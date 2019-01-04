@@ -18,6 +18,8 @@ using namespace std;
 #include "InputManager.h"
 #include "ParticleGenerator.h"
 #include "scene_node.h"
+#include "Component.h"
+#include "Actor.h"
 
 /****************************************************************************
  *
@@ -621,6 +623,8 @@ HRESULT InitialiseGraphics()
 	g_rootNode->addChildNode(g_node1);
 	g_rootNode->addChildNode(g_node2);
 
+	g_node1->AddComponent(new Actor());
+
 	CreateSkybox();
 
 	return S_OK;
@@ -645,7 +649,7 @@ void RenderFrame(void)
 	if (g_input->IsKeyPressed(DIK_D)) x = 0.5;
 	if (x != 0 || z != 0) {
 		g_node1->LookAt_XZ(g_node1->GetXPos() + x, g_node1->GetZPos() + z);
-		g_node1->MoveForward(0.005, g_rootNode);
+		g_node1->MoveForward(0.005, g_node1->GetRootNode());
 	}
 
 	x = 0;
@@ -657,7 +661,7 @@ void RenderFrame(void)
 	if (g_input->IsKeyPressed(DIK_RIGHT)) x = 0.5;
 	if (x != 0 || z != 0) {
 		g_node2->LookAt_XZ(g_node2->GetXPos() + x, g_node2->GetZPos() + z);
-		g_node2->MoveForward(0.005, g_rootNode);
+		g_node2->MoveForward(0.005, g_node2->GetRootNode());
 	}
 
 	// Camera control
@@ -696,7 +700,7 @@ void RenderFrame(void)
 	//g_model->Draw(&view, &projection);
 	//g_model1->Draw(&view, &projection);
 
-	g_rootNode->execute(&world, &view, &projection);
+	g_rootNode->Update(&world, &view, &projection);
 
 	g_2DText->AddText("gagaga gagaga gaogaigar", -1.0, -0.9, 0.075);
 	g_2DText->RenderText();

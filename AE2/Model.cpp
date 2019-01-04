@@ -266,6 +266,11 @@ bool Model::CheckCollision(Model * other, float xOffset, float yOffset, float zO
 		return false;
 }
 
+void Model::Update()
+{
+
+}
+
 void Model::SetXPos(float x)
 {
 	m_x = x;

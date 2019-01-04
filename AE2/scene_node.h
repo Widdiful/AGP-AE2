@@ -17,12 +17,15 @@ using namespace std;
 #include "Model.h"
 #include "InputManager.h"
 #include "ParticleGenerator.h"
+#include "Component.h"
 
 class scene_node
 {
 private:
 	Model* m_pModel;
 	vector<scene_node*> m_children;
+	vector<Component*> m_components;
+	scene_node* m_parent;
 
 	float m_x, m_y, m_z;
 	float m_xAngle, m_yAngle, m_zAngle;
@@ -38,7 +41,9 @@ public:
 	void SetModel(Model* model);
 	void addChildNode(scene_node* n);
 	bool detatchNode(scene_node* n);
-	void execute(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection);
+	void SetParent(scene_node* n);
+	scene_node* GetParent();
+	void Update(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection);
 	void LookAt_XZ(float x, float z);
 	void MoveForward(float distance);
 	bool MoveForward(float distance, scene_node* rootNode);
@@ -46,6 +51,8 @@ public:
 	bool CheckCollision(scene_node* compareTree, scene_node* objectTreeRoot);
 	XMVECTOR GetWorldCentrePosition();
 	void UpdateCollisionTree(XMMATRIX* world, float scale);
+	void AddComponent(Component* component);
+	scene_node* GetRootNode();
 
 	// POSITION INFO
 

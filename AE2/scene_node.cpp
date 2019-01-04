@@ -29,6 +29,7 @@ void scene_node::SetModel(Model * model)
 void scene_node::addChildNode(scene_node * n)
 {
 	m_children.push_back(n);
+	n->SetParent(this);
 }
 
 bool scene_node::detatchNode(scene_node * n)
@@ -47,7 +48,17 @@ bool scene_node::detatchNode(scene_node * n)
 
 }
 
-void scene_node::execute(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection)
+void scene_node::SetParent(scene_node * n)
+{
+	m_parent = n;
+}
+
+scene_node * scene_node::GetParent()
+{
+	return m_parent;
+}
+
+void scene_node::Update(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection)
 {
 	// the local_world matrix will be used to calc the local transformations for this node
 	XMMATRIX local_world = XMMatrixIdentity();
@@ -67,10 +78,15 @@ void scene_node::execute(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projectio
 	// only draw if there is a model attached
 	if (m_pModel) m_pModel->Draw(&local_world, view, projection);
 
+	// run all component update functions
+	for (int i = 0; i < m_components.size(); i++) {
+		m_components[i]->Update();
+	}
+
 	// traverse all child nodes, passing in the concatenated world matrix
 	for (int i = 0; i < m_children.size(); i++)
 	{
-		m_children[i]->execute(&local_world, view, projection);
+		m_children[i]->Update(&local_world, view, projection);
 	}
 
 }
@@ -217,6 +233,21 @@ void scene_node::UpdateCollisionTree(XMMATRIX * world, float scale)
 		m_children[i]->UpdateCollisionTree(&local_world, m_worldScale);
 	}
 
+}
+
+void scene_node::AddComponent(Component * component)
+{
+	m_components.push_back(component);
+	component->SetNode(this);
+	component->Start();
+}
+
+scene_node * scene_node::GetRootNode()
+{
+	if (m_parent) {
+		return m_parent->GetRootNode();
+	}
+	return this;
 }
 
 void scene_node::SetXPos(float x)
@@ -381,7 +412,7 @@ bool scene_node::AddZPos(float z, scene_node * rootNode)
 
 bool scene_node::AddPos(float x, float y, float z, scene_node * rootNode)
 {
-	if (AddXPos(x, rootNode) && AddYPos(y, rootNode) && AddZPos(z, rootNode))
+	if (!(AddXPos(x, rootNode) && AddYPos(y, rootNode) && AddZPos(z, rootNode)))
 		return true;
 	else
 		return false;

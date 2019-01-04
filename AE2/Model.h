@@ -3,7 +3,7 @@
 
 class Model
 {
-private:
+protected:
 	ID3D11Device*			m_pD3DDevice;
 	ID3D11DeviceContext*	m_pImmediateContext;
 
@@ -39,6 +39,7 @@ public:
 	void MoveForward(float distance);
 	bool CheckCollision(Model* other);
 	bool CheckCollision(Model* other, float xOffset, float yOffset, float zOffset);
+	virtual void Update();
 
 	// POSITION INFO
 

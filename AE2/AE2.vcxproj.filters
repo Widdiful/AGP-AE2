@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <FxCompile Include="particle_shader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="model_shader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="shaders.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="sky_shader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="text2D_shaders.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="objfilemodel.cpp" />
+    <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="scene_node.cpp" />
+    <ClCompile Include="text2D.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Actor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="objfilemodel.h" />
+    <ClInclude Include="ParticleGenerator.h" />
+    <ClInclude Include="scene_node.h" />
+    <ClInclude Include="text2D.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Actor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{fbf36a4f-f427-4fa3-8fd6-b29e08dac337}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
