@@ -10,6 +10,7 @@ private:
 	HINSTANCE*	m_hInst;
 	HWND*		m_hWnd;
 	unsigned char m_keyboard_keys_state[256];
+	unsigned char m_previous_keyboard_keys_state[256];
 	DIMOUSESTATE m_mouse_state;
 
 public:
@@ -19,6 +20,7 @@ public:
 	HRESULT InitialiseInput();
 	void ReadInputStates();
 	bool IsKeyPressed(unsigned char DI_keycode);
+	bool IsKeyBeganPressed(unsigned char DI_keycode);
 	DIMOUSESTATE GetMouseState();
 };
 

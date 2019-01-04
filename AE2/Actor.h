@@ -3,16 +3,16 @@
 class Actor :
 	public Component
 {
-private:
-	bool m_useGravity = true;
+protected:
+	bool m_useGravity;
 	float m_velocityX, m_velocityY, m_velocityZ;
 	float m_gravity;
 	float m_gravityMax;
 public:
-	Actor();
+	Actor(float useGravity);
 	~Actor();
 
-	void Start();
-	void Update();
+	virtual void Start();
+	virtual void Update();
 };
 

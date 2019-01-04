@@ -20,6 +20,7 @@ using namespace std;
 #include "scene_node.h"
 #include "Component.h"
 #include "Actor.h"
+#include "Player.h"
 
 /****************************************************************************
  *
@@ -623,7 +624,7 @@ HRESULT InitialiseGraphics()
 	g_rootNode->addChildNode(g_node1);
 	g_rootNode->addChildNode(g_node2);
 
-	g_node1->AddComponent(new Actor());
+	g_node1->AddComponent(new Player(true, g_input));
 
 	CreateSkybox();
 
@@ -640,39 +641,14 @@ void RenderFrame(void)
 
 	if (g_input->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(g_hWnd);
 
-	// Character control
-	float x = 0, z = 0;
-	float moveDurationMax = 5000;
-	if (g_input->IsKeyPressed(DIK_W)) z = 0.5;
-	if (g_input->IsKeyPressed(DIK_S)) z = -0.5;
-	if (g_input->IsKeyPressed(DIK_A)) x = -0.5;
-	if (g_input->IsKeyPressed(DIK_D)) x = 0.5;
-	if (x != 0 || z != 0) {
-		g_node1->LookAt_XZ(g_node1->GetXPos() + x, g_node1->GetZPos() + z);
-		g_node1->MoveForward(0.005, g_node1->GetRootNode());
-	}
-
-	x = 0;
-	z = 0;
-
-	if (g_input->IsKeyPressed(DIK_UP)) z = 0.5;
-	if (g_input->IsKeyPressed(DIK_DOWN)) z = -0.5;
-	if (g_input->IsKeyPressed(DIK_LEFT)) x = -0.5;
-	if (g_input->IsKeyPressed(DIK_RIGHT)) x = 0.5;
-	if (x != 0 || z != 0) {
-		g_node2->LookAt_XZ(g_node2->GetXPos() + x, g_node2->GetZPos() + z);
-		g_node2->MoveForward(0.005, g_node2->GetRootNode());
-	}
-
 	// Camera control
 	float sensitivity = 0.25;
 	float speed = 0.0005;
-	float lookAhead = 0;
 	//if (g_input->GetMouseState().lX != 0) camera->Rotate(g_input->GetMouseState().lX * sensitivity, 25);
 	//if (g_input->GetMouseState().lY != 0) camera->Pitch(-g_input->GetMouseState().lY * sensitivity, -60, -10);
-	camera->MoveTowardsX(g_node1->GetXPos() + (x * lookAhead), speed);
+	camera->MoveTowardsX(g_node1->GetXPos(), speed);
 	camera->SetY(25);
-	camera->MoveTowardsZ(g_node1->GetZPos() + (z * lookAhead) - 50, speed);
+	camera->MoveTowardsZ(g_node1->GetZPos() - 50, speed);
 	camera->LerpAt(g_node1->GetXPos(), g_node1->GetYPos(), g_node1->GetZPos(), 0.0005);
 
 

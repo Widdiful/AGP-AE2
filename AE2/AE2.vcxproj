@@ -148,6 +148,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="objfilemodel.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene_node.cpp" />
     <ClCompile Include="text2D.cpp" />
   </ItemGroup>
@@ -186,6 +187,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="objfilemodel.h" />
     <ClInclude Include="ParticleGenerator.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="scene_node.h" />
     <ClInclude Include="text2D.h" />
   </ItemGroup>

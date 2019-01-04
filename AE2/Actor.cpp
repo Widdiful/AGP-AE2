@@ -3,7 +3,7 @@
 
 
 
-Actor::Actor()
+Actor::Actor(float useGravity)
 {
 	m_velocityX = 0;
 	m_velocityY = 0;
@@ -11,7 +11,7 @@ Actor::Actor()
 
 	m_gravity = -0.0001f;
 	m_gravityMax = -0.01f;
-	m_useGravity = true;
+	m_useGravity = useGravity;
 }
 
 Actor::~Actor()
@@ -33,7 +33,9 @@ void Actor::Update()
 
 	if (m_node) {
 		m_node->AddXPos(m_velocityX, m_rootNode);
-		m_node->AddYPos(m_velocityY, m_rootNode);
+		if (m_node->AddYPos(m_velocityY, m_rootNode)) {
+			m_velocityY = 0;
+		}
 		m_node->AddZPos(m_velocityZ, m_rootNode);
 	}
 }

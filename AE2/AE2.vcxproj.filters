@@ -28,6 +28,7 @@
     <ClCompile Include="text2D.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -39,6 +40,7 @@
     <ClInclude Include="text2D.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shaders">

@@ -1,5 +1,6 @@
 #include "InputManager.h"
-
+#include <algorithm>
+#include <iterator>
 
 
 InputManager::InputManager(HINSTANCE * g_hInst, HWND* g_hWnd)
@@ -57,6 +58,8 @@ HRESULT InputManager::InitialiseInput()
 
 void InputManager::ReadInputStates()
 {
+	std::copy(std::begin(m_keyboard_keys_state), std::end(m_keyboard_keys_state), std::begin(m_previous_keyboard_keys_state));
+
 	HRESULT hr;
 	hr = m_keyboard_device->GetDeviceState(sizeof(m_keyboard_keys_state), (LPVOID)&m_keyboard_keys_state);
 	if (FAILED(hr)) {
@@ -76,6 +79,13 @@ void InputManager::ReadInputStates()
 bool InputManager::IsKeyPressed(unsigned char DI_keycode)
 {
 	return m_keyboard_keys_state[DI_keycode] & 0x80;
+}
+
+bool InputManager::IsKeyBeganPressed(unsigned char DI_keycode)
+{
+	bool lastFrame = !(m_previous_keyboard_keys_state[DI_keycode] & 0x80);
+	bool thisFrame = m_keyboard_keys_state[DI_keycode] & 0x80;
+	return lastFrame && thisFrame;
 }
 
 DIMOUSESTATE InputManager::GetMouseState()
