@@ -21,6 +21,7 @@ using namespace std;
 #include "Component.h"
 #include "Actor.h"
 #include "Player.h"
+#include "CameraControl.h"
 
 /****************************************************************************
  *
@@ -234,8 +235,10 @@ Model* g_model1;
 ParticleGenerator* g_particleGenerator;
 
 scene_node* g_rootNode;
-scene_node* g_node1;
+scene_node* g_playerNode;
 scene_node* g_node2;
+scene_node* g_cameraGripNode;
+scene_node* g_cameraNode;
 
 XMVECTOR g_directional_light_origin = XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f);
 XMVECTOR g_directional_light_colour = XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
@@ -614,17 +617,24 @@ HRESULT InitialiseGraphics()
 	g_particleGenerator->CreateParticle();
 
 	g_rootNode = new scene_node();
-	g_node1 = new scene_node();
+	g_playerNode = new scene_node();
 	g_node2 = new scene_node();
 
-	g_node1->SetModel(g_model);
+	g_playerNode->SetModel(g_model);
 	g_node2->SetModel(g_model1);
 	g_node2->SetXPos(-10);
 
-	g_rootNode->addChildNode(g_node1);
-	g_rootNode->addChildNode(g_node2);
+	g_cameraGripNode = new scene_node();
+	g_cameraNode = new scene_node();
 
-	g_node1->AddComponent(new Player(true, g_input));
+	g_rootNode->addChildNode(g_playerNode);
+	g_rootNode->addChildNode(g_node2);
+	g_rootNode->addChildNode(g_cameraGripNode);
+	g_cameraGripNode->addChildNode(g_cameraNode);
+
+	g_playerNode->AddComponent(new Player(true, g_input, g_cameraGripNode));
+	//g_node2->AddComponent(new Player(false, g_input));
+	g_cameraGripNode->AddComponent(new CameraControl(camera, g_playerNode, g_cameraNode, g_input));
 
 	CreateSkybox();
 
@@ -640,17 +650,6 @@ void RenderFrame(void)
 	g_input->ReadInputStates();
 
 	if (g_input->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(g_hWnd);
-
-	// Camera control
-	float sensitivity = 0.25;
-	float speed = 0.0005;
-	//if (g_input->GetMouseState().lX != 0) camera->Rotate(g_input->GetMouseState().lX * sensitivity, 25);
-	//if (g_input->GetMouseState().lY != 0) camera->Pitch(-g_input->GetMouseState().lY * sensitivity, -60, -10);
-	camera->MoveTowardsX(g_node1->GetXPos(), speed);
-	camera->SetY(25);
-	camera->MoveTowardsZ(g_node1->GetZPos() - 50, speed);
-	camera->LerpAt(g_node1->GetXPos(), g_node1->GetYPos(), g_node1->GetZPos(), 0.0005);
-
 
 	// Clear the back buffer - choose a colour you like
 	float rgba_clear_colour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };

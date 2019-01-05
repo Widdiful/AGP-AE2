@@ -35,6 +35,8 @@ private:
 
 	bool m_collisionEnabled = true;
 
+	XMMATRIX worldMatrix;
+
 public:
 	scene_node();
 	~scene_node();
@@ -45,6 +47,7 @@ public:
 	scene_node* GetParent();
 	void Update(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection);
 	void LookAt_XZ(float x, float z);
+	void LookAt_XZ(float x, float z, float rot);
 	void MoveForward(float distance);
 	bool MoveForward(float distance, scene_node* rootNode);
 	bool CheckCollision(scene_node* compareTree);
@@ -52,6 +55,7 @@ public:
 	XMVECTOR GetWorldCentrePosition();
 	void UpdateCollisionTree(XMMATRIX* world, float scale);
 	void AddComponent(Component* component);
+	Component* GetComponent(std::string name);
 	scene_node* GetRootNode();
 
 	// POSITION INFO
@@ -74,6 +78,10 @@ public:
 	float GetXPos();
 	float GetYPos();
 	float GetZPos();
+
+	float GetWorldXPos();
+	float GetWorldYPos();
+	float GetWorldZPos();
 
 	// ROTATION INFO
 

@@ -121,6 +121,21 @@ float Camera::GetZ()
 	return m_z;
 }
 
+float Camera::GetDX()
+{
+	return m_dx;
+}
+
+float Camera::GetDZ()
+{
+	return m_dz;
+}
+
+float Camera::GetYRot()
+{
+	return m_camera_rotation;
+}
+
 void Camera::SetX(float val)
 {
 	m_x = val;
@@ -139,6 +154,11 @@ void Camera::SetZ(float val)
 void Camera::MoveTowardsX(float val, float lerpSpeed)
 {
 	m_x = (m_x + (lerpSpeed * (val - m_x)));
+}
+
+void Camera::MoveTowardsY(float val, float lerpSpeed)
+{
+	m_y = (m_y + (lerpSpeed * (val - m_y)));
 }
 
 void Camera::MoveTowardsZ(float val, float lerpSpeed)

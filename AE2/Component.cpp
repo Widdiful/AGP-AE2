@@ -5,7 +5,7 @@
 
 Component::Component()
 {
-
+	m_name = "";
 }
 
 Component::~Component()
@@ -21,7 +21,17 @@ void Component::Update()
 {
 }
 
+void Component::OnCollision(Component* other)
+{
+
+}
+
 void Component::SetNode(scene_node * node)
 {
 	m_node = node;
+}
+
+std::string Component::GetName()
+{
+	return m_name;
 }

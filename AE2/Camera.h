@@ -34,11 +34,17 @@ public:
 	float GetY();
 	float GetZ();
 
+	float GetDX();
+	float GetDZ();
+
+	float GetYRot();
+
 	void SetX(float val);
 	void SetY(float val);
 	void SetZ(float val);
 
 	void MoveTowardsX(float val, float lerpSpeed);
+	void MoveTowardsY(float val, float lerpSpeed);
 	void MoveTowardsZ(float val, float lerpSpeed);
 };
 

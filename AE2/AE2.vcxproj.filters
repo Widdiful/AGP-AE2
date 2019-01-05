@@ -18,33 +18,83 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
-    <ClCompile Include="objfilemodel.cpp" />
-    <ClCompile Include="ParticleGenerator.cpp" />
-    <ClCompile Include="scene_node.cpp" />
-    <ClCompile Include="text2D.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="Actor.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Actor.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControl.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="objfilemodel.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleGenerator.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_node.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="text2D.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="objfilemodel.h" />
-    <ClInclude Include="ParticleGenerator.h" />
-    <ClInclude Include="scene_node.h" />
-    <ClInclude Include="text2D.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="Actor.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="Actor.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControl.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="objfilemodel.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleGenerator.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_node.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="text2D.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shaders">
       <UniqueIdentifier>{fbf36a4f-f427-4fa3-8fd6-b29e08dac337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{bf994bf4-6d71-4850-b874-22da7997ae5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{9565f92b-fbb5-47be-a343-bb4af6fc5484}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

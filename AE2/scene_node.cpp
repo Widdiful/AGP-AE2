@@ -75,6 +75,8 @@ void scene_node::Update(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection
 	// transformations of all parent nodes so that this nodes transformations are relative to those
 	local_world *= *world;
 
+	worldMatrix = local_world;
+
 	// only draw if there is a model attached
 	if (m_pModel) m_pModel->Draw(&local_world, view, projection);
 
@@ -99,6 +101,16 @@ void scene_node::LookAt_XZ(float x, float z)
 	dz = z - m_z;
 
 	m_yAngle = atan2(dx, dz) * (180.0 / XM_PI);
+}
+
+void scene_node::LookAt_XZ(float x, float z, float rot)
+{
+	float dx, dz;
+
+	dx = x - m_x;
+	dz = z - m_z;
+
+	m_yAngle = atan2(dx, dz) * (180.0 / XM_PI) + rot;
 }
 
 void scene_node::MoveForward(float distance)
@@ -240,6 +252,16 @@ void scene_node::AddComponent(Component * component)
 	m_components.push_back(component);
 	component->SetNode(this);
 	component->Start();
+}
+
+Component * scene_node::GetComponent(std::string name)
+{
+	for (int i = 0; i < m_components.size(); i++) {
+		if (m_components[i]->GetName() == name) {
+			return m_components[i];
+		}
+	}
+	return nullptr;
 }
 
 scene_node * scene_node::GetRootNode()
@@ -475,6 +497,21 @@ float scene_node::GetYPos()
 float scene_node::GetZPos()
 {
 	return m_z;
+}
+
+float scene_node::GetWorldXPos()
+{
+	return m_worldCentreX;
+}
+
+float scene_node::GetWorldYPos()
+{
+	return m_worldCentreY;
+}
+
+float scene_node::GetWorldZPos()
+{
+	return m_worldCentreZ;
 }
 
 float scene_node::GetXRot()
