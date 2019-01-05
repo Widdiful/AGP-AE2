@@ -17,13 +17,15 @@ using namespace std;
 #include "Model.h"
 #include "InputManager.h"
 #include "ParticleGenerator.h"
-#include "scene_node.h"
+#include "SceneNode.h"
 #include "Component.h"
 #include "Actor.h"
 #include "Player.h"
 #include "CameraControl.h"
 #include "Enemy.h"
+#include "UIManager.h"
 
+#pragma region "Keyboard stuff"
 /****************************************************************************
  *
  *      DirectInput keyboard scan codes
@@ -192,7 +194,7 @@ using namespace std;
 #define DIK_RIGHTARROW      DIK_RIGHT           /* RightArrow on arrow keypad */
 #define DIK_DOWNARROW       DIK_DOWN            /* DownArrow on arrow keypad */
 #define DIK_PGDN            DIK_NEXT            /* PgDn on arrow keypad */
-
+#pragma endregion
 
 //////////////////////////////////////////////////////////////////////////////////////
 //	Global Variables
@@ -235,11 +237,11 @@ Model* g_model;
 Model* g_model1;
 ParticleGenerator* g_particleGenerator;
 
-scene_node* g_rootNode;
-scene_node* g_playerNode;
-scene_node* g_node2;
-scene_node* g_cameraGripNode;
-scene_node* g_cameraNode;
+SceneNode* g_rootNode;
+SceneNode* g_playerNode;
+SceneNode* g_node2;
+SceneNode* g_cameraGripNode;
+SceneNode* g_cameraNode;
 
 XMVECTOR g_directional_light_origin = XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f);
 XMVECTOR g_directional_light_colour = XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
@@ -617,17 +619,17 @@ HRESULT InitialiseGraphics()
 	g_particleGenerator = new ParticleGenerator(g_pD3DDevice, g_pImmediateContext);
 	g_particleGenerator->CreateParticle();
 
-	g_rootNode = new scene_node("Root");
-	g_playerNode = new scene_node("Player");
-	g_node2 = new scene_node("Enemy");
+	g_rootNode = new SceneNode("Root");
+	g_playerNode = new SceneNode("Player");
+	g_node2 = new SceneNode("Enemy");
 
 	g_playerNode->SetModel(g_model);
 	g_node2->SetModel(g_model1);
 	g_node2->SetXPos(-10);
 	g_node2->SetYPos(10);
 
-	g_cameraGripNode = new scene_node("Camera Grip");
-	g_cameraNode = new scene_node("Camera");
+	g_cameraGripNode = new SceneNode("Camera Grip");
+	g_cameraNode = new SceneNode("Camera");
 
 	g_rootNode->addChildNode(g_playerNode);
 	g_rootNode->addChildNode(g_node2);
@@ -635,8 +637,11 @@ HRESULT InitialiseGraphics()
 	g_cameraGripNode->addChildNode(g_cameraNode);
 
 	g_playerNode->AddComponent(new Player(true, g_input, g_cameraGripNode));
+	g_playerNode->AddComponent(new UIManager(g_2DText));
 	g_node2->AddComponent(new Enemy(true));
 	g_cameraGripNode->AddComponent(new CameraControl(camera, g_playerNode, g_cameraNode, g_input));
+
+	g_rootNode->StartComponents();
 
 	CreateSkybox();
 
@@ -659,28 +664,15 @@ void RenderFrame(void)
 
 	g_pImmediateContext->ClearDepthStencilView(g_pZBuffer, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	//// Set vertex buffer
-	//UINT stride = sizeof(POS_COL_TEX_NORM_VERTEX);
-	//UINT offset = 0;
-	//g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer, &stride, &offset);
-
 	XMMATRIX world, projection, view;
 	world = XMMatrixTranslation(0, 0, 0);
 	projection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45), 640.0 / 480.0, 1.0, 1000.0);
 	view = camera->GetViewMatrix();
 
-	//g_model1->LookAt_XZ(g_model->GetXPos(), g_model->GetZPos());
-	//if (!g_model1->CheckCollision(g_model)) g_model1->MoveForward(0.001);
-
 	RenderSkybox(&view, &projection);
 
-	//g_model->Draw(&view, &projection);
-	//g_model1->Draw(&view, &projection);
-
+	// Run all scene nodes and components
 	g_rootNode->Update(&world, &view, &projection);
-
-	g_2DText->AddText("gagaga gagaga gaogaigar", -1.0, -0.9, 0.075);
-	g_2DText->RenderText();
 
 	g_particleGenerator->Draw(&view, &projection, new XMFLOAT3(camera->GetX(), camera->GetY(), camera->GetZ()));
 

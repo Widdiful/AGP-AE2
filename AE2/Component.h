@@ -1,11 +1,11 @@
 #pragma once
 #include <string>
-class scene_node;
+class SceneNode;
 class Component
 {
 protected:
-	scene_node* m_node;
-	scene_node* m_rootNode;
+	SceneNode* m_node;
+	SceneNode* m_rootNode;
 	std::string m_name;
 public:
 	Component();
@@ -15,7 +15,7 @@ public:
 	virtual void Update();
 	virtual void OnCollision(Component* other);
 
-	void SetNode(scene_node* node);
+	void SetNode(SceneNode* node);
 	std::string GetName();
 };
 

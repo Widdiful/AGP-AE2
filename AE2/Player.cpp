@@ -1,8 +1,8 @@
 #include "Player.h"
-#include "scene_node.h"
+#include "SceneNode.h"
 
 
-Player::Player(float useGravity, InputManager* input, scene_node* camera) : Actor(useGravity)
+Player::Player(float useGravity, InputManager* input, SceneNode* camera) : Actor(useGravity)
 {
 	m_name = "Player";
 	
@@ -21,6 +21,8 @@ Player::~Player()
 void Player::Start()
 {
 	Actor::Start();
+
+	m_uiManager = static_cast<UIManager*>(m_node->GetComponent("UI Manager"));
 }
 
 void Player::Update()
@@ -38,6 +40,8 @@ void Player::Update()
 	if (m_input->IsKeyBeganPressed(DIK_SPACE)) {
 		m_velocityY += m_jumpVelocity;
 	}
+
+	m_uiManager->ChangeText("Wahoo!");
 
 	Actor::Update();
 }

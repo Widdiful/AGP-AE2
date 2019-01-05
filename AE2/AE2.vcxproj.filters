@@ -43,9 +43,6 @@
     <ClCompile Include="ParticleGenerator.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="scene_node.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="text2D.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -55,7 +52,15 @@
     <ClCompile Include="Model.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="SceneNode.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -85,16 +90,21 @@
     <ClInclude Include="ParticleGenerator.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="scene_node.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="text2D.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="SceneNode.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shaders">

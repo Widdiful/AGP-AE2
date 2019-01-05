@@ -2,7 +2,7 @@
 
 
 
-CameraControl::CameraControl(Camera * camera, scene_node * target, scene_node* cameraNode, InputManager* input)
+CameraControl::CameraControl(Camera * camera, SceneNode * target, SceneNode* cameraNode, InputManager* input)
 {
 	m_name = "Camera Control";
 

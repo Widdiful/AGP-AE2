@@ -2,14 +2,17 @@
 #include "Actor.h"
 #include "InputManager.h"
 #include "Camera.h"
+#include "UIManager.h"
 class Player :
 	public Actor
 {
 private:
 	InputManager* m_input;
-	scene_node* m_camera;
+	SceneNode* m_camera;
+
+	UIManager* m_uiManager;
 public:
-	Player(float useGravity, InputManager* input, scene_node* camera);
+	Player(float useGravity, InputManager* input, SceneNode* camera);
 	~Player();
 
 	void Start();

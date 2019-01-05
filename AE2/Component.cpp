@@ -1,5 +1,5 @@
 #include "Component.h"
-#include "scene_node.h"
+#include "SceneNode.h"
 
 
 
@@ -26,7 +26,7 @@ void Component::OnCollision(Component* other)
 
 }
 
-void Component::SetNode(scene_node * node)
+void Component::SetNode(SceneNode * node)
 {
 	m_node = node;
 }

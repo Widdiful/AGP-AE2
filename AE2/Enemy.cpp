@@ -1,5 +1,5 @@
 #include "Enemy.h"
-#include "scene_node.h"
+#include "SceneNode.h"
 
 
 Enemy::Enemy(bool gravity) : Actor(gravity)
