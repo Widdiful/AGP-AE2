@@ -617,16 +617,17 @@ HRESULT InitialiseGraphics()
 	g_particleGenerator = new ParticleGenerator(g_pD3DDevice, g_pImmediateContext);
 	g_particleGenerator->CreateParticle();
 
-	g_rootNode = new scene_node();
-	g_playerNode = new scene_node();
-	g_node2 = new scene_node();
+	g_rootNode = new scene_node("Root");
+	g_playerNode = new scene_node("Player");
+	g_node2 = new scene_node("Enemy");
 
 	g_playerNode->SetModel(g_model);
 	g_node2->SetModel(g_model1);
 	g_node2->SetXPos(-10);
+	g_node2->SetYPos(10);
 
-	g_cameraGripNode = new scene_node();
-	g_cameraNode = new scene_node();
+	g_cameraGripNode = new scene_node("Camera Grip");
+	g_cameraNode = new scene_node("Camera");
 
 	g_rootNode->addChildNode(g_playerNode);
 	g_rootNode->addChildNode(g_node2);

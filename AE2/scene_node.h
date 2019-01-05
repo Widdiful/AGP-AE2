@@ -18,6 +18,7 @@ using namespace std;
 #include "InputManager.h"
 #include "ParticleGenerator.h"
 #include "Component.h"
+#include "Vector3.h"
 
 class scene_node
 {
@@ -27,9 +28,9 @@ private:
 	vector<Component*> m_components;
 	scene_node* m_parent;
 
-	float m_x, m_y, m_z;
-	float m_xAngle, m_yAngle, m_zAngle;
-	float m_xScale, m_yScale, m_zScale;
+	string m_name;
+
+	Vector3 m_position, m_rotation, m_scale;
 	float m_worldCentreX, m_worldCentreY, m_worldCentreZ;
 	float m_worldScale;
 
@@ -38,7 +39,7 @@ private:
 	XMMATRIX worldMatrix;
 
 public:
-	scene_node();
+	scene_node(string name);
 	~scene_node();
 	void SetModel(Model* model);
 	void addChildNode(scene_node* n);
@@ -47,6 +48,7 @@ public:
 	scene_node* GetParent();
 	void Update(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection);
 	void LookAt_XZ(float x, float z);
+	void LookAt_XYZ(float x, float y, float z);
 	void LookAt_XZ(float x, float z, float rot);
 	void MoveForward(float distance);
 	bool MoveForward(float distance, scene_node* rootNode);
@@ -56,7 +58,9 @@ public:
 	void UpdateCollisionTree(XMMATRIX* world, float scale);
 	void AddComponent(Component* component);
 	Component* GetComponent(std::string name);
+	scene_node* FindNode(string name);
 	scene_node* GetRootNode();
+	string GetName();
 
 	// POSITION INFO
 

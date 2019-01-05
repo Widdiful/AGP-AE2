@@ -12,9 +12,9 @@ Enemy::Enemy(bool gravity) : Actor(gravity)
 	m_points.push_back(Vector3(0, 0, 0));
 	m_points.push_back(Vector3(10, 0, 0));
 	m_points.push_back(Vector3(0, 0, 10));
-	m_points.push_back(Vector3(10, 0, 10));
-	m_points.push_back(Vector3(20, 0, 0));
-	m_points.push_back(Vector3(-20, 0, 20));
+	m_points.push_back(Vector3(10, 10, 10));
+	m_points.push_back(Vector3(20, 10, 0));
+	m_points.push_back(Vector3(-20, 10, 20));
 
 	m_currentPoint = m_points[m_currentPointIndex];
 }
@@ -31,16 +31,20 @@ void Enemy::Update()
 
 	Vector3 pos = Vector3(m_node->GetXPos(), m_node->GetYPos(), m_node->GetZPos());
 	float dx = pos.x - m_currentPoint.x;
-	float dy = pos.y - m_currentPoint.y;
 	float dz = pos.z - m_currentPoint.z;
 
 	// check bounding sphere collision
-	float distance = sqrt(dx*dx + dy * dy + dz * dz);
+	float distance = sqrt(dx*dx + dz * dz);
 
 	if (distance <= m_distanceToChange){
 		m_currentPoint = GetNextPoint();
 	}
 
+	if (m_currentPoint.y > m_node->GetYPos() && m_node->GetYPos() <= 0) {
+		m_velocityY += m_jumpVelocity;
+	}
+
+	Actor::Update();
 }
 
 Vector3 Enemy::GetNextPoint()
