@@ -22,6 +22,7 @@ using namespace std;
 #include "Actor.h"
 #include "Player.h"
 #include "CameraControl.h"
+#include "Enemy.h"
 
 /****************************************************************************
  *
@@ -633,7 +634,7 @@ HRESULT InitialiseGraphics()
 	g_cameraGripNode->addChildNode(g_cameraNode);
 
 	g_playerNode->AddComponent(new Player(true, g_input, g_cameraGripNode));
-	//g_node2->AddComponent(new Player(false, g_input));
+	g_node2->AddComponent(new Enemy(true));
 	g_cameraGripNode->AddComponent(new CameraControl(camera, g_playerNode, g_cameraNode, g_input));
 
 	CreateSkybox();

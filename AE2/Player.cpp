@@ -4,6 +4,8 @@
 
 Player::Player(float useGravity, InputManager* input, scene_node* camera) : Actor(useGravity)
 {
+	m_name = "Player";
+	
 	m_input = input;
 	m_camera = camera;
 

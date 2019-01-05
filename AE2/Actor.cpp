@@ -5,6 +5,8 @@
 
 Actor::Actor(float useGravity)
 {
+	m_name = "Actor";
+
 	m_velocityX = 0;
 	m_velocityY = 0;
 	m_velocityZ = 0;

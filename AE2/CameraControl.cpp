@@ -4,6 +4,8 @@
 
 CameraControl::CameraControl(Camera * camera, scene_node * target, scene_node* cameraNode, InputManager* input)
 {
+	m_name = "Camera Control";
+
 	m_camera = camera;
 	m_target = target;
 	m_cameraNode = cameraNode;
@@ -24,6 +26,7 @@ CameraControl::~CameraControl()
 
 void CameraControl::Update()
 {
+	Component::Update();
 	if (m_input->IsKeyPressed(DIK_LEFT)) {
 		m_node->AddYRot(m_gripRotateSpeed);
 	}
