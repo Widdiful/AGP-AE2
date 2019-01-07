@@ -67,7 +67,9 @@
     <ClCompile Include="Level1.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
-    <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -118,7 +120,9 @@
     <ClInclude Include="Level1.h">
       <Filter>Levels</Filter>
     </ClInclude>
-    <ClInclude Include="Skybox.h" />
+    <ClInclude Include="Skybox.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shaders">

@@ -224,21 +224,6 @@ int g_levelID = 0;
 
 
 //Define vertex structure
-struct POS_COL_VERTEX//This will be added to and renamed in future tutorials
-{
-	XMFLOAT3	pos;
-	XMFLOAT4	Col;
-};
-
-//Define vertex structure
-struct POS_COL_TEX_VERTEX
-{
-	XMFLOAT3	pos;
-	XMFLOAT4	Col;
-	XMFLOAT2    Texture0;
-};
-
-//Define vertex structure
 struct POS_COL_TEX_NORM_VERTEX
 {
 	XMFLOAT3	pos;
@@ -255,9 +240,6 @@ struct CONSTANT_BUFFER0
 	XMVECTOR directional_light_vector;
 	XMVECTOR directional_light_colour;
 	XMVECTOR ambient_light_colour;
-	/*float RedAmount;
-	float scale;
-	XMFLOAT2 packing_bytes;*/
 };
 
 
@@ -538,6 +520,11 @@ void ShutdownD3D()
 	if (g_pImmediateContext) g_pImmediateContext->Release();
 	if (g_pD3DDevice) g_pD3DDevice->Release();
 	if (g_pBackBufferRTView) g_pBackBufferRTView->Release();
+
+	for (int i = 0; i < g_levels.size(); i++) {
+		delete g_levels[i];
+		g_levels[i] = nullptr;
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -548,10 +535,9 @@ HRESULT InitialiseGraphics()
 	HRESULT hr = S_OK;
 	g_skybox = new Skybox(g_pD3DDevice, g_pVertexBuffer, g_pConstantBuffer0, g_pImmediateContext, g_pVertexShader, g_pPixelShader, g_pInputLayout, g_pSkybox, g_pSampler0);
 
-	// initialise level 1
+	// Create levels
 	g_levels.push_back(new Level1(g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
-	g_levels[0]->InitialiseLevel();
-	g_levels[0]->StartComponents();
+	g_levels.push_back(new Level(g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
 
 	return S_OK;
 }
@@ -565,6 +551,9 @@ void RenderFrame(void)
 	g_input->ReadInputStates();
 
 	if (g_input->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(g_hWnd);
+	if (g_input->IsKeyPressed(DIK_1)) g_levelID = 0;
+	if (g_input->IsKeyPressed(DIK_2)) g_levelID = 1;
+	if (g_input->IsKeyBeganPressed(DIK_R)) g_levels[g_levelID]->Restart();
 
 	// Clear the back buffer - choose a colour you like
 	float rgba_clear_colour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };

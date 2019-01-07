@@ -4,11 +4,13 @@
 
 Level::Level(InputManager* input, ID3D11Device* device, ID3D11DeviceContext* context, Skybox* skybox)
 {
+	// Set up references
 	m_input = input;
 	m_pD3DDevice = device;
 	m_pImmediateContext = context;
 	m_skybox = skybox;
 
+	// Create skybox rasters
 	D3D11_RASTERIZER_DESC rasteriser_desc;
 	ZeroMemory(&rasteriser_desc, sizeof(rasteriser_desc));
 
@@ -28,6 +30,8 @@ Level::Level(InputManager* input, ID3D11Device* device, ID3D11DeviceContext* con
 	m_pD3DDevice->CreateDepthStencilState(&stencilDesc, &m_pDepthWriteSolid);
 	stencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	m_pD3DDevice->CreateDepthStencilState(&stencilDesc, &m_pDepthWriteSkybox);
+
+	InitialiseLevel();
 }
 
 
@@ -54,6 +58,8 @@ void Level::InitialiseLevel()
 	m_cameraNode = new SceneNode("Camera");
 	m_rootNode->addChildNode(m_cameraGripNode);
 	m_cameraGripNode->addChildNode(m_cameraNode);
+
+	StartComponents();
 }
 
 void Level::StartComponents()
@@ -73,4 +79,23 @@ void Level::Update()
 
 	// Run updates for level objects
 	m_rootNode->Update(&m_world, &m_view, &m_projection);
+}
+
+void Level::Restart()
+{
+	CleanUp();
+	InitialiseLevel();
+	StartComponents();
+}
+
+void Level::CleanUp()
+{
+	delete m_camera;
+	m_camera = nullptr;
+	delete m_rootNode;
+	m_rootNode = nullptr;
+	delete m_cameraGripNode;
+	m_cameraGripNode = nullptr;
+	delete m_cameraNode;
+	m_cameraNode = nullptr;
 }

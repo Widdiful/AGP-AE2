@@ -22,5 +22,7 @@ public:
 	~Level1();
 	void InitialiseLevel();
 	void Update();
+	void Restart();
+	void CleanUp();
 };
 

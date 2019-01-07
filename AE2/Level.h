@@ -29,5 +29,7 @@ public:
 	virtual void InitialiseLevel();
 	virtual void StartComponents();
 	virtual void Update();
+	virtual void Restart();
+	virtual void CleanUp();
 };
 
