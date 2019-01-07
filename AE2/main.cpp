@@ -12,18 +12,9 @@
 #include <iostream>
 using namespace std;
 
-#include "Camera.h"
-#include "text2D.h"
-#include "Model.h"
-#include "InputManager.h"
-#include "ParticleGenerator.h"
-#include "SceneNode.h"
-#include "Component.h"
-#include "Actor.h"
-#include "Player.h"
-#include "CameraControl.h"
-#include "Enemy.h"
-#include "UIManager.h"
+#include "Skybox.h"
+#include "Level.h"
+#include "Level1.h"
 
 #pragma region "Keyboard stuff"
 /****************************************************************************
@@ -203,7 +194,7 @@ HINSTANCE	g_hInst = NULL;
 HWND		g_hWnd = NULL;
 
 // Rename for each tutorial – This will appear in the title bar of the window
-char		g_TutorialName[100] = "Tutorial 03 Exercise 01\0";
+char		g_TutorialName[100] = "A Video Game\0";
 
 D3D_DRIVER_TYPE         g_driverType = D3D_DRIVER_TYPE_NULL;
 D3D_FEATURE_LEVEL       g_featureLevel = D3D_FEATURE_LEVEL_11_0;
@@ -225,27 +216,12 @@ ID3D11ShaderResourceView* g_pTexture0;
 ID3D11ShaderResourceView* g_pSkybox;
 ID3D11SamplerState* g_pSampler0;
 
-ID3D11RasterizerState*		g_pRasterSolid = 0;
-ID3D11RasterizerState*		g_pRasterSkybox = 0;
-ID3D11DepthStencilState*	g_pDepthWriteSolid = 0;
-ID3D11DepthStencilState*	g_pDepthWriteSkybox = 0;
-
 InputManager* g_input;
-Camera* camera;
-Text2D* g_2DText;
-Model* g_model;
-Model* g_model1;
-ParticleGenerator* g_particleGenerator;
+vector<Level*> g_levels;
+Skybox* g_skybox;
+int g_levelID = 0;
 
-SceneNode* g_rootNode;
-SceneNode* g_playerNode;
-SceneNode* g_node2;
-SceneNode* g_cameraGripNode;
-SceneNode* g_cameraNode;
 
-XMVECTOR g_directional_light_origin = XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f);
-XMVECTOR g_directional_light_colour = XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
-XMVECTOR g_ambient_light_colour = XMVectorSet(0.25f, 0.25f, 0.25f, 1.0f);
 
 //Define vertex structure
 struct POS_COL_VERTEX//This will be added to and renamed in future tutorials
@@ -294,8 +270,6 @@ HRESULT InitialiseD3D();
 void ShutdownD3D();
 void RenderFrame(void);
 HRESULT InitialiseGraphics(void);
-HRESULT CreateSkybox(void);
-void RenderSkybox(XMMATRIX* view, XMMATRIX* projection);
 
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -545,8 +519,6 @@ HRESULT InitialiseD3D()
 
 	g_pD3DDevice->CreateSamplerState(&sampler_desc, &g_pSampler0);
 
-	g_2DText = new Text2D("assets/font1.bmp", g_pD3DDevice, g_pImmediateContext);
-
 	return S_OK;
 }
 
@@ -555,7 +527,6 @@ HRESULT InitialiseD3D()
 //////////////////////////////////////////////////////////////////////////////////////
 void ShutdownD3D()
 {
-	if (g_model) delete(g_model); g_model = nullptr;
 	if (g_pVertexBuffer) g_pVertexBuffer->Release();
 	if (g_pInputLayout) g_pInputLayout->Release();
 	if (g_pVertexShader) g_pVertexShader->Release();
@@ -567,83 +538,20 @@ void ShutdownD3D()
 	if (g_pImmediateContext) g_pImmediateContext->Release();
 	if (g_pD3DDevice) g_pD3DDevice->Release();
 	if (g_pBackBufferRTView) g_pBackBufferRTView->Release();
-	if (g_pRasterSolid != 0) g_pRasterSolid->Release();
-	if (g_pRasterSkybox != 0) g_pRasterSkybox->Release();
-	if (g_pDepthWriteSolid != 0) g_pDepthWriteSolid->Release();
-	if (g_pDepthWriteSkybox != 0) g_pDepthWriteSkybox->Release();
-	if (camera) delete(camera); camera = nullptr;
-	if (g_2DText) delete(g_2DText); g_2DText = nullptr;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-//Init graphics - Tutorial 03
+//Init graphics
 /////////////////////////////////////////////////////////////////////////////////////////////
 HRESULT InitialiseGraphics()
 {
 	HRESULT hr = S_OK;
+	g_skybox = new Skybox(g_pD3DDevice, g_pVertexBuffer, g_pConstantBuffer0, g_pImmediateContext, g_pVertexShader, g_pPixelShader, g_pInputLayout, g_pSkybox, g_pSampler0);
 
-	D3D11_RASTERIZER_DESC rasteriser_desc;
-	ZeroMemory(&rasteriser_desc, sizeof(rasteriser_desc));
-
-	rasteriser_desc.FillMode = D3D11_FILL_SOLID;
-	rasteriser_desc.CullMode = D3D11_CULL_BACK;
-	hr = g_pD3DDevice->CreateRasterizerState(&rasteriser_desc, &g_pRasterSolid);
-
-	rasteriser_desc.FillMode = D3D11_FILL_SOLID;
-	rasteriser_desc.CullMode = D3D11_CULL_FRONT;
-	hr = g_pD3DDevice->CreateRasterizerState(&rasteriser_desc, &g_pRasterSkybox);
-
-	D3D11_DEPTH_STENCIL_DESC stencilDesc;
-	ZeroMemory(&stencilDesc, sizeof(stencilDesc));
-	stencilDesc.DepthEnable = true;
-	stencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	stencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	hr = g_pD3DDevice->CreateDepthStencilState(&stencilDesc, &g_pDepthWriteSolid);
-	stencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	hr = g_pD3DDevice->CreateDepthStencilState(&stencilDesc, &g_pDepthWriteSkybox);
-
-	g_model = new Model(g_pD3DDevice, g_pImmediateContext);
-	g_model->LoadObjModel((char*)"assets/Sphere.obj");
-	g_model->AddTexture((char*)"assets/gaogaigar.bmp");
-	//g_model->SetScale(0.01, 0.01, 0.01);
-
-	g_model1 = new Model(g_pD3DDevice, g_pImmediateContext);
-	g_model1->LoadObjModel((char*)"assets/Sphere.obj");
-	g_model1->AddTexture((char*)"assets/gaogaigar.bmp");
-	g_model1->SetPos(-5, 0, 5);
-	//g_model1->SetScale(0.01, 0.01, 0.01);
-
-	camera = new Camera(0.0, 0.0, -10, 0.0);
-	camera->Pitch(-60);
-
-	g_particleGenerator = new ParticleGenerator(g_pD3DDevice, g_pImmediateContext);
-	g_particleGenerator->CreateParticle();
-
-	g_rootNode = new SceneNode("Root");
-	g_playerNode = new SceneNode("Player");
-	g_node2 = new SceneNode("Enemy");
-
-	g_playerNode->SetModel(g_model);
-	g_node2->SetModel(g_model1);
-	g_node2->SetXPos(-10);
-	g_node2->SetYPos(10);
-
-	g_cameraGripNode = new SceneNode("Camera Grip");
-	g_cameraNode = new SceneNode("Camera");
-
-	g_rootNode->addChildNode(g_playerNode);
-	g_rootNode->addChildNode(g_node2);
-	g_rootNode->addChildNode(g_cameraGripNode);
-	g_cameraGripNode->addChildNode(g_cameraNode);
-
-	g_playerNode->AddComponent(new Player(true, g_input, g_cameraGripNode));
-	g_playerNode->AddComponent(new UIManager(g_2DText));
-	g_node2->AddComponent(new Enemy(true));
-	g_cameraGripNode->AddComponent(new CameraControl(camera, g_playerNode, g_cameraNode, g_input));
-
-	g_rootNode->StartComponents();
-
-	CreateSkybox();
+	// initialise level 1
+	g_levels.push_back(new Level1(g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
+	g_levels[0]->InitialiseLevel();
+	g_levels[0]->StartComponents();
 
 	return S_OK;
 }
@@ -664,213 +572,9 @@ void RenderFrame(void)
 
 	g_pImmediateContext->ClearDepthStencilView(g_pZBuffer, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	XMMATRIX world, projection, view;
-	world = XMMatrixTranslation(0, 0, 0);
-	projection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45), 640.0 / 480.0, 1.0, 1000.0);
-	view = camera->GetViewMatrix();
-
-	RenderSkybox(&view, &projection);
-
 	// Run all scene nodes and components
-	g_rootNode->Update(&world, &view, &projection);
-
-	g_particleGenerator->Draw(&view, &projection, new XMFLOAT3(camera->GetX(), camera->GetY(), camera->GetZ()));
+	g_levels[g_levelID]->Update();
 
 	// Display what has just been rendered
 	g_pSwapChain->Present(0, 0);
-}
-
-HRESULT CreateSkybox(void) {
-	HRESULT hr = S_OK;
-
-	//Define vertices of a triangle - screen coordinates -1.0 to +1.0
-	POS_COL_TEX_NORM_VERTEX vertices[] =
-	{
-		// back face
-		{XMFLOAT3(-1.0f, 1.0f, 1.0f)  , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
-		{XMFLOAT3(-1.0f, -1.0f, 1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
-		{XMFLOAT3(1.0f, 1.0f, 1.0f)   , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
-		{XMFLOAT3(1.0f, 1.0f, 1.0f)   , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
-		{XMFLOAT3(-1.0f, -1.0f, 1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
-		{XMFLOAT3(1.0f, -1.0f, 1.0f)  , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
-
-		// front face
-		{XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f), XMFLOAT3(0.0f, 0.0f, -1.0f)},
-		{XMFLOAT3(-1.0f, 1.0f, -1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, -1.0f)},
-		{XMFLOAT3(1.0f, 1.0f, -1.0f)  , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, -1.0f)},
-		{XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f), XMFLOAT3(0.0f, 0.0f, -1.0f)},
-		{XMFLOAT3(1.0f, 1.0f, -1.0f)  , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, -1.0f)},
-		{XMFLOAT3(1.0f, -1.0f, -1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f), XMFLOAT3(0.0f, 0.0f, -1.0f)},
-
-		// left face
-		{XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f), XMFLOAT3(-1.0f, 0.0f, 0.0f)},
-		{XMFLOAT3(-1.0f, -1.0f, 1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f), XMFLOAT3(-1.0f, 0.0f, 0.0f)},
-		{XMFLOAT3(-1.0f, 1.0f, -1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f), XMFLOAT3(-1.0f, 0.0f, 0.0f)},
-		{XMFLOAT3(-1.0f, -1.0f, 1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f), XMFLOAT3(-1.0f, 0.0f, 0.0f)},
-		{XMFLOAT3(-1.0f, 1.0f, 1.0f)  , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f), XMFLOAT3(-1.0f, 0.0f, 0.0f)},
-		{XMFLOAT3(-1.0f, 1.0f, -1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f), XMFLOAT3(-1.0f, 0.0f, 0.0f)},
-
-		// right face
-		{XMFLOAT3(1.0f, -1.0f, 1.0f) ,  XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f),	XMFLOAT3(1.0f, 0.0f, 0.0f)},
-		{XMFLOAT3(1.0f, -1.0f, -1.0f),  XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f),	XMFLOAT3(1.0f, 0.0f, 0.0f)},
-		{XMFLOAT3(1.0f, 1.0f, -1.0f) ,  XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f),	XMFLOAT3(1.0f, 0.0f, 0.0f)},
-		{XMFLOAT3(1.0f, 1.0f, 1.0f)	 ,  XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f),	XMFLOAT3(1.0f, 0.0f, 0.0f)},
-		{XMFLOAT3(1.0f, -1.0f, 1.0f) ,  XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f),	XMFLOAT3(1.0f, 0.0f, 0.0f)},
-		{XMFLOAT3(1.0f, 1.0f, -1.0f) ,  XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f),	XMFLOAT3(1.0f, 0.0f, 0.0f)},
-
-		// bottom face
-		{XMFLOAT3(1.0f, -1.0f, -1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f), XMFLOAT3(0.0f, -1.0f, 0.0f)},
-		{XMFLOAT3(1.0f, -1.0f, 1.0f)  , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f), XMFLOAT3(0.0f, -1.0f, 0.0f)},
-		{XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f), XMFLOAT3(0.0f, -1.0f, 0.0f)},
-		{XMFLOAT3(1.0f, -1.0f, 1.0f)  , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f), XMFLOAT3(0.0f, -1.0f, 0.0f)},
-		{XMFLOAT3(-1.0f, -1.0f, 1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f), XMFLOAT3(0.0f, -1.0f, 0.0f)},
-		{XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f), XMFLOAT3(0.0f, -1.0f, 0.0f)},
-
-		// top face
-		{XMFLOAT3(1.0f, 1.0f, 1.0f)	  , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f)},
-		{XMFLOAT3(1.0f, 1.0f, -1.0f)  , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f)},
-		{XMFLOAT3(-1.0f, 1.0f, -1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f)},
-		{XMFLOAT3(-1.0f, 1.0f, 1.0f)  , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f)},
-		{XMFLOAT3(1.0f, 1.0f, 1.0f)	  , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f)},
-		{XMFLOAT3(-1.0f, 1.0f, -1.0f) , XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f)}
-
-
-	};
-
-	//Set up and create vertex buffer
-	D3D11_BUFFER_DESC bufferDesc;
-	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
-	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;										//Allows use by CPU and GPU
-	bufferDesc.ByteWidth = sizeof(vertices);							//Set the total size of the buffer (in this case, 3 vertices)
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;							//Set the type of buffer to vertex buffer
-	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;							//Allow access by the CPU
-	hr = g_pD3DDevice->CreateBuffer(&bufferDesc, NULL, &g_pVertexBuffer);		//Create the buffer
-
-	if (FAILED(hr))//Return an error code if failed
-	{
-		return hr;
-	}
-
-	// Create constant buffer
-	D3D11_BUFFER_DESC constant_buffer_desc;
-	ZeroMemory(&constant_buffer_desc, sizeof(constant_buffer_desc));
-
-	constant_buffer_desc.Usage = D3D11_USAGE_DEFAULT;
-	constant_buffer_desc.ByteWidth = 112; // must be a multiple of 16
-	constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-
-	hr = g_pD3DDevice->CreateBuffer(&constant_buffer_desc, NULL, &g_pConstantBuffer0);
-	if (FAILED(hr)) return hr;
-
-	//Copy the vertices into the buffer
-	D3D11_MAPPED_SUBRESOURCE ms;
-
-	//Lock the buffer to allow writing
-	g_pImmediateContext->Map(g_pVertexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-
-	//Copy the data
-	memcpy(ms.pData, vertices, sizeof(vertices));
-
-	//Unlock the buffer
-	g_pImmediateContext->Unmap(g_pVertexBuffer, NULL);
-
-	//Load and compile the pixel and vertex shaders - use vs_5_0 to target DX11 hardware only
-	ID3DBlob *VS, *PS, *error;
-	hr = D3DX11CompileFromFile("sky_shader.hlsl", 0, 0, "VShader", "vs_4_0", 0, 0, 0, &VS, &error, 0);
-
-	if (error != 0)//Check for shader compilation error
-	{
-		OutputDebugStringA((char*)error->GetBufferPointer());
-		error->Release();
-		if (FAILED(hr))//Don't fail if error is just a warning
-		{
-			return hr;
-		}
-	}
-
-	hr = D3DX11CompileFromFile("sky_shader.hlsl", 0, 0, "PShader", "ps_4_0", 0, 0, 0, &PS, &error, 0);
-
-	if (error != 0)//Check for shader compilation error
-	{
-		OutputDebugStringA((char*)error->GetBufferPointer());
-		error->Release();
-		if (FAILED(hr))//Don't fail if error is just a warning
-		{
-			return hr;
-		}
-	}
-
-	//Create shader objects
-	hr = g_pD3DDevice->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &g_pVertexShader);
-	if (FAILED(hr))
-	{
-		return hr;
-	}
-
-	hr = g_pD3DDevice->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &g_pPixelShader);
-	if (FAILED(hr))
-	{
-		return hr;
-	}
-
-	//Set the shader objects as active
-	g_pImmediateContext->VSSetShader(g_pVertexShader, 0, 0);
-	g_pImmediateContext->PSSetShader(g_pPixelShader, 0, 0);
-
-	//Create and set the input layout object
-	D3D11_INPUT_ELEMENT_DESC iedesc[] =
-	{
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},
-		{"COLOR", 0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,D3D11_APPEND_ALIGNED_ELEMENT,D3D11_INPUT_PER_VERTEX_DATA,0},
-		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
-	};
-
-	hr = g_pD3DDevice->CreateInputLayout(iedesc, ARRAYSIZE(iedesc), VS->GetBufferPointer(), VS->GetBufferSize(), &g_pInputLayout);
-	if (FAILED(hr))
-	{
-		return hr;
-	}
-
-	g_pImmediateContext->IASetInputLayout(g_pInputLayout);
-
-	D3DX11CreateShaderResourceViewFromFile(g_pD3DDevice, "assets/skybox01.dds", NULL, NULL, &g_pSkybox, NULL);
-
-	return S_OK;
-}
-
-void RenderSkybox(XMMATRIX* view, XMMATRIX* projection) {
-	g_pImmediateContext->RSSetState(g_pRasterSkybox);
-	g_pImmediateContext->OMSetDepthStencilState(g_pDepthWriteSkybox, 0);
-
-	// Set vertex buffer
-	UINT stride = sizeof(POS_COL_TEX_NORM_VERTEX);
-	UINT offset = 0;
-	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer, &stride, &offset);
-
-	XMMATRIX world;
-	CONSTANT_BUFFER0 cb0_values;
-	world = XMMatrixScaling(3.0, 3.0, 3.0);
-	world *= XMMatrixTranslation(camera->GetX(), camera->GetY(), camera->GetZ());
-	cb0_values.WorldViewProjection = world * (*view) * (*projection);
-
-	// upload the new values for the constant buffer
-	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer0, 0, 0, &cb0_values, 0, 0);
-
-	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer0);
-
-	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSampler0);
-	g_pImmediateContext->PSSetShaderResources(0, 1, &g_pSkybox);
-	g_pImmediateContext->VSSetShader(g_pVertexShader, 0, 0);
-	g_pImmediateContext->PSSetShader(g_pPixelShader, 0, 0);
-	g_pImmediateContext->IASetInputLayout(g_pInputLayout);
-
-	// Select which primitive type to use
-	g_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	// Draw the vertex buffer to the back buffer
-	g_pImmediateContext->Draw(36, 0);
-
-	g_pImmediateContext->RSSetState(g_pRasterSolid);
-	g_pImmediateContext->OMSetDepthStencilState(g_pDepthWriteSolid, 0);
 }
