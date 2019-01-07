@@ -298,7 +298,7 @@ void ParticleGenerator::Draw(XMMATRIX* view, XMMATRIX* projection, XMFLOAT3* cam
 			{
 				it++;
 				m_active.front()->age = m_age;
-				m_active.front()->position = { (RandomNegOneToPosOne() + m_x * 10)*(RandomZeroToOne() * 10), m_y + 5.0f, /*position.z*/ cameraPosition->z + 7.0f };
+				m_active.front()->position = { (RandomNegOneToPosOne() + m_x * 10)*(RandomZeroToOne() * 10), m_y + 5.0f, /*position.z*/ m_z + 7.0f };
 				m_active.front()->velocity = { /*RandomNegOneToPosOne()*/0.0f, 4.50f, RandomNegOneToPosOne() };
 				m_free.push_back(m_active.front());//move the (now previously) current active particle to the back of the pool			
 				m_active.pop_front();//remove the particle

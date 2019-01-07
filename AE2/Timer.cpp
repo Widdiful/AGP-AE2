@@ -21,4 +21,6 @@ void Timer::Tick()
 	timeNow = double(timeGetTime());
 	deltaTime = timeNow - timePrevious;
 	timePrevious = timeNow;
+
+	if (deltaTime > 1000) deltaTime = 0;
 }

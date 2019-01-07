@@ -9,6 +9,7 @@ Enemy::Enemy(bool gravity) : Actor(gravity)
 	m_jumpVelocity = 0.05f;
 	m_moveSpeed = 0.025f;
 	m_distanceToChange = 0.1f;
+	m_chaseDistance = 25;
 
 	m_points.push_back(Vector3(0, 0, 0));
 	m_points.push_back(Vector3(10, 0, 0));
@@ -25,23 +26,44 @@ Enemy::~Enemy()
 {
 }
 
+void Enemy::Start()
+{
+	Actor::Start();
+	m_player = m_rootNode->FindNode("Player");
+}
+
 void Enemy::Update()
 {
-	m_node->LookAt_XZ(m_currentPoint.x, m_currentPoint.z);
-	m_node->MoveForward(m_level->GetDeltaTime() * m_moveSpeed, m_node->GetRootNode());
-
 	Vector3 pos = Vector3(m_node->GetXPos(), m_node->GetYPos(), m_node->GetZPos());
-	float dx = pos.x - m_currentPoint.x;
-	float dz = pos.z - m_currentPoint.z;
+	float dx = pos.x - m_player->GetXPos();
+	float dz = pos.z - m_player->GetZPos();
 
-	// check bounding sphere collision
+	// check distance to player
 	float distance = sqrt(dx*dx + dz * dz);
+	Vector3 target;
 
-	if (distance <= m_distanceToChange){
-		m_currentPoint = GetNextPoint();
+	if (distance <= m_chaseDistance) {
+		target = Vector3(m_player->GetXPos(), m_player->GetZPos(), m_player->GetZPos());
 	}
 
-	if (m_currentPoint.y > m_node->GetYPos() && m_node->GetYPos() <= 0) {
+	else {
+		target = m_currentPoint;
+
+		dx = pos.x - m_currentPoint.x;
+		dz = pos.z - m_currentPoint.z;
+
+		// check distance to next point
+		distance = sqrt(dx*dx + dz * dz);
+
+		if (distance <= m_distanceToChange) {
+			m_currentPoint = GetNextPoint();
+		}
+
+	}
+	m_node->LookAt_XZ(target.x, target.z);
+	m_node->MoveForward(m_level->GetDeltaTime() * m_moveSpeed, m_node->GetRootNode());
+
+	if (target.y > m_node->GetYPos() && m_node->GetYPos() <= 0) {
 		m_velocityY += m_jumpVelocity;
 	}
 

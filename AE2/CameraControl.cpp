@@ -12,7 +12,7 @@ CameraControl::CameraControl(Camera * camera, SceneNode * target, SceneNode* cam
 	m_cameraNode = cameraNode;
 	m_input = input;
 
-	m_moveSpeed = 0.001;
+	m_moveSpeed = 0.005;
 	m_rotateSpeed = 0.5;
 	m_gripRotateSpeed = 0.1f;
 
@@ -46,5 +46,5 @@ void CameraControl::Update()
 	m_camera->MoveTowardsX(m_cameraNode->GetWorldXPos(), m_moveSpeed * m_level->GetDeltaTime());
 	m_camera->MoveTowardsY(m_cameraNode->GetWorldYPos(), m_moveSpeed * m_level->GetDeltaTime());
 	m_camera->MoveTowardsZ(m_cameraNode->GetWorldZPos(), m_moveSpeed * m_level->GetDeltaTime());
-	m_camera->LerpAt(m_target->GetXPos(), m_target->GetYPos(), m_target->GetZPos(), m_rotateSpeed * m_level->GetDeltaTime());
+	m_camera->LerpAt(m_target->GetXPos(), m_target->GetYPos(), m_target->GetZPos(), m_rotateSpeed);
 }
