@@ -219,7 +219,7 @@ ID3D11SamplerState* g_pSampler0;
 InputManager* g_input;
 vector<Level*> g_levels;
 Skybox* g_skybox;
-int g_levelID = 0;
+int g_levelID = 0; // Tells the loop which level to run
 
 
 

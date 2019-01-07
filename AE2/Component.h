@@ -13,7 +13,7 @@ public:
 
 	virtual void Start();
 	virtual void Update();
-	virtual void OnCollision(Component* other);
+	virtual void OnCollision(SceneNode* other);
 
 	void SetNode(SceneNode* node);
 	std::string GetName();

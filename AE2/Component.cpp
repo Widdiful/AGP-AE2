@@ -21,7 +21,7 @@ void Component::Update()
 {
 }
 
-void Component::OnCollision(Component* other)
+void Component::OnCollision(SceneNode* other)
 {
 
 }

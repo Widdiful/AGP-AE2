@@ -8,7 +8,7 @@ class Level1 :
 {
 private:
 	SceneNode* m_playerNode;
-	SceneNode* m_node2;
+	SceneNode* m_enemyNode;
 
 	Model* m_model;
 	Model* m_model1;

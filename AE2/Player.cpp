@@ -23,6 +23,7 @@ void Player::Start()
 	Actor::Start();
 
 	m_uiManager = static_cast<UIManager*>(m_node->GetComponent("UI Manager"));
+	m_uiMessage = "Wahoo!";
 }
 
 void Player::Update()
@@ -41,7 +42,15 @@ void Player::Update()
 		m_velocityY += m_jumpVelocity;
 	}
 
-	m_uiManager->ChangeText("Wahoo!");
+	m_uiManager->ChangeText(m_uiMessage);
 
 	Actor::Update();
+}
+
+void Player::OnCollision(SceneNode * other)
+{
+	if (other->GetName() == "Enemy") {
+		hitCount++;
+		m_uiMessage = std::to_string(hitCount);
+	}
 }

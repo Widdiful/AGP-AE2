@@ -42,20 +42,20 @@ void Level1::InitialiseLevel()
 
 	// Set up scene nodes
 	m_playerNode = new SceneNode("Player");
-	m_node2 = new SceneNode("Enemy");
+	m_enemyNode = new SceneNode("Enemy");
 
 	m_playerNode->SetModel(m_model);
-	m_node2->SetModel(m_model1);
-	m_node2->SetXPos(-10);
-	m_node2->SetYPos(10);
+	m_enemyNode->SetModel(m_model1);
+	m_enemyNode->SetXPos(-10);
+	m_enemyNode->SetYPos(10);
 
 	m_rootNode->addChildNode(m_playerNode);
-	m_rootNode->addChildNode(m_node2);
+	m_rootNode->addChildNode(m_enemyNode);
 	
 	// Set up components
 	m_playerNode->AddComponent(new Player(true, m_input, m_cameraGripNode));
 	m_playerNode->AddComponent(new UIManager(m_2DText));
-	m_node2->AddComponent(new Enemy(true));
+	m_enemyNode->AddComponent(new Enemy(true));
 	m_cameraGripNode->AddComponent(new CameraControl(m_camera, m_playerNode, m_cameraNode, m_input));
 
 	StartComponents();
@@ -86,6 +86,6 @@ void Level1::CleanUp()
 	m_particleGenerator = nullptr;
 	delete m_playerNode;
 	m_playerNode = nullptr;
-	delete m_node2;
-	m_node2 = nullptr;
+	delete m_enemyNode;
+	m_enemyNode = nullptr;
 }

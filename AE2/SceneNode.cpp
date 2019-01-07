@@ -183,6 +183,12 @@ bool SceneNode::CheckCollision(SceneNode * compareTree, SceneNode * objectTreeRo
 			(compareTree->m_pModel->GetBoundingSphereRadius() * compareTree->m_worldScale) +
 			(this->m_pModel->GetBoundingSphereRadius() * m_worldScale))
 		{
+			for (int i = 0; i < m_components.size(); i++) {
+				m_components[i]->OnCollision(compareTree);
+			}
+			for (int i = 0; i < compareTree->m_components.size(); i++) {
+				compareTree->m_components[i]->OnCollision(this);
+			}
 			return true;
 		}
 	}

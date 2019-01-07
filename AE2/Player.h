@@ -11,11 +11,14 @@ private:
 	SceneNode* m_camera;
 
 	UIManager* m_uiManager;
+	std::string m_uiMessage;
+	int hitCount = 0;
 public:
 	Player(float useGravity, InputManager* input, SceneNode* camera);
 	~Player();
 
 	void Start();
 	void Update();
+	void OnCollision(SceneNode* other);
 };
 
