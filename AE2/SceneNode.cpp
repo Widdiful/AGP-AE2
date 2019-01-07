@@ -48,6 +48,11 @@ void SceneNode::SetParent(SceneNode * n)
 	m_parent = n;
 }
 
+void SceneNode::SetLevel(Level * n)
+{
+	m_level = n;
+}
+
 SceneNode * SceneNode::GetParent()
 {
 	return m_parent;
@@ -55,6 +60,8 @@ SceneNode * SceneNode::GetParent()
 
 void SceneNode::Update(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection)
 {
+	if (!m_enabled) return;
+
 	// the local_world matrix will be used to calc the local transformations for this node
 	XMMATRIX local_world = XMMatrixIdentity();
 
@@ -158,9 +165,10 @@ bool SceneNode::CheckCollision(SceneNode * compareTree, SceneNode * objectTreeRo
 	// check to see if root of tree being compared is same as root node of object tree being checked
 	// i.e. stop object node and children being checked against each other
 	if (objectTreeRoot == compareTree) return false;
+	if (!(compareTree->m_enabled && objectTreeRoot->m_enabled)) return false;
 
 	// only check for collisions if both nodes contain a model
-	if (m_pModel && compareTree->m_pModel && m_collisionEnabled && compareTree->m_collisionEnabled)
+	if (m_pModel && compareTree->m_pModel)
 	{
 		XMVECTOR v1 = GetWorldCentrePosition();
 		XMVECTOR v2 = compareTree->GetWorldCentrePosition();
@@ -189,6 +197,7 @@ bool SceneNode::CheckCollision(SceneNode * compareTree, SceneNode * objectTreeRo
 			for (int i = 0; i < compareTree->m_components.size(); i++) {
 				compareTree->m_components[i]->OnCollision(this);
 			}
+			if (!(m_collisionEnabled && compareTree->m_collisionEnabled)) return false;
 			return true;
 		}
 	}
@@ -306,12 +315,27 @@ void SceneNode::StartComponents()
 	}
 }
 
+void SceneNode::SetEnabled(bool val)
+{
+	m_enabled = val;
+}
+
+void SceneNode::SetCollision(bool val)
+{
+	m_collisionEnabled = val;
+}
+
 SceneNode * SceneNode::GetRootNode()
 {
 	if (m_parent) {
 		return m_parent->GetRootNode();
 	}
 	return this;
+}
+
+Level * SceneNode::GetLevel()
+{
+	return m_level;
 }
 
 void SceneNode::SetXPos(float x)

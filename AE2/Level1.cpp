@@ -7,6 +7,7 @@
 #include "CameraControl.h"
 #include "Enemy.h"
 #include "UIManager.h"
+#include "Pickup.h"
 
 
 
@@ -51,6 +52,32 @@ void Level1::InitialiseLevel()
 
 	m_rootNode->addChildNode(m_playerNode);
 	m_rootNode->addChildNode(m_enemyNode);
+
+	int coinCount = 10;
+	int redCoinCount = 8;
+	for (int i = 0; i < coinCount; i++) {
+		m_coinModels.push_back(new Model(m_pD3DDevice, m_pImmediateContext));
+		m_coinModels.back()->LoadObjModel((char*)"assets/Sphere.obj");
+		m_coinModels.back()->AddTexture((char*)"assets/gaogaigar.bmp");
+		m_coins.push_back(new SceneNode("Coin"));
+		m_coins.back()->SetModel(m_coinModels.back());
+		m_coins.back()->SetXPos((i % 2) * 10);
+		m_coins.back()->SetZPos(i * 5);
+		m_coins.back()->AddComponent(new Pickup());
+		m_rootNode->addChildNode(m_coins.back());
+	}
+	for (int i = 0; i < redCoinCount; i++) {
+		m_redCoinModels.push_back(new Model(m_pD3DDevice, m_pImmediateContext));
+		m_redCoinModels.back()->LoadObjModel((char*)"assets/Sphere.obj");
+		m_redCoinModels.back()->AddTexture((char*)"assets/gaogaigar.bmp");
+		m_redCoins.push_back(new SceneNode("Red Coin"));
+		m_redCoins.back()->SetModel(m_redCoinModels.back());
+		m_redCoins.back()->SetXPos(-(i % 2) * 10);
+		m_redCoins.back()->SetZPos(-i * 5);
+		m_redCoins.back()->AddComponent(new Pickup());
+		m_rootNode->addChildNode(m_redCoins.back());
+	}
+
 	
 	// Set up components
 	m_playerNode->AddComponent(new Player(true, m_input, m_cameraGripNode));

@@ -14,7 +14,11 @@ Component::~Component()
 
 void Component::Start()
 {
-	if (m_node) m_rootNode = m_node->GetRootNode();
+	if (m_node) {
+		m_rootNode = m_node->GetRootNode();
+		if (m_rootNode != m_node)
+			m_level = m_rootNode->GetLevel();
+	}
 }
 
 void Component::Update()

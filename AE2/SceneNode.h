@@ -20,6 +20,7 @@ using namespace std;
 #include "Component.h"
 #include "Vector3.h"
 
+class Level;
 class SceneNode
 {
 private:
@@ -27,6 +28,7 @@ private:
 	vector<SceneNode*> m_children;
 	vector<Component*> m_components;
 	SceneNode* m_parent;
+	Level* m_level;
 
 	string m_name;
 
@@ -35,6 +37,7 @@ private:
 	float m_worldScale;
 
 	bool m_collisionEnabled = true;
+	bool m_enabled = true;
 
 	XMMATRIX worldMatrix;
 
@@ -45,6 +48,7 @@ public:
 	void addChildNode(SceneNode* n);
 	bool detatchNode(SceneNode* n);
 	void SetParent(SceneNode* n);
+	void SetLevel(Level* n);
 	SceneNode* GetParent();
 	void Update(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection);
 	void LookAt_XZ(float x, float z);
@@ -60,8 +64,11 @@ public:
 	Component* GetComponent(std::string name);
 	SceneNode* FindNode(string name);
 	SceneNode* GetRootNode();
+	Level* GetLevel();
 	string GetName();
 	void StartComponents();
+	void SetEnabled(bool val);
+	void SetCollision(bool val);
 
 	// POSITION INFO
 

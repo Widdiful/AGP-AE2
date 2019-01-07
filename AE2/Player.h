@@ -12,7 +12,7 @@ private:
 
 	UIManager* m_uiManager;
 	std::string m_uiMessage;
-	int hitCount = 0;
+	int m_coinCount, m_redCoinCount;
 public:
 	Player(float useGravity, InputManager* input, SceneNode* camera);
 	~Player();

@@ -1,2 +1,3 @@
 components
 levels
+searching game objects and components

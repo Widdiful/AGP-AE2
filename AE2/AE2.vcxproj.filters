@@ -70,6 +70,8 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Pickup.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -123,6 +125,8 @@
     <ClInclude Include="Skybox.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Pickup.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shaders">

@@ -9,9 +9,13 @@ class Level1 :
 private:
 	SceneNode* m_playerNode;
 	SceneNode* m_enemyNode;
+	vector<SceneNode*> m_coins;
+	vector<SceneNode*> m_redCoins;
 
 	Model* m_model;
 	Model* m_model1;
+	vector<Model*> m_coinModels;
+	vector<Model*> m_redCoinModels;
 
 	ParticleGenerator* m_particleGenerator;
 

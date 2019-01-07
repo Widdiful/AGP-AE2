@@ -8,7 +8,7 @@ UIManager::UIManager(Text2D * text)
 	m_2DText = text;
 	m_text = "New text";
 	m_x = -1.0f;
-	m_y = -0.9f;
+	m_y = 0.9f;
 	m_size = 0.075f;
 }
 

@@ -1,12 +1,13 @@
 #include "Enemy.h"
 #include "SceneNode.h"
+#include "Level.h"
 
 
 Enemy::Enemy(bool gravity) : Actor(gravity)
 {
 	m_name = "Enemy";
-	m_jumpVelocity = 0.03f;
-	m_moveSpeed = 0.005f;
+	m_jumpVelocity = 0.05f;
+	m_moveSpeed = 0.025f;
 	m_distanceToChange = 0.1f;
 
 	m_points.push_back(Vector3(0, 0, 0));
@@ -27,7 +28,7 @@ Enemy::~Enemy()
 void Enemy::Update()
 {
 	m_node->LookAt_XZ(m_currentPoint.x, m_currentPoint.z);
-	m_node->MoveForward(m_moveSpeed, m_node->GetRootNode());
+	m_node->MoveForward(m_level->GetDeltaTime() * m_moveSpeed, m_node->GetRootNode());
 
 	Vector3 pos = Vector3(m_node->GetXPos(), m_node->GetYPos(), m_node->GetZPos());
 	float dx = pos.x - m_currentPoint.x;

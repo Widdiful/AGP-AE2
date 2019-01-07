@@ -31,6 +31,9 @@ Level::Level(InputManager* input, ID3D11Device* device, ID3D11DeviceContext* con
 	stencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	m_pD3DDevice->CreateDepthStencilState(&stencilDesc, &m_pDepthWriteSkybox);
 
+	// Start timer
+	m_timer = new Timer();
+
 	InitialiseLevel();
 }
 
@@ -58,6 +61,7 @@ void Level::InitialiseLevel()
 	m_cameraNode = new SceneNode("Camera");
 	m_rootNode->addChildNode(m_cameraGripNode);
 	m_cameraGripNode->addChildNode(m_cameraNode);
+	m_rootNode->SetLevel(this);
 
 	StartComponents();
 }
@@ -77,8 +81,12 @@ void Level::Update()
 	// Render skybox
 	m_skybox->DrawSkybox(m_camera, &m_view, &m_projection, m_pRasterSkybox, m_pDepthWriteSkybox, m_pRasterSolid, m_pDepthWriteSolid);
 
+	// Tick timer
+	m_timer->Tick();
+
 	// Run updates for level objects
 	m_rootNode->Update(&m_world, &m_view, &m_projection);
+
 }
 
 void Level::Restart()
@@ -98,4 +106,9 @@ void Level::CleanUp()
 	m_cameraGripNode = nullptr;
 	delete m_cameraNode;
 	m_cameraNode = nullptr;
+}
+
+double Level::GetDeltaTime()
+{
+	return m_timer->deltaTime;
 }
