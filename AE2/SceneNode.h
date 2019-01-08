@@ -23,6 +23,9 @@ using namespace std;
 class Level;
 class SceneNode
 {
+public:
+	enum CollisionType { Sphere, Cube };
+
 private:
 	Model* m_pModel;
 	vector<SceneNode*> m_children;
@@ -40,6 +43,8 @@ private:
 	bool m_enabled = true;
 
 	XMMATRIX m_localWorldMatrix;
+
+	CollisionType m_collisionType;
 
 public:
 	SceneNode(string name);
@@ -69,6 +74,7 @@ public:
 	void StartComponents();
 	void SetEnabled(bool val);
 	void SetCollision(bool val);
+	void SetCollisionType(CollisionType val);
 
 	// POSITION INFO
 

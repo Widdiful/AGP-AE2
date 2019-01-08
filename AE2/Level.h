@@ -7,7 +7,7 @@
 
 class Level
 {
-public:
+protected:
 	SceneNode* m_rootNode;
 	SceneNode* m_cameraGripNode;
 	SceneNode* m_cameraNode;
@@ -25,6 +25,10 @@ public:
 	Skybox* m_skybox;
 	Time* m_timer;
 
+	int m_coinCount;
+	int m_redCoinCount;
+	bool m_complete;
+
 public:
 	Level(InputManager* input, ID3D11Device* device, ID3D11DeviceContext* context, Skybox* skybox);
 	~Level();
@@ -33,7 +37,12 @@ public:
 	virtual void Update();
 	virtual void Restart();
 	virtual void CleanUp();
+	virtual void CompleteLevel();
 
 	double GetDeltaTime();
+
+	int GetCoinCount();
+	int GetRedCoinCount();
+	bool IsComplete();
 };
 

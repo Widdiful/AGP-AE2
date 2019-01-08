@@ -23,9 +23,11 @@ protected:
 	float					m_xAngle, m_yAngle, m_zAngle;
 	float					m_xScale, m_yScale, m_zScale;
 	float					m_bounding_sphere_centre_x, m_bounding_sphere_centre_y, m_bounding_sphere_centre_z, m_bounding_sphere_radius;
+	float					m_cube_boundsX, m_cube_boundsY, m_cube_boundsZ;
 
 	XMFLOAT3 CalculateModelCentrePoint();
 	float CalculateBoundingSphereRadius();
+	XMFLOAT3 CalculateCubeBounds();
 public:
 	Model(ID3D11Device* pD3DDevice, ID3D11DeviceContext* pImmediateContext);
 	~Model();
@@ -104,5 +106,6 @@ public:
 
 	XMVECTOR GetBoundingSphereWorldSpacePosition();
 	float GetBoundingSphereRadius();
+	XMFLOAT3 GetCubeBounds();
 };
 

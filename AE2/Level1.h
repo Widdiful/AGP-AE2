@@ -9,11 +9,14 @@ class Level1 :
 private:
 	SceneNode* m_playerNode;
 	SceneNode* m_enemyNode;
+	SceneNode* m_Box1;
+
 	vector<SceneNode*> m_coins;
 	vector<SceneNode*> m_redCoins;
 
-	Model* m_model;
-	Model* m_model1;
+	Model* m_playerModel;
+	Model* m_enemyModel;
+	Model* m_Box1Model;
 	vector<Model*> m_coinModels;
 	vector<Model*> m_redCoinModels;
 

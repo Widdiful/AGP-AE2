@@ -564,6 +564,11 @@ void RenderFrame(void)
 	// Run all scene nodes and components
 	g_levels[g_levelID]->Update();
 
+	if (g_levels[g_levelID]->IsComplete()) {
+		g_levels[g_levelID]->Restart();
+		g_levelID = (g_levelID + 1) % g_levels.size();
+	}
+
 	// Display what has just been rendered
 	g_pSwapChain->Present(0, 0);
 }

@@ -41,7 +41,7 @@ void Player::Update()
 		m_node->MoveForward(m_level->GetDeltaTime() * m_moveSpeed, m_node->GetRootNode());
 	}
 
-	if (m_input->IsKeyBeganPressed(DIK_SPACE)) {
+	if (m_input->IsKeyBeganPressed(DIK_SPACE) && m_grounded) {
 		m_velocityY += m_jumpVelocity;
 	}
 
@@ -62,5 +62,8 @@ void Player::OnCollision(SceneNode * other)
 	else if (other->GetName() == "Red Coin") {
 		m_redCoinCount++;
 		other->SetEnabled(false);
+		if (m_redCoinCount == m_level->GetRedCoinCount()) {
+			m_level->CompleteLevel();
+		}
 	}
 }

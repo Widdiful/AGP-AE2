@@ -8,6 +8,7 @@
 #include "Enemy.h"
 #include "UIManager.h"
 #include "Pickup.h"
+#include "LevelCube.h"
 
 
 
@@ -21,6 +22,7 @@ Level1::Level1(InputManager* input, ID3D11Device* device, ID3D11DeviceContext* c
 
 Level1::~Level1()
 {
+
 }
 
 void Level1::InitialiseLevel()
@@ -30,13 +32,17 @@ void Level1::InitialiseLevel()
 
 	m_2DText = new Text2D("assets/font1.bmp", m_pD3DDevice, m_pImmediateContext);
 
-	m_model = new Model(m_pD3DDevice, m_pImmediateContext);
-	m_model->LoadObjModel((char*)"assets/Sphere.obj");
-	m_model->AddTexture((char*)"assets/gaogaigar.bmp");
+	m_playerModel = new Model(m_pD3DDevice, m_pImmediateContext);
+	m_playerModel->LoadObjModel((char*)"assets/Sphere.obj");
+	m_playerModel->AddTexture((char*)"assets/gaogaigar.bmp");
 
-	m_model1 = new Model(m_pD3DDevice, m_pImmediateContext);
-	m_model1->LoadObjModel((char*)"assets/Sphere.obj");
-	m_model1->AddTexture((char*)"assets/gaogaigar.bmp");
+	m_enemyModel = new Model(m_pD3DDevice, m_pImmediateContext);
+	m_enemyModel->LoadObjModel((char*)"assets/Sphere.obj");
+	m_enemyModel->AddTexture((char*)"assets/gaogaigar.bmp");
+
+	m_Box1Model = new Model(m_pD3DDevice, m_pImmediateContext);
+	m_Box1Model->LoadObjModel((char*)"assets/Cube.obj");
+	m_Box1Model->AddTexture((char*)"assets/gaogaigar.bmp");
 
 	m_particleGenerator = new ParticleGenerator(m_pD3DDevice, m_pImmediateContext);
 	m_particleGenerator->CreateParticle();
@@ -44,18 +50,23 @@ void Level1::InitialiseLevel()
 	// Set up scene nodes
 	m_playerNode = new SceneNode("Player");
 	m_enemyNode = new SceneNode("Enemy");
+	m_Box1 = new SceneNode("Box1");
 
-	m_playerNode->SetModel(m_model);
-	m_enemyNode->SetModel(m_model1);
-	m_enemyNode->SetXPos(-10);
+	m_playerNode->SetModel(m_playerModel);
+	m_enemyNode->SetModel(m_enemyModel);
+	m_Box1->SetModel(m_Box1Model);
+	m_enemyNode->SetXPos(-100);
 	m_enemyNode->SetYPos(10);
+	m_Box1->SetScale(100, 5, 200);
+	m_Box1->SetYPos(-10);
 
 	m_rootNode->addChildNode(m_playerNode);
 	m_rootNode->addChildNode(m_enemyNode);
+	m_rootNode->addChildNode(m_Box1);
 
-	int coinCount = 10;
-	int redCoinCount = 8;
-	for (int i = 0; i < coinCount; i++) {
+	m_coinCount = 10;
+	m_redCoinCount = 8;
+	for (int i = 0; i < m_coinCount; i++) {
 		m_coinModels.push_back(new Model(m_pD3DDevice, m_pImmediateContext));
 		m_coinModels.back()->LoadObjModel((char*)"assets/Sphere.obj");
 		m_coinModels.back()->AddTexture((char*)"assets/gaogaigar.bmp");
@@ -66,7 +77,7 @@ void Level1::InitialiseLevel()
 		m_coins.back()->AddComponent(new Pickup());
 		m_rootNode->addChildNode(m_coins.back());
 	}
-	for (int i = 0; i < redCoinCount; i++) {
+	for (int i = 0; i < m_redCoinCount; i++) {
 		m_redCoinModels.push_back(new Model(m_pD3DDevice, m_pImmediateContext));
 		m_redCoinModels.back()->LoadObjModel((char*)"assets/Sphere.obj");
 		m_redCoinModels.back()->AddTexture((char*)"assets/gaogaigar.bmp");
@@ -84,6 +95,7 @@ void Level1::InitialiseLevel()
 	m_playerNode->AddComponent(new UIManager(m_2DText));
 	m_enemyNode->AddComponent(new Enemy(true));
 	m_cameraGripNode->AddComponent(new CameraControl(m_camera, m_playerNode, m_cameraNode, m_input));
+	m_Box1->AddComponent(new LevelCube());
 
 	StartComponents();
 }
@@ -98,21 +110,34 @@ void Level1::Restart()
 {
 	CleanUp();
 	InitialiseLevel();
-	StartComponents();
 }
 
 void Level1::CleanUp()
 {
 	delete m_2DText;
 	m_2DText = nullptr;
-	delete m_model;
-	m_model = nullptr;
-	delete m_model1;
-	m_model1 = nullptr;
+	delete m_playerModel;
+	m_playerModel = nullptr;
+	delete m_enemyModel;
+	m_enemyModel = nullptr;
 	delete m_particleGenerator;
 	m_particleGenerator = nullptr;
 	delete m_playerNode;
 	m_playerNode = nullptr;
 	delete m_enemyNode;
 	m_enemyNode = nullptr;
+
+	for (int i = 0; i < m_coins.size(); i++) {
+		delete m_coins[i];
+		m_coins[i] = nullptr;
+		delete m_coinModels[i];
+		m_coinModels[i] = nullptr;
+	}
+
+	for (int i = 0; i < m_redCoins.size(); i++) {
+		delete m_redCoins[i];
+		m_redCoins[i] = nullptr;
+		delete m_redCoinModels[i];
+		m_redCoinModels[i] = nullptr;
+	}
 }

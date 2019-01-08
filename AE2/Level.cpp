@@ -35,15 +35,14 @@ Level::Level(InputManager* input, ID3D11Device* device, ID3D11DeviceContext* con
 	// Start timer
 	m_timer = new Time();
 
+	m_complete = false;
+
 	InitialiseLevel();
 }
 
 
 Level::~Level()
 {
-	delete m_rootNode;
-	m_rootNode = nullptr;
-
 	if (m_pRasterSolid != 0) m_pRasterSolid->Release();
 	if (m_pRasterSkybox != 0) m_pRasterSkybox->Release();
 	if (m_pDepthWriteSolid != 0) m_pDepthWriteSolid->Release();
@@ -94,7 +93,6 @@ void Level::Restart()
 {
 	CleanUp();
 	InitialiseLevel();
-	StartComponents();
 }
 
 void Level::CleanUp()
@@ -107,9 +105,34 @@ void Level::CleanUp()
 	m_cameraGripNode = nullptr;
 	delete m_cameraNode;
 	m_cameraNode = nullptr;
+	delete m_skybox;
+	m_skybox = nullptr;
+	delete m_timer;
+	m_timer = nullptr;
+
+}
+
+void Level::CompleteLevel()
+{
+	m_complete = true;
 }
 
 double Level::GetDeltaTime()
 {
 	return m_timer->deltaTime;
+}
+
+int Level::GetCoinCount()
+{
+	return m_coinCount;
+}
+
+int Level::GetRedCoinCount()
+{
+	return m_redCoinCount;
+}
+
+bool Level::IsComplete()
+{
+	return m_complete;
 }

@@ -57,3 +57,8 @@ float Maths::PlaneEquation(Plane p, Vector3 v)
 {
 	return (p.normal.x * v.x) + (p.normal.y * v.y) + (p.normal.z * v.z) + p.d;
 }
+
+Vector3 Maths::planeIntersection(Plane * p, Vector3 * v1, Vector3 * v2)
+{
+	return Vector3();
+}

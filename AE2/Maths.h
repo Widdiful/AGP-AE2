@@ -18,5 +18,6 @@ public:
 	Vector3 normalise(Vector3 v1);
 	Plane CalculatePlane(Vector3 v1, Vector3 v2, Vector3 v3);
 	float PlaneEquation(Plane p, Vector3 v);
+	Vector3 planeIntersection(Plane* p, Vector3* v1, Vector3* v2);
 };
 

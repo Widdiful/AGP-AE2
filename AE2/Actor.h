@@ -8,6 +8,8 @@ protected:
 	float m_velocityX, m_velocityY, m_velocityZ;
 	float m_gravity, m_gravityMax;
 	float m_jumpVelocity, m_moveSpeed;
+	bool m_grounded;
+
 public:
 	Actor(float useGravity);
 	~Actor();

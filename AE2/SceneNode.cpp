@@ -9,11 +9,22 @@ SceneNode::SceneNode(string name)
 	m_position = Vector3(0, 0, 0);
 	m_rotation = Vector3(0, 0, 0);
 	m_scale = Vector3(1, 1, 1);
+
+	//m_collisionType = Cube;
 }
 
 
 SceneNode::~SceneNode()
 {
+	for (int i = 0; i < m_components.size(); i++) {
+		delete m_components[i];
+		m_components[i] = nullptr;
+	}
+	for (int i = 0; i < m_children.size(); i++) {
+		detatchNode(m_children[i]);
+		delete m_children[i];
+		m_children[i] = nullptr;
+	}
 }
 
 void SceneNode::SetModel(Model * model)
@@ -180,15 +191,101 @@ bool SceneNode::CheckCollision(SceneNode * compareTree, SceneNode * objectTreeRo
 		float z1 = XMVectorGetZ(v1);
 		float z2 = XMVectorGetZ(v2);
 
-		float dx = x1 - x2;
-		float dy = y1 - y2;
-		float dz = z1 - z2;
+		bool collision = false;
 
-		// check bounding sphere collision
-		if (sqrt(dx*dx + dy * dy + dz * dz) <
-			(compareTree->m_pModel->GetBoundingSphereRadius() * compareTree->m_worldScale) +
-			(this->m_pModel->GetBoundingSphereRadius() * m_worldScale))
-		{
+		if (m_collisionType == compareTree->m_collisionType) {
+			switch (m_collisionType) {
+			case Sphere: {
+				float dx = x1 - x2;
+				float dy = y1 - y2;
+				float dz = z1 - z2;
+
+				// check bounding sphere collision
+				if (sqrt(dx*dx + dy * dy + dz * dz) <
+					(compareTree->m_pModel->GetBoundingSphereRadius() * compareTree->m_worldScale) +
+					(this->m_pModel->GetBoundingSphereRadius() * m_worldScale))
+				{
+					collision = true;
+				}
+			}
+						 break;
+
+			case Cube: {
+				float xbounds1 = this->m_pModel->GetCubeBounds().x * m_scale.x;
+				float ybounds1 = this->m_pModel->GetCubeBounds().y * m_scale.y;
+				float zbounds1 = this->m_pModel->GetCubeBounds().z * m_scale.z;
+				float xbounds2 = compareTree->m_pModel->GetCubeBounds().x * compareTree->m_scale.x;
+				float ybounds2 = compareTree->m_pModel->GetCubeBounds().y * compareTree->m_scale.y;
+				float zbounds2 = compareTree->m_pModel->GetCubeBounds().z * compareTree->m_scale.z;
+				bool xCol = (x1 - xbounds1 < x2 + xbounds2) && (x1 + xbounds1 > x2 - xbounds2);
+				bool yCol = (y1 - ybounds1 < y2 + ybounds2) && (y1 + ybounds1 > y2 - ybounds2);
+				bool zCol = (z1 - zbounds1 < z2 + zbounds2) && (z1 + zbounds1 > z2 - zbounds2);
+
+				if (xCol && yCol && zCol)
+					collision = true;
+			}
+					   break;
+			}
+		}
+		else {
+			float cubeX, cubeY, cubeZ;
+			float sphereX, sphereY, sphereZ;
+
+			float xbounds;
+			float ybounds;
+			float zbounds;
+
+			switch (m_collisionType) {
+			case Sphere:
+				cubeX = XMVectorGetX(compareTree->GetWorldCentrePosition());
+				cubeY = XMVectorGetY(compareTree->GetWorldCentrePosition());
+				cubeZ = XMVectorGetZ(compareTree->GetWorldCentrePosition());
+				sphereX = XMVectorGetX(this->GetWorldCentrePosition());
+				sphereY = XMVectorGetY(this->GetWorldCentrePosition());
+				sphereZ = XMVectorGetZ(this->GetWorldCentrePosition());
+				xbounds = compareTree->m_pModel->GetCubeBounds().x * compareTree->m_scale.x;
+				ybounds = compareTree->m_pModel->GetCubeBounds().y * compareTree->m_scale.y;
+				zbounds = compareTree->m_pModel->GetCubeBounds().z * compareTree->m_scale.z;
+				break;
+			case Cube:
+				cubeX = XMVectorGetX(this->GetWorldCentrePosition());
+				cubeY = XMVectorGetY(this->GetWorldCentrePosition());
+				cubeZ = XMVectorGetZ(this->GetWorldCentrePosition());
+				sphereX = XMVectorGetX(compareTree->GetWorldCentrePosition());
+				sphereY = XMVectorGetY(compareTree->GetWorldCentrePosition());
+				sphereZ = XMVectorGetZ(compareTree->GetWorldCentrePosition());
+				xbounds = this->m_pModel->GetCubeBounds().x * this->m_scale.x;
+				ybounds = this->m_pModel->GetCubeBounds().y * this->m_scale.y;
+				zbounds = this->m_pModel->GetCubeBounds().z * this->m_scale.z;
+				break;
+			}
+
+			float step = m_pModel->GetBoundingSphereRadius();
+			float x, y, z;
+
+			x = sphereX;
+			if (x > cubeX + xbounds) x = cubeX + xbounds;
+			if (x < cubeX - xbounds) x = cubeX - xbounds;
+			y = sphereY;
+			if (y > cubeY + ybounds) y = cubeY + ybounds;
+			if (y < cubeY - ybounds) y = cubeY - ybounds;
+			z = sphereZ;
+			if (z > cubeZ + zbounds) z = cubeZ + zbounds;
+			if (z < cubeZ - zbounds) z = cubeZ - zbounds;
+
+			Vector3 closestPoint = Vector3(x, y, z);
+
+			float dx = sphereX - closestPoint.x;
+			float dy = sphereY - closestPoint.y;
+			float dz = sphereZ - closestPoint.z;
+
+			// check bounding sphere collision
+			if (sqrt(dx*dx + dy * dy + dz * dz) < this->m_pModel->GetBoundingSphereRadius() * m_worldScale) {
+				collision = true;
+			}
+		}
+
+		if (collision) {
 			for (int i = 0; i < m_components.size(); i++) {
 				m_components[i]->OnCollision(compareTree);
 			}
@@ -198,6 +295,7 @@ bool SceneNode::CheckCollision(SceneNode * compareTree, SceneNode * objectTreeRo
 			if (!(m_collisionEnabled && compareTree->m_collisionEnabled)) return false;
 			return true;
 		}
+		
 	}
 
 	// iterate through compared tree child nodes
@@ -321,6 +419,11 @@ void SceneNode::SetEnabled(bool val)
 void SceneNode::SetCollision(bool val)
 {
 	m_collisionEnabled = val;
+}
+
+void SceneNode::SetCollisionType(CollisionType val)
+{
+	m_collisionType = val;
 }
 
 SceneNode * SceneNode::GetRootNode()

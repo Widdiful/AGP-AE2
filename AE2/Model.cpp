@@ -52,6 +52,39 @@ float Model::CalculateBoundingSphereRadius()
 	return maxDistance;
 }
 
+XMFLOAT3 Model::CalculateCubeBounds()
+{
+	float minX = 100;
+	float minY = 100;
+	float minZ = 100;
+	float maxX = -100;
+	float maxY = -100;
+	float maxZ = -100;
+
+	for (int i = 0; i < m_pObject->numverts; i++) {
+		XMFLOAT3 currentVertex = m_pObject->vertices[i].Pos;
+
+		if (currentVertex.x < minX) minX = currentVertex.x;
+		if (currentVertex.x > maxX) maxX = currentVertex.x;
+
+		if (currentVertex.y < minY) minY = currentVertex.y;
+		if (currentVertex.y > maxY) maxY = currentVertex.y;
+
+		if (currentVertex.z < minZ) minZ = currentVertex.z;
+		if (currentVertex.z > maxZ) maxZ = currentVertex.z;
+	}
+
+	float x = max(abs(minX), abs(maxX));
+	float y = max(abs(minY), abs(maxY));
+	float z = max(abs(minZ), abs(maxZ));
+
+	m_cube_boundsX = x;
+	m_cube_boundsY = y;
+	m_cube_boundsZ = z;
+	
+	return XMFLOAT3(x, y, z);
+}
+
 Model::Model(ID3D11Device * pD3DDevice, ID3D11DeviceContext * pImmediateContext)
 {
 	m_pD3DDevice = pD3DDevice;
@@ -161,6 +194,7 @@ HRESULT Model::LoadObjModel(char * filename)
 
 	CalculateModelCentrePoint();
 	CalculateBoundingSphereRadius();
+	CalculateCubeBounds();
 
 	return S_OK;
 }
@@ -502,4 +536,9 @@ XMVECTOR Model::GetBoundingSphereWorldSpacePosition()
 float Model::GetBoundingSphereRadius()
 {
 	return m_bounding_sphere_radius * ((m_xScale + m_yScale + m_zScale) / 3.0);
+}
+
+XMFLOAT3 Model::GetCubeBounds()
+{
+	return XMFLOAT3(m_cube_boundsX, m_cube_boundsY, m_cube_boundsZ);
 }
