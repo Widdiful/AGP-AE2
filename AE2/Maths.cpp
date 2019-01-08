@@ -62,3 +62,11 @@ Vector3 Maths::planeIntersection(Plane * p, Vector3 * v1, Vector3 * v2)
 {
 	return Vector3();
 }
+
+float Maths::clamp(float value, float min, float max)
+{
+	float result = value;
+	if (value > max) result = max;
+	if (value < min) result = min;
+	return result;
+}

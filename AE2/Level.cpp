@@ -68,7 +68,7 @@ void Level::InitialiseLevel()
 
 void Level::StartComponents()
 {
-	m_rootNode->StartComponents();
+	if (m_rootNode) m_rootNode->StartComponents();
 }
 
 void Level::Update()
@@ -97,6 +97,8 @@ void Level::Restart()
 
 void Level::CleanUp()
 {
+	m_rootNode->DeleteComponents();
+
 	delete m_camera;
 	m_camera = nullptr;
 	delete m_rootNode;
@@ -105,11 +107,6 @@ void Level::CleanUp()
 	m_cameraGripNode = nullptr;
 	delete m_cameraNode;
 	m_cameraNode = nullptr;
-	delete m_skybox;
-	m_skybox = nullptr;
-	delete m_timer;
-	m_timer = nullptr;
-
 }
 
 void Level::CompleteLevel()

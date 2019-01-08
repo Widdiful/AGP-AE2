@@ -549,7 +549,6 @@ void RenderFrame(void)
 {
 	// Update inputs
 	g_input->ReadInputStates();
-
 	if (g_input->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(g_hWnd);
 	if (g_input->IsKeyPressed(DIK_1)) g_levelID = 0;
 	if (g_input->IsKeyPressed(DIK_2)) g_levelID = 1;

@@ -9,7 +9,7 @@ Enemy::Enemy(bool gravity) : Actor(gravity)
 	m_jumpVelocity = 0.05f;
 	m_moveSpeed = 0.025f;
 	m_distanceToChange = 0.1f;
-	m_chaseDistance = 25;
+	m_chaseDistance = 50;
 
 	m_points.push_back(Vector3(0, 0, 0));
 	m_points.push_back(Vector3(10, 0, 0));
@@ -64,7 +64,7 @@ void Enemy::Update()
 	m_node->MoveForward(m_level->GetDeltaTime() * m_moveSpeed, m_node->GetRootNode());
 
 	if (target.y > m_node->GetYPos() && m_grounded) {
-		//m_velocityY += m_jumpVelocity;
+		m_velocityY += m_jumpVelocity;
 	}
 
 	Actor::Update();

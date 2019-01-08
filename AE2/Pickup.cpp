@@ -6,7 +6,7 @@
 
 Pickup::Pickup() : Component()
 {
-	m_rotateSpeed = -0.03;
+	m_rotateSpeed = -0.3;
 }
 
 

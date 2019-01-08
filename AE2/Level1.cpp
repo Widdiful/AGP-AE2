@@ -27,6 +27,7 @@ Level1::~Level1()
 
 void Level1::InitialiseLevel()
 {
+	Level::InitialiseLevel();
 	// Set up graphics
 	m_skybox->SetTexture("assets/skybox01.dds");
 
@@ -114,6 +115,7 @@ void Level1::Restart()
 
 void Level1::CleanUp()
 {
+	Level::CleanUp();
 	delete m_2DText;
 	m_2DText = nullptr;
 	delete m_playerModel;
@@ -126,18 +128,22 @@ void Level1::CleanUp()
 	m_playerNode = nullptr;
 	delete m_enemyNode;
 	m_enemyNode = nullptr;
-
+	
 	for (int i = 0; i < m_coins.size(); i++) {
-		delete m_coins[i];
-		m_coins[i] = nullptr;
 		delete m_coinModels[i];
 		m_coinModels[i] = nullptr;
+		delete m_coins[i];
+		m_coins[i] = nullptr;
 	}
+	m_coins.clear();
+	m_coinModels.clear();
 
 	for (int i = 0; i < m_redCoins.size(); i++) {
-		delete m_redCoins[i];
-		m_redCoins[i] = nullptr;
 		delete m_redCoinModels[i];
 		m_redCoinModels[i] = nullptr;
+		delete m_redCoins[i];
+		m_redCoins[i] = nullptr;
 	}
+	m_redCoins.clear();
+	m_redCoinModels.clear();
 }

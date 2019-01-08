@@ -29,8 +29,4 @@ c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742)
 c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: conversion from 'unsigned int' to 'INT' requires a narrowing conversion
 c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: conversion from 'unsigned int' to 'INT' requires a narrowing conversion
   c:\program files (x86)\windows kits\10\include\10.0.16299.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-d:\users\lewis\.uni\year 3\games programming\agp-ae2\ae2\level1.cpp(75): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\users\lewis\.uni\year 3\games programming\agp-ae2\ae2\level1.cpp(76): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\users\lewis\.uni\year 3\games programming\agp-ae2\ae2\level1.cpp(86): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\users\lewis\.uni\year 3\games programming\agp-ae2\ae2\level1.cpp(87): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   AE2.vcxproj -> D:\Users\Lewis\.Uni\Year 3\Games Programming\AGP-AE2\AE2\x64\Debug\AE2.exe

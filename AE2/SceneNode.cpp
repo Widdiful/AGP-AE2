@@ -1,4 +1,5 @@
 #include "SceneNode.h"
+#include "Maths.h"
 
 
 
@@ -16,15 +17,17 @@ SceneNode::SceneNode(string name)
 
 SceneNode::~SceneNode()
 {
-	for (int i = 0; i < m_components.size(); i++) {
+	/*for (int i = 0; i < m_components.size(); i++) {
 		delete m_components[i];
 		m_components[i] = nullptr;
-	}
-	for (int i = 0; i < m_children.size(); i++) {
-		detatchNode(m_children[i]);
-		delete m_children[i];
-		m_children[i] = nullptr;
-	}
+	}*/
+	//m_components.clear();
+	//for (int i = 0; i < m_children.size(); i++) {
+	//	//detatchNode(m_children[i]);
+	//	delete m_children[i];
+	//	m_children[i] = nullptr;
+	//}
+	//m_children.clear();
 }
 
 void SceneNode::SetModel(Model * model)
@@ -263,15 +266,9 @@ bool SceneNode::CheckCollision(SceneNode * compareTree, SceneNode * objectTreeRo
 			float step = m_pModel->GetBoundingSphereRadius();
 			float x, y, z;
 
-			x = sphereX;
-			if (x > cubeX + xbounds) x = cubeX + xbounds;
-			if (x < cubeX - xbounds) x = cubeX - xbounds;
-			y = sphereY;
-			if (y > cubeY + ybounds) y = cubeY + ybounds;
-			if (y < cubeY - ybounds) y = cubeY - ybounds;
-			z = sphereZ;
-			if (z > cubeZ + zbounds) z = cubeZ + zbounds;
-			if (z < cubeZ - zbounds) z = cubeZ - zbounds;
+			x = Maths::clamp(sphereX, cubeX - xbounds, cubeX + xbounds);
+			y = Maths::clamp(sphereY, cubeY - ybounds, cubeY + ybounds);
+			z = Maths::clamp(sphereZ, cubeZ - zbounds, cubeZ + zbounds);
 
 			Vector3 closestPoint = Vector3(x, y, z);
 
@@ -408,6 +405,17 @@ void SceneNode::StartComponents()
 	}
 	for (int i = 0; i < m_children.size(); i++) {
 		m_children[i]->StartComponents();
+	}
+}
+
+void SceneNode::DeleteComponents()
+{
+	for (int i = 0; i < m_components.size(); i++) {
+		delete m_components[i];
+		m_components[i] = nullptr;
+	}
+	for (int i = 0; i < m_children.size(); i++) {
+		m_children[i]->DeleteComponents();
 	}
 }
 

@@ -79,7 +79,9 @@
     <ClCompile Include="Maths.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="LevelCube.cpp" />
+    <ClCompile Include="LevelCube.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -142,7 +144,9 @@
     <ClInclude Include="Maths.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="LevelCube.h" />
+    <ClInclude Include="LevelCube.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shaders">

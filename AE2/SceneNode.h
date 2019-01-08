@@ -49,13 +49,28 @@ private:
 public:
 	SceneNode(string name);
 	~SceneNode();
+
+	// Core node features
 	void SetModel(Model* model);
 	void addChildNode(SceneNode* n);
 	bool detatchNode(SceneNode* n);
 	void SetParent(SceneNode* n);
-	void SetLevel(Level* n);
 	SceneNode* GetParent();
+	void SetLevel(Level* n);
+	Level* GetLevel();
 	void Update(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection);
+	string GetName();
+	void SetEnabled(bool val);
+
+	// Components
+	void AddComponent(Component* component);
+	Component* GetComponent(std::string name);
+	SceneNode* FindNode(string name);
+	SceneNode* GetRootNode();
+	void StartComponents();
+	void DeleteComponents();
+
+	// World
 	void LookAt_XZ(float x, float z);
 	void LookAt_XYZ(float x, float y, float z);
 	void LookAt_XZ(float x, float z, float rot);
@@ -65,14 +80,6 @@ public:
 	bool CheckCollision(SceneNode* compareTree, SceneNode* objectTreeRoot);
 	XMVECTOR GetWorldCentrePosition();
 	void UpdateCollisionTree(XMMATRIX* world, float scale);
-	void AddComponent(Component* component);
-	Component* GetComponent(std::string name);
-	SceneNode* FindNode(string name);
-	SceneNode* GetRootNode();
-	Level* GetLevel();
-	string GetName();
-	void StartComponents();
-	void SetEnabled(bool val);
 	void SetCollision(bool val);
 	void SetCollisionType(CollisionType val);
 
