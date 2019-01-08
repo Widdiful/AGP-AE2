@@ -39,7 +39,7 @@ private:
 	bool m_collisionEnabled = true;
 	bool m_enabled = true;
 
-	XMMATRIX worldMatrix;
+	XMMATRIX m_localWorldMatrix;
 
 public:
 	SceneNode(string name);

@@ -157,7 +157,7 @@
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="text2D.cpp" />
-    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Vector3.cpp" />
   </ItemGroup>
@@ -205,7 +205,7 @@
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="text2D.h" />
-    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>

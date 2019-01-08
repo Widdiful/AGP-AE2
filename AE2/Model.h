@@ -40,6 +40,7 @@ public:
 	bool CheckCollision(Model* other);
 	bool CheckCollision(Model* other, float xOffset, float yOffset, float zOffset);
 	virtual void Update();
+	ObjFileModel* GetObject();
 
 	// POSITION INFO
 

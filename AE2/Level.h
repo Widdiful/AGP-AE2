@@ -3,7 +3,7 @@
 #include "SceneNode.h"
 #include "InputManager.h"
 #include "Skybox.h"
-#include "Timer.h"
+#include "Time.h"
 
 class Level
 {
@@ -23,7 +23,7 @@ public:
 
 	XMMATRIX m_world, m_projection, m_view;
 	Skybox* m_skybox;
-	Timer* m_timer;
+	Time* m_timer;
 
 public:
 	Level(InputManager* input, ID3D11Device* device, ID3D11DeviceContext* context, Skybox* skybox);

@@ -6,6 +6,8 @@
 #define XM_NO_ALIGNMENT
 #include <xnamath.h>
 
+#include "Vector3.h"
+
 #pragma once
 class Camera
 {
@@ -29,6 +31,7 @@ public:
 	void LookAt(float x, float y, float z);
 	void LerpAt(float x, float y, float z, float lerpSpeed);
 	XMMATRIX GetViewMatrix();
+	Vector3 GetLookVector();
 
 	float GetX();
 	float GetY();

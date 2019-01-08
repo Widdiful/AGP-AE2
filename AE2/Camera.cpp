@@ -106,6 +106,11 @@ XMMATRIX Camera::GetViewMatrix()
 	return XMMatrixLookAtLH(m_position, m_lookat, m_up);
 }
 
+Vector3 Camera::GetLookVector()
+{
+	return Vector3(m_dx, m_dy, m_dz);
+}
+
 float Camera::GetX()
 {
 	return m_x;

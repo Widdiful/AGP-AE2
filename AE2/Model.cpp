@@ -271,6 +271,11 @@ void Model::Update()
 
 }
 
+ObjFileModel * Model::GetObject()
+{
+	return m_pObject;
+}
+
 void Model::SetXPos(float x)
 {
 	m_x = x;

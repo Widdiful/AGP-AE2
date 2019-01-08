@@ -63,24 +63,22 @@ void SceneNode::Update(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection)
 	if (!m_enabled) return;
 
 	// the local_world matrix will be used to calc the local transformations for this node
-	XMMATRIX local_world = XMMatrixIdentity();
+	m_localWorldMatrix = XMMatrixIdentity();
 
-	local_world = XMMatrixRotationX(XMConvertToRadians(m_rotation.x));
-	local_world *= XMMatrixRotationY(XMConvertToRadians(m_rotation.y));
-	local_world *= XMMatrixRotationZ(XMConvertToRadians(m_rotation.z));
+	m_localWorldMatrix = XMMatrixRotationX(XMConvertToRadians(m_rotation.x));
+	m_localWorldMatrix *= XMMatrixRotationY(XMConvertToRadians(m_rotation.y));
+	m_localWorldMatrix *= XMMatrixRotationZ(XMConvertToRadians(m_rotation.z));
 
-	local_world *= XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	m_localWorldMatrix *= XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 
-	local_world *= XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	m_localWorldMatrix *= XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 
 	// the local matrix is multiplied by the passed in world matrix that contains the concatenated
 	// transformations of all parent nodes so that this nodes transformations are relative to those
-	local_world *= *world;
-
-	worldMatrix = local_world;
+	m_localWorldMatrix *= *world;
 
 	// only draw if there is a model attached
-	if (m_pModel) m_pModel->Draw(&local_world, view, projection);
+	if (m_pModel) m_pModel->Draw(&m_localWorldMatrix, view, projection);
 
 	// run all component update functions
 	for (int i = 0; i < m_components.size(); i++) {
@@ -90,7 +88,7 @@ void SceneNode::Update(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection)
 	// traverse all child nodes, passing in the concatenated world matrix
 	for (int i = 0; i < m_children.size(); i++)
 	{
-		m_children[i]->Update(&local_world, view, projection);
+		m_children[i]->Update(&m_localWorldMatrix, view, projection);
 	}
 
 }

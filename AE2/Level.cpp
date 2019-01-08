@@ -1,4 +1,5 @@
 #include "Level.h"
+#include <math.h>
 
 
 
@@ -32,7 +33,7 @@ Level::Level(InputManager* input, ID3D11Device* device, ID3D11DeviceContext* con
 	m_pD3DDevice->CreateDepthStencilState(&stencilDesc, &m_pDepthWriteSkybox);
 
 	// Start timer
-	m_timer = new Timer();
+	m_timer = new Time();
 
 	InitialiseLevel();
 }
