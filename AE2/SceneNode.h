@@ -65,6 +65,7 @@ public:
 	// Components
 	void AddComponent(Component* component);
 	Component* GetComponent(std::string name);
+	Component* GetComponentInChildren(std::string name);
 	SceneNode* FindNode(string name);
 	SceneNode* GetRootNode();
 	void StartComponents();

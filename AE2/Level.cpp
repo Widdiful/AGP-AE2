@@ -32,11 +32,6 @@ Level::Level(InputManager* input, ID3D11Device* device, ID3D11DeviceContext* con
 	stencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	m_pD3DDevice->CreateDepthStencilState(&stencilDesc, &m_pDepthWriteSkybox);
 
-	// Start timer
-	m_timer = new Time();
-
-	m_complete = false;
-
 	InitialiseLevel();
 }
 
@@ -51,6 +46,8 @@ Level::~Level()
 
 void Level::InitialiseLevel()
 {
+	m_complete = false;
+
 	// Initialise camera
 	m_camera = new Camera(0.0, 0.0, -10, 0.0);
 	m_camera->Pitch(-60);
@@ -81,9 +78,6 @@ void Level::Update()
 	// Render skybox
 	m_skybox->DrawSkybox(m_camera, &m_view, &m_projection, m_pRasterSkybox, m_pDepthWriteSkybox, m_pRasterSolid, m_pDepthWriteSolid);
 
-	// Tick timer
-	m_timer->Tick();
-
 	// Run updates for level objects
 	m_rootNode->Update(&m_world, &m_view, &m_projection);
 
@@ -112,11 +106,6 @@ void Level::CleanUp()
 void Level::CompleteLevel()
 {
 	m_complete = true;
-}
-
-double Level::GetDeltaTime()
-{
-	return m_timer->deltaTime;
 }
 
 int Level::GetCoinCount()

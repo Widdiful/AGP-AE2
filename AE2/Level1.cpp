@@ -99,12 +99,14 @@ void Level1::InitialiseLevel()
 	m_Box1->AddComponent(new LevelCube());
 
 	StartComponents();
+	m_uiManager = m_rootNode->GetComponentInChildren("UI Manager");
 }
 
 void Level1::Update()
 {
 	Level::Update();
 	m_particleGenerator->Draw(&m_view, &m_projection, new XMFLOAT3(m_camera->GetX(), m_camera->GetY(), m_camera->GetZ()));
+	m_uiManager->Update();
 }
 
 void Level1::Restart()

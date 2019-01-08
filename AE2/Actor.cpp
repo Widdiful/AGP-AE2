@@ -31,15 +31,15 @@ void Actor::Update()
 	Component::Update();
 
 	if (m_node) {
-		m_node->AddXPos(m_velocityX * m_level->GetDeltaTime(), m_rootNode);
-		if (m_node->AddYPos(m_velocityY * m_level->GetDeltaTime(), m_rootNode)) {
+		m_node->AddXPos(m_velocityX * Time::getInstance().deltaTime, m_rootNode);
+		if (m_node->AddYPos(m_velocityY * Time::getInstance().deltaTime, m_rootNode)) {
 			m_velocityY = 0;
 			m_grounded = true;
 		}
 		else if (m_useGravity) {
-			if (m_velocityY > m_gravityMax) m_velocityY += m_gravity * m_level->GetDeltaTime();
+			if (m_velocityY > m_gravityMax) m_velocityY += m_gravity * Time::getInstance().deltaTime;
 		}
-		m_node->AddZPos(m_velocityZ * m_level->GetDeltaTime(), m_rootNode);
+		m_node->AddZPos(m_velocityZ * Time::getInstance().deltaTime, m_rootNode);
 
 		if (m_velocityY > 0.0001f || m_velocityY < -0.0001f) {
 			m_grounded = false;

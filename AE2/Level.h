@@ -23,7 +23,6 @@ protected:
 
 	XMMATRIX m_world, m_projection, m_view;
 	Skybox* m_skybox;
-	Time* m_timer;
 
 	int m_coinCount;
 	int m_redCoinCount;
@@ -38,8 +37,6 @@ public:
 	virtual void Restart();
 	virtual void CleanUp();
 	virtual void CompleteLevel();
-
-	double GetDeltaTime();
 
 	int GetCoinCount();
 	int GetRedCoinCount();

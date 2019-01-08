@@ -560,6 +560,8 @@ void RenderFrame(void)
 
 	g_pImmediateContext->ClearDepthStencilView(g_pZBuffer, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
+	Time::getInstance().Tick();
+
 	// Run all scene nodes and components
 	g_levels[g_levelID]->Update();
 

@@ -3,16 +3,6 @@
 
 
 
-Time::Time()
-{
-	timeNow = double(timeGetTime());
-	timeSinceStart = 0;
-	deltaTime = 0;
-	fps = 0;
-	timePrevious = timeNow;
-}
-
-
 Time::~Time()
 {
 }

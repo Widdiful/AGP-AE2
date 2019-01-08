@@ -22,5 +22,5 @@ void Pickup::Start()
 
 void Pickup::Update()
 {
-	m_node->AddYRot(m_rotateSpeed * m_level->GetDeltaTime());
+	m_node->AddYRot(m_rotateSpeed * Time::getInstance().deltaTime);
 }

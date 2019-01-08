@@ -379,6 +379,20 @@ Component * SceneNode::GetComponent(std::string name)
 	return nullptr;
 }
 
+Component * SceneNode::GetComponentInChildren(std::string name)
+{
+	for (int i = 0; i < m_components.size(); i++) {
+		if (m_components[i]->GetName() == name) {
+			return m_components[i];
+		}
+	}
+	for (int i = 0; i < m_children.size(); i++) {
+		Component* temp = m_children[i]->GetComponentInChildren(name);
+		if (temp != nullptr) return temp;
+	}
+	return nullptr;
+}
+
 SceneNode * SceneNode::FindNode(string name)
 {
 	for (int i = 0; i < m_children.size(); i++) {

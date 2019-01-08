@@ -23,6 +23,7 @@ private:
 	ParticleGenerator* m_particleGenerator;
 
 	Text2D* m_2DText;
+	Component* m_uiManager;
 
 public:
 	Level1(InputManager* input, ID3D11Device* device, ID3D11DeviceContext* context, Skybox* skybox);

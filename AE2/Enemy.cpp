@@ -61,7 +61,7 @@ void Enemy::Update()
 
 	}
 	m_node->LookAt_XZ(target.x, target.z);
-	m_node->MoveForward(m_level->GetDeltaTime() * m_moveSpeed, m_node->GetRootNode());
+	m_node->MoveForward(Time::getInstance().deltaTime * m_moveSpeed, m_node->GetRootNode());
 
 	if (target.y > m_node->GetYPos() && m_grounded) {
 		m_velocityY += m_jumpVelocity;

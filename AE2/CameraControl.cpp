@@ -29,22 +29,22 @@ void CameraControl::Update()
 {
 	Component::Update();
 	if (m_input->IsKeyPressed(DIK_LEFT)) {
-		m_node->AddYRot(m_gripRotateSpeed * m_level->GetDeltaTime());
+		m_node->AddYRot(m_gripRotateSpeed * Time::getInstance().deltaTime);
 	}
 	if (m_input->IsKeyPressed(DIK_RIGHT)) {
-		m_node->AddYRot(-m_gripRotateSpeed * m_level->GetDeltaTime());
+		m_node->AddYRot(-m_gripRotateSpeed * Time::getInstance().deltaTime);
 	}
 	if (m_input->IsKeyPressed(DIK_UP)) {
-		m_node->AddXRot(m_gripRotateSpeed * m_level->GetDeltaTime());
+		m_node->AddXRot(m_gripRotateSpeed * Time::getInstance().deltaTime);
 	}
 	if (m_input->IsKeyPressed(DIK_DOWN)) {
-		m_node->AddXRot(-m_gripRotateSpeed * m_level->GetDeltaTime());
+		m_node->AddXRot(-m_gripRotateSpeed * Time::getInstance().deltaTime);
 	}
 
 	m_node->SetPos(m_target->GetXPos(), m_target->GetYPos(), m_target->GetZPos());
 	m_cameraNode->SetPos(m_offsetX, m_offsetY, m_offsetZ);
-	m_camera->MoveTowardsX(m_cameraNode->GetWorldXPos(), m_moveSpeed * m_level->GetDeltaTime());
-	m_camera->MoveTowardsY(m_cameraNode->GetWorldYPos(), m_moveSpeed * m_level->GetDeltaTime());
-	m_camera->MoveTowardsZ(m_cameraNode->GetWorldZPos(), m_moveSpeed * m_level->GetDeltaTime());
+	m_camera->MoveTowardsX(m_cameraNode->GetWorldXPos(), m_moveSpeed * Time::getInstance().deltaTime);
+	m_camera->MoveTowardsY(m_cameraNode->GetWorldYPos(), m_moveSpeed * Time::getInstance().deltaTime);
+	m_camera->MoveTowardsZ(m_cameraNode->GetWorldZPos(), m_moveSpeed * Time::getInstance().deltaTime);
 	m_camera->LerpAt(m_target->GetXPos(), m_target->GetYPos(), m_target->GetZPos(), m_rotateSpeed);
 }

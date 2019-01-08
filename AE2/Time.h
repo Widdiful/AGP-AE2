@@ -1,12 +1,24 @@
 #pragma once
+#include <windows.h>
+
 class Time
 {
 private:
+	Time() {
+		timeNow = double(timeGetTime());
+		timeSinceStart = 0;
+		deltaTime = 0;
+		fps = 0;
+		timePrevious = timeNow;
+	}
 	double timeNow;
 	double timePrevious;
 
 public:
-	Time();
+	static Time& getInstance() {
+		static Time instance;
+		return instance;
+	}
 	~Time();
 	double timeSinceStart;
 	double deltaTime;
