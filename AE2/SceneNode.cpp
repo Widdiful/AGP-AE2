@@ -35,6 +35,13 @@ void SceneNode::SetModel(Model * model)
 	m_pModel = model;
 }
 
+void SceneNode::SetModel(char* model, char* texture, ID3D11Device* device, ID3D11DeviceContext* context)
+{
+	m_pModel = new Model(device, context);
+	m_pModel->LoadObjModel(model);
+	m_pModel->AddTexture(texture);
+}
+
 void SceneNode::addChildNode(SceneNode * n)
 {
 	m_children.push_back(n);

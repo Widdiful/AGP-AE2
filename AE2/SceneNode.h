@@ -53,6 +53,7 @@ public:
 
 	// Core node features
 	void SetModel(Model* model);
+	void SetModel(char* model, char* texture, ID3D11Device* device, ID3D11DeviceContext* context);
 	void addChildNode(SceneNode* n);
 	bool detatchNode(SceneNode* n);
 	void SetParent(SceneNode* n);

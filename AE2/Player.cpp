@@ -45,7 +45,7 @@ void Player::Update()
 		m_velocityY += m_jumpVelocity;
 	}
 
-	m_uiManager->ChangeText("Coins: " + std::to_string(m_coinCount) + " Red coins: " + std::to_string(m_redCoinCount));
+	if (m_uiManager) m_uiManager->ChangeText("Coins: " + std::to_string(m_coinCount) + " Red coins: " + std::to_string(m_redCoinCount));
 	//m_uiManager->ChangeText(std::to_string(Time::getInstance().fpsInt));
 
 	Actor::Update();
@@ -60,7 +60,7 @@ void Player::OnCollision(SceneNode * other)
 		m_coinCount++;
 		other->SetEnabled(false);
 	}
-	else if (other->GetName() == "Red Coin") {
+	else if (other->GetName() == "RedCoin") {
 		m_redCoinCount++;
 		other->SetEnabled(false);
 		if (m_redCoinCount == m_level->GetRedCoinCount()) {

@@ -14,7 +14,6 @@ using namespace std;
 
 #include "Skybox.h"
 #include "Level.h"
-#include "Level1.h"
 
 #pragma region "Keyboard stuff"
 /****************************************************************************
@@ -536,8 +535,8 @@ HRESULT InitialiseGraphics()
 	g_skybox = new Skybox(g_pD3DDevice, g_pVertexBuffer, g_pConstantBuffer0, g_pImmediateContext, g_pVertexShader, g_pPixelShader, g_pInputLayout, g_pSkybox, g_pSampler0);
 
 	// Create levels
-	g_levels.push_back(new Level1(g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
-	g_levels.push_back(new Level(g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
+	g_levels.push_back(new Level((char*)"levels/1.txt", g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
+	g_levels.push_back(new Level((char*)"levels/1.txt", g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
 
 	return S_OK;
 }

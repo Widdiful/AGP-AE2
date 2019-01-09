@@ -61,12 +61,6 @@
     <ClCompile Include="Vector3.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Level.cpp">
-      <Filter>Levels</Filter>
-    </ClCompile>
-    <ClCompile Include="Level1.cpp">
-      <Filter>Levels</Filter>
-    </ClCompile>
     <ClCompile Include="Skybox.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -81,6 +75,9 @@
     </ClCompile>
     <ClCompile Include="LevelCube.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,12 +123,6 @@
     <ClInclude Include="Vector3.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Level.h">
-      <Filter>Levels</Filter>
-    </ClInclude>
-    <ClInclude Include="Level1.h">
-      <Filter>Levels</Filter>
-    </ClInclude>
     <ClInclude Include="Skybox.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -147,6 +138,9 @@
     <ClInclude Include="LevelCube.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shaders">
@@ -157,9 +151,6 @@
     </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{9565f92b-fbb5-47be-a343-bb4af6fc5484}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Levels">
-      <UniqueIdentifier>{24d57c53-fa49-47c2-ad01-9c74fa4b8169}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

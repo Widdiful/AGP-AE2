@@ -29,5 +29,16 @@ VOut ModelVS(float4 position : POSITION, float2 texcoord : TEXCOORD, float3 norm
 }
 
 float4 ModelPS(float4 position : SV_POSITION, float4 color : COLOR, float2 texcoord : TEXCOORD) : SV_TARGET{
+	float intensity = (color.x + color.y + color.z + color.w) / 4.0;
+
+	if (intensity > 0.95)
+	color = float4(1.0, 1, 1, 1.0) * color;
+	else if (intensity > 0.5)
+	color = float4(0.7, 0.7, 0.7, 1.0) * color;
+	else if (intensity > 0.025)
+	color = float4(0.35, 0.35, 0.35, 1.0) * color;
+	else
+	color = float4(0.2, 0.2, 0.2, 1.0) * color;
+
 	return texture0.Sample(sampler0, texcoord) * color;
 }

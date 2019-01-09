@@ -1,0 +1,73 @@
+SKYBOX assets/skybox02.dds
+
+TEXT assets/font1.bmp
+
+PARTICLE
+
+NODE Player
+POS 0 100 0
+COMPONENT Player
+COMPONENT UIManager
+
+NODE Enemy
+POS -100 10 0
+COMPONENT Enemy
+
+NODE Box1
+POS 0 -10 0
+SCALE 100 5 200
+COMPONENT LevelCube
+
+NODE Coin
+POS 5 0 0
+
+NODE Coin
+POS 10 0 0
+
+NODE Coin
+POS 15 0 0
+
+NODE Coin
+POS 20 0 0
+
+NODE Coin
+POS 25 0 0
+
+NODE Coin
+POS 30 0 0
+
+NODE Coin
+POS 35 0 0
+
+NODE Coin
+POS 40 0 0
+
+NODE Coin
+POS 45 0 0
+
+NODE Coin
+POS 50 0 0
+
+NODE RedCoin
+POS 0 0 5
+
+NODE RedCoin
+POS 0 0 10
+
+NODE RedCoin
+POS 0 0 15
+
+NODE RedCoin
+POS 0 0 20
+
+NODE RedCoin
+POS 0 0 25
+
+NODE RedCoin
+POS 0 0 30
+
+NODE RedCoin
+POS 0 0 35
+
+NODE RedCoin
+POS 0 0 40

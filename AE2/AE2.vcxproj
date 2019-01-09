@@ -147,7 +147,6 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Level.cpp" />
-    <ClCompile Include="Level1.cpp" />
     <ClCompile Include="LevelCube.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Maths.cpp" />
@@ -198,7 +197,6 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Level.h" />
-    <ClInclude Include="Level1.h" />
     <ClInclude Include="LevelCube.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="Model.h" />

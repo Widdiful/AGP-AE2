@@ -4,6 +4,8 @@
 #include "InputManager.h"
 #include "Skybox.h"
 #include "Time.h"
+#include "text2D.h"
+#include "UIManager.h"
 
 class Level
 {
@@ -15,6 +17,9 @@ protected:
 	InputManager* m_input;
 	ID3D11Device* m_pD3DDevice;
 	ID3D11DeviceContext* m_pImmediateContext;
+	vector<SceneNode*> m_nodes;
+	Text2D* m_2DText;
+	Component* m_uiManager;
 
 	ID3D11RasterizerState*		m_pRasterSolid = 0;
 	ID3D11RasterizerState*		m_pRasterSkybox = 0;
@@ -24,12 +29,14 @@ protected:
 	XMMATRIX m_world, m_projection, m_view;
 	Skybox* m_skybox;
 
+	vector<string> levelText;
+
 	int m_coinCount;
 	int m_redCoinCount;
 	bool m_complete;
 
 public:
-	Level(InputManager* input, ID3D11Device* device, ID3D11DeviceContext* context, Skybox* skybox);
+	Level(string file, InputManager* input, ID3D11Device* device, ID3D11DeviceContext* context, Skybox* skybox);
 	~Level();
 	virtual void InitialiseLevel();
 	virtual void StartComponents();
