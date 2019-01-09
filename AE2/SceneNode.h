@@ -41,6 +41,7 @@ private:
 
 	bool m_collisionEnabled = true;
 	bool m_enabled = true;
+	bool m_visible = true;
 
 	XMMATRIX m_localWorldMatrix;
 

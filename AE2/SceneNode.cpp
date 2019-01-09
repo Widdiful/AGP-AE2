@@ -76,24 +76,26 @@ void SceneNode::Update(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection)
 {
 	if (!m_enabled) return;
 
-	// the local_world matrix will be used to calc the local transformations for this node
-	m_localWorldMatrix = XMMatrixIdentity();
+	// Only draw object if visible
+	if (m_visible) {
+		// the local_world matrix will be used to calc the local transformations for this node
+		m_localWorldMatrix = XMMatrixIdentity();
 
-	m_localWorldMatrix = XMMatrixRotationX(XMConvertToRadians(m_rotation.x));
-	m_localWorldMatrix *= XMMatrixRotationY(XMConvertToRadians(m_rotation.y));
-	m_localWorldMatrix *= XMMatrixRotationZ(XMConvertToRadians(m_rotation.z));
+		m_localWorldMatrix = XMMatrixRotationX(XMConvertToRadians(m_rotation.x));
+		m_localWorldMatrix *= XMMatrixRotationY(XMConvertToRadians(m_rotation.y));
+		m_localWorldMatrix *= XMMatrixRotationZ(XMConvertToRadians(m_rotation.z));
 
-	m_localWorldMatrix *= XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+		m_localWorldMatrix *= XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 
-	m_localWorldMatrix *= XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+		m_localWorldMatrix *= XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 
-	// the local matrix is multiplied by the passed in world matrix that contains the concatenated
-	// transformations of all parent nodes so that this nodes transformations are relative to those
-	m_localWorldMatrix *= *world;
+		// the local matrix is multiplied by the passed in world matrix that contains the concatenated
+		// transformations of all parent nodes so that this nodes transformations are relative to those
+		m_localWorldMatrix *= *world;
 
-	// only draw if there is a model attached
-	if (m_pModel) m_pModel->Draw(&m_localWorldMatrix, view, projection);
-
+		// only draw if there is a model attached
+		if (m_pModel) m_pModel->Draw(&m_localWorldMatrix, view, projection);
+	}
 	// run all component update functions
 	for (int i = 0; i < m_components.size(); i++) {
 		m_components[i]->Update();

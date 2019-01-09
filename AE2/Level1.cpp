@@ -34,11 +34,11 @@ void Level1::InitialiseLevel()
 	m_2DText = new Text2D("assets/font1.bmp", m_pD3DDevice, m_pImmediateContext);
 
 	m_playerModel = new Model(m_pD3DDevice, m_pImmediateContext);
-	m_playerModel->LoadObjModel((char*)"assets/Sphere.obj");
+	m_playerModel->LoadObjModel((char*)"assets/player.obj");
 	m_playerModel->AddTexture((char*)"assets/gaogaigar.bmp");
 
 	m_enemyModel = new Model(m_pD3DDevice, m_pImmediateContext);
-	m_enemyModel->LoadObjModel((char*)"assets/Sphere.obj");
+	m_enemyModel->LoadObjModel((char*)"assets/enemy.obj");
 	m_enemyModel->AddTexture((char*)"assets/gaogaigar.bmp");
 
 	m_Box1Model = new Model(m_pD3DDevice, m_pImmediateContext);
