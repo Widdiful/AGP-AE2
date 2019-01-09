@@ -46,6 +46,7 @@ void Player::Update()
 	}
 
 	m_uiManager->ChangeText("Coins: " + std::to_string(m_coinCount) + " Red coins: " + std::to_string(m_redCoinCount));
+	//m_uiManager->ChangeText(std::to_string(Time::getInstance().fpsInt));
 
 	Actor::Update();
 }

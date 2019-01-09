@@ -13,6 +13,7 @@ private:
 	}
 	double timeNow;
 	double timePrevious;
+	int frameCount;
 
 public:
 	static Time& getInstance() {
