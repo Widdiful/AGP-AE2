@@ -30,15 +30,18 @@ VOut ModelVS(float4 position : POSITION, float2 texcoord : TEXCOORD, float3 norm
 
 float4 ModelPS(float4 position : SV_POSITION, float4 color : COLOR, float2 texcoord : TEXCOORD) : SV_TARGET{
 	float intensity = (color.x + color.y + color.z + color.w) / 4.0;
+	float4 celShading;
 
-	if (intensity > 0.95)
-	color = float4(1.0, 1, 1, 1.0) * color;
+	if (intensity >= 1)
+		celShading = float4(1.25, 1.25, 1.25, 1.0);
+	else if (intensity > 0.85)
+		celShading = float4(1.0, 1.0, 1.0, 1.0);
 	else if (intensity > 0.5)
-	color = float4(0.7, 0.7, 0.7, 1.0) * color;
+		celShading = float4(0.7, 0.7, 0.7, 1.0);
 	else if (intensity > 0.025)
-	color = float4(0.35, 0.35, 0.35, 1.0) * color;
+		celShading = float4(0.35, 0.35, 0.35, 1.0);
 	else
-	color = float4(0.2, 0.2, 0.2, 1.0) * color;
+		celShading = float4(0.2, 0.2, 0.2, 1.0);
 
-	return texture0.Sample(sampler0, texcoord) * color;
+	return texture0.Sample(sampler0, texcoord) * (color * 2) * celShading;
 }

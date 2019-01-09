@@ -157,7 +157,7 @@ void Level::Update()
 {
 	// Set up matrices
 	m_world = XMMatrixTranslation(0, 0, 0);
-	m_projection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45), 640.0 / 480.0, 1.0, 1000.0);
+	m_projection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45), 16.0 / 9.0, 1.0, 1000.0);
 	m_view = m_camera->GetViewMatrix();
 
 	// Render skybox
