@@ -29,7 +29,7 @@ void Level1::InitialiseLevel()
 {
 	Level::InitialiseLevel();
 	// Set up graphics
-	m_skybox->SetTexture("assets/skybox01.dds");
+	m_skybox->SetTexture("assets/skybox02.dds");
 
 	m_2DText = new Text2D("assets/font1.bmp", m_pD3DDevice, m_pImmediateContext);
 
@@ -43,7 +43,7 @@ void Level1::InitialiseLevel()
 
 	m_Box1Model = new Model(m_pD3DDevice, m_pImmediateContext);
 	m_Box1Model->LoadObjModel((char*)"assets/Cube.obj");
-	m_Box1Model->AddTexture((char*)"assets/gaogaigar.bmp");
+	m_Box1Model->AddTexture((char*)"assets/platform.bmp");
 
 	m_particleGenerator = new ParticleGenerator(m_pD3DDevice, m_pImmediateContext);
 	m_particleGenerator->CreateParticle();
@@ -69,8 +69,8 @@ void Level1::InitialiseLevel()
 	m_redCoinCount = 8;
 	for (int i = 0; i < m_coinCount; i++) {
 		m_coinModels.push_back(new Model(m_pD3DDevice, m_pImmediateContext));
-		m_coinModels.back()->LoadObjModel((char*)"assets/Sphere.obj");
-		m_coinModels.back()->AddTexture((char*)"assets/gaogaigar.bmp");
+		m_coinModels.back()->LoadObjModel((char*)"assets/coin.obj");
+		m_coinModels.back()->AddTexture((char*)"assets/coin.bmp");
 		m_coins.push_back(new SceneNode("Coin"));
 		m_coins.back()->SetModel(m_coinModels.back());
 		m_coins.back()->SetXPos((i % 2) * 10);
@@ -80,8 +80,8 @@ void Level1::InitialiseLevel()
 	}
 	for (int i = 0; i < m_redCoinCount; i++) {
 		m_redCoinModels.push_back(new Model(m_pD3DDevice, m_pImmediateContext));
-		m_redCoinModels.back()->LoadObjModel((char*)"assets/Sphere.obj");
-		m_redCoinModels.back()->AddTexture((char*)"assets/gaogaigar.bmp");
+		m_redCoinModels.back()->LoadObjModel((char*)"assets/redCoin.obj");
+		m_redCoinModels.back()->AddTexture((char*)"assets/redCoin.bmp");
 		m_redCoins.push_back(new SceneNode("Red Coin"));
 		m_redCoins.back()->SetModel(m_redCoinModels.back());
 		m_redCoins.back()->SetXPos(-(i % 2) * 10);

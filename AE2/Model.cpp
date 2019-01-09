@@ -100,7 +100,7 @@ Model::Model(ID3D11Device * pD3DDevice, ID3D11DeviceContext * pImmediateContext)
 	m_yScale = 1.0f;
 	m_zScale = 1.0f;
 
-	m_directional_light_origin = XMVectorSet(-1.0f, 0.0f, -1.0f, 0.0f);
+	m_directional_light_origin = XMVectorSet(-0.25f, 1.0f, -0.25f, 0.0f);
 	m_directional_light_colour = XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
 	m_ambient_light_colour = XMVectorSet(0.25f, 0.25f, 0.25f, 1.0f);
 
