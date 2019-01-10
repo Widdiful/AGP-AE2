@@ -1,5 +1,7 @@
 #pragma once
 #include "objfilemodel.h"
+#include <map>
+
 
 class Model
 {
@@ -28,6 +30,8 @@ protected:
 	XMFLOAT3 CalculateModelCentrePoint();
 	float CalculateBoundingSphereRadius();
 	XMFLOAT3 CalculateCubeBounds();
+
+	static map<char*, ObjFileModel*> m_modelMap;
 public:
 	Model(ID3D11Device* pD3DDevice, ID3D11DeviceContext* pImmediateContext);
 	~Model();

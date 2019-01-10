@@ -63,6 +63,9 @@ public:
 	void Update(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection);
 	string GetName();
 	void SetEnabled(bool val);
+	bool GetEnabled();
+	void SetVisible(bool val);
+	bool GetVisible();
 
 	// Components
 	void AddComponent(Component* component);

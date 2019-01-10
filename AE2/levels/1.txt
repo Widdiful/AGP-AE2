@@ -20,6 +20,110 @@ COMPONENT LevelCube
 
 NODE Coin
 POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
+NODE Coin
+POS 5 0 0
 
 NODE Coin
 POS 10 0 0

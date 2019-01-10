@@ -9,6 +9,9 @@ protected:
 	float m_gravity, m_gravityMax;
 	float m_jumpVelocity, m_moveSpeed;
 	bool m_grounded;
+	float m_iframes;
+	bool m_visible;
+	int m_health;
 
 public:
 	Actor(float useGravity);
@@ -16,5 +19,6 @@ public:
 
 	virtual void Start();
 	virtual void Update();
+	virtual void TakeDamage();
 };
 

@@ -1,6 +1,8 @@
 #include "Model.h"
 #include <math.h>
 
+map<char*, ObjFileModel*> Model::m_modelMap;
+
 struct MODEL_CONSTANT_BUFFER {
 	XMMATRIX WorldViewProjection;
 	XMVECTOR directional_light_vector;
@@ -110,8 +112,6 @@ Model::Model(ID3D11Device * pD3DDevice, ID3D11DeviceContext * pImmediateContext)
 
 Model::~Model()
 {
-	delete m_pObject;
-	m_pObject = nullptr;
 	if (m_pVShader) m_pVShader->Release();
 	if (m_pPShader) m_pPShader->Release();
 	if (m_pInputLayout) m_pInputLayout->Release();
@@ -120,7 +120,15 @@ Model::~Model()
 
 HRESULT Model::LoadObjModel(char * filename)
 {
-	m_pObject = new ObjFileModel(filename, m_pD3DDevice, m_pImmediateContext);
+	map<char*, ObjFileModel*>::iterator it = m_modelMap.find(filename);
+	if (it != m_modelMap.end()) {
+		m_pObject = it->second;
+	}
+	else {
+		m_pObject = new ObjFileModel(filename, m_pD3DDevice, m_pImmediateContext);
+		it = m_modelMap.begin();
+		m_modelMap.insert(it, pair<char*, ObjFileModel*>(filename, m_pObject));
+	}
 
 	if (m_pObject->filename == "FILE NOT LOADED") return S_FALSE;
 

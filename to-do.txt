@@ -1,0 +1,21 @@
+required:
+cubemap on coins
+second camera
+model manager
+texture manager
+player health
+kill enemies
+advanced text
+
+stretch:
+advanced textures
+advanced lighting
+other shaders
+bsp trees
+ai pathfinding
+advanced particles
+
+levels:
+level 1 - mostly flat, some platforming
+level 2 - more verticality. climb a tower
+level 3 - sky level

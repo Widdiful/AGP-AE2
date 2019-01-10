@@ -38,10 +38,10 @@ float4 ModelPS(float4 position : SV_POSITION, float4 color : COLOR, float2 texco
 		celShading = float4(1.0, 1.0, 1.0, 1.0);
 	else if (intensity > 0.5)
 		celShading = float4(0.7, 0.7, 0.7, 1.0);
-	else if (intensity > 0.025)
-		celShading = float4(0.35, 0.35, 0.35, 1.0);
+	else if (intensity > 0.03)
+		celShading = float4(0.5, 0.5, 0.5, 1.0);
 	else
-		celShading = float4(0.2, 0.2, 0.2, 1.0);
+		celShading = float4(0.3, 0.3, 0.3, 1.0);
 
 	return texture0.Sample(sampler0, texcoord) * (color * 2) * celShading;
 }

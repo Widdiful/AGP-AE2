@@ -6,6 +6,7 @@
 Player::Player(float useGravity, InputManager* input, SceneNode* camera) : Actor(useGravity)
 {
 	m_name = "Player";
+	m_health = 3;
 	
 	m_input = input;
 	m_camera = camera;
@@ -64,7 +65,16 @@ void Player::OnCollision(SceneNode * other)
 {
 	// Collision code based on node name
 	if (other->GetName() == "Enemy") {
-		// dies
+		if (m_node->GetYPos() > other->GetYPos() && m_velocityY < 0) {
+			if (static_cast<Actor*>(other->GetComponent("Enemy"))) {
+				static_cast<Actor*>(other->GetComponent("Enemy"))->TakeDamage();
+				m_coinCount++;
+			}
+		}
+		else if (m_iframes <= 0) {
+			m_iframes = 1;
+			TakeDamage();
+		}
 	}
 	else if (other->GetName() == "Coin") {
 		m_coinCount++;

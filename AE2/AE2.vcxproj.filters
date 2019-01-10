@@ -16,6 +16,9 @@
     <FxCompile Include="text2D_shaders.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="reflect_shader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

@@ -442,6 +442,21 @@ void SceneNode::SetEnabled(bool val)
 	m_enabled = val;
 }
 
+bool SceneNode::GetEnabled()
+{
+	return m_enabled;
+}
+
+void SceneNode::SetVisible(bool val)
+{
+	m_visible = val;
+}
+
+bool SceneNode::GetVisible()
+{
+	return m_visible;
+}
+
 void SceneNode::SetCollision(bool val)
 {
 	m_collisionEnabled = val;

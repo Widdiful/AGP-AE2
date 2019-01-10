@@ -7,6 +7,8 @@
 Actor::Actor(float useGravity)
 {
 	m_name = "Actor";
+	m_health = 1;
+	m_visible = true;
 
 	m_velocityX = 0;
 	m_velocityY = 0;
@@ -57,5 +59,23 @@ void Actor::Update()
 				m_grounded = true;
 			}
 		}*/
+
+		bool blinking = false;
+		if (m_iframes > 0) {
+			m_node->SetVisible(!m_node->GetVisible());
+			m_iframes -= Time::getInstance().deltaTime / 1000.0f;
+			blinking = true;
+		}
+		if (m_iframes <= 0 && blinking) {
+			m_node->SetVisible(m_visible);
+		}
+	}
+}
+
+void Actor::TakeDamage()
+{
+	m_health--;
+	if (m_health <= 0) {
+		m_node->SetEnabled(false);
 	}
 }

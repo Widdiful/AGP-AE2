@@ -43,7 +43,7 @@ void Enemy::Update()
 	Vector3 target;
 
 	// Chase player if close enough
-	if (distance <= m_chaseDistance) {
+	if (distance <= m_chaseDistance && m_player->GetEnabled()) {
 		target = Vector3(m_player->GetXPos(), m_player->GetZPos(), m_player->GetZPos());
 	}
 
