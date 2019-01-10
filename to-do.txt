@@ -1,11 +1,8 @@
 required:
 cubemap on coins
 second camera
-model manager
-texture manager
-player health
-kill enemies
 advanced text
+moving platforms
 
 stretch:
 advanced textures

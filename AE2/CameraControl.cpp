@@ -26,7 +26,7 @@ CameraControl::CameraControl(Camera * camera, SceneNode * target, SceneNode* cam
 
 	m_FPoffsetX = 0;
 	m_FPoffsetY = 0;
-	m_FPoffsetZ = -1;
+	m_FPoffsetZ = -2;
 
 	m_offsets.push_back(Vector3(m_offsetX, m_offsetY, m_offsetZ));
 	m_offsets.push_back(Vector3(m_FPoffsetX, m_FPoffsetY, m_FPoffsetZ));

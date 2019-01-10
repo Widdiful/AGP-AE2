@@ -570,5 +570,5 @@ void RenderFrame(void)
 	}
 
 	// Display what has just been rendered
-	g_pSwapChain->Present(1, 0);
+	g_pSwapChain->Present(0, 0);
 }

@@ -54,7 +54,7 @@ void Player::Update()
 	// Update UI
 	if (m_input->IsKeyBeganPressed(DIK_TAB))
 		m_selectedText = (m_selectedText + 1) % m_messages.size();
-	m_messages[0] = "Coins: " + std::to_string(m_coinCount) + " Red coins: " + std::to_string(m_redCoinCount);
+	m_messages[0] = std::to_string(m_health) + "HP Coins " + std::to_string(m_coinCount) + " Red coins " + std::to_string(m_redCoinCount);
 	m_messages[1] = "FPS" + to_string((int)(floorf(Time::getInstance().fps * 100)) / 100) + " X" + to_string((int)(floorf(m_node->GetXPos() * 100)) / 100) + " Y" + to_string((int)(floorf(m_node->GetYPos() * 100)) / 100) + " Z" + to_string((int)(floorf(m_node->GetZPos() * 100)) / 100);
 	if (m_uiManager) m_uiManager->ChangeText(m_messages[m_selectedText]);
 

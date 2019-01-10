@@ -25,6 +25,8 @@ VOut ModelVS(float4 position : POSITION, float2 texcoord : TEXCOORD, float3 norm
 	diffuse_amount = saturate(diffuse_amount);
 	output.color = ambient_light_colour + (directional_light_colour * diffuse_amount);
 
+	output.color *= saturate(dot(normal, directional_light_vector)) * directional_light_colour + ambient_light_colour;
+
 	return output;
 }
 
@@ -43,5 +45,7 @@ float4 ModelPS(float4 position : SV_POSITION, float4 color : COLOR, float2 texco
 	else
 		celShading = float4(0.3, 0.3, 0.3, 1.0);
 
-	return texture0.Sample(sampler0, texcoord) * (color * 2) * celShading;
+
+
+	return texture0.Sample(sampler0, texcoord) * (color * 3) * celShading;
 }
