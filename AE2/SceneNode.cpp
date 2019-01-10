@@ -17,17 +17,12 @@ SceneNode::SceneNode(string name)
 
 SceneNode::~SceneNode()
 {
-	/*for (int i = 0; i < m_components.size(); i++) {
+	delete m_pModel;
+	m_pModel = nullptr;
+	for (int i = 0; i < m_components.size(); i++) {
 		delete m_components[i];
-		m_components[i] = nullptr;
-	}*/
-	//m_components.clear();
-	//for (int i = 0; i < m_children.size(); i++) {
-	//	//detatchNode(m_children[i]);
-	//	delete m_children[i];
-	//	m_children[i] = nullptr;
-	//}
-	//m_children.clear();
+	}
+	m_components.clear();
 }
 
 void SceneNode::SetModel(Model * model)

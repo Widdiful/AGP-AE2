@@ -15,6 +15,7 @@ Player::Player(float useGravity, InputManager* input, SceneNode* camera) : Actor
 
 	m_coinCount = 0;
 	m_redCoinCount = 0;
+	m_selectedText = 0;
 }
 
 
@@ -27,10 +28,13 @@ void Player::Start()
 	Actor::Start();
 
 	m_uiManager = static_cast<UIManager*>(m_node->GetComponent("UI Manager"));
+	m_messages.push_back("");
+	m_messages.push_back("");
 }
 
 void Player::Update()
 {
+	// Move based on keyboard input
 	float x = 0, z = 0;
 	if (m_input->IsKeyPressed(DIK_W)) z = 0.5;
 	if (m_input->IsKeyPressed(DIK_S)) z = -0.5;
@@ -41,18 +45,24 @@ void Player::Update()
 		m_node->MoveForward(Time::getInstance().deltaTime * m_moveSpeed, m_node->GetRootNode());
 	}
 
+	// Jump
 	if (m_input->IsKeyBeganPressed(DIK_SPACE) && m_grounded) {
 		m_velocityY += m_jumpVelocity;
 	}
 
-	if (m_uiManager) m_uiManager->ChangeText("Coins: " + std::to_string(m_coinCount) + " Red coins: " + std::to_string(m_redCoinCount));
-	//m_uiManager->ChangeText(std::to_string(Time::getInstance().fpsInt));
+	// Update UI
+	if (m_input->IsKeyBeganPressed(DIK_TAB))
+		m_selectedText = (m_selectedText + 1) % m_messages.size();
+	m_messages[0] = "Coins: " + std::to_string(m_coinCount) + " Red coins: " + std::to_string(m_redCoinCount);
+	m_messages[1] = "FPS" + to_string((int)(floorf(Time::getInstance().fps * 100)) / 100) + " X" + to_string((int)(floorf(m_node->GetXPos() * 100)) / 100) + " Y" + to_string((int)(floorf(m_node->GetYPos() * 100)) / 100) + " Z" + to_string((int)(floorf(m_node->GetZPos() * 100)) / 100);
+	if (m_uiManager) m_uiManager->ChangeText(m_messages[m_selectedText]);
 
 	Actor::Update();
 }
 
 void Player::OnCollision(SceneNode * other)
 {
+	// Collision code based on node name
 	if (other->GetName() == "Enemy") {
 		// dies
 	}

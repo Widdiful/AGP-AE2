@@ -14,6 +14,8 @@ Component::~Component()
 
 void Component::Start()
 {
+	// Code ran after creation once every component has been created
+	// Put references to other components here
 	if (m_node) {
 		m_rootNode = m_node->GetRootNode();
 		if (m_rootNode != m_node)
@@ -23,11 +25,12 @@ void Component::Start()
 
 void Component::Update()
 {
+	// Code ran on every frame
 }
 
 void Component::OnCollision(SceneNode* other)
 {
-
+	// Code ran whenever node touches another
 }
 
 void Component::SetNode(SceneNode * node)

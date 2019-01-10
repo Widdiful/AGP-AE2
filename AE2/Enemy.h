@@ -20,5 +20,7 @@ public:
 	void Start();
 	void Update();
 	Vector3 GetNextPoint();
+	void AddPoint(Vector3 newPoint);
+	void AddPoints(std::vector<Vector3> newPoints);
 };
 

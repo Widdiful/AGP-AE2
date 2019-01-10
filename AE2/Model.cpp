@@ -111,6 +111,7 @@ Model::Model(ID3D11Device * pD3DDevice, ID3D11DeviceContext * pImmediateContext)
 Model::~Model()
 {
 	delete m_pObject;
+	m_pObject = nullptr;
 	if (m_pVShader) m_pVShader->Release();
 	if (m_pPShader) m_pPShader->Release();
 	if (m_pInputLayout) m_pInputLayout->Release();

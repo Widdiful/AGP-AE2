@@ -17,6 +17,8 @@ Pickup::~Pickup()
 void Pickup::Start()
 {
 	Component::Start();
+
+	// Set collision to only allow triggers
 	m_node->SetCollision(false);
 }
 

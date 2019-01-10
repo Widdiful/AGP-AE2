@@ -535,7 +535,7 @@ HRESULT InitialiseGraphics()
 	g_skybox = new Skybox(g_pD3DDevice, g_pVertexBuffer, g_pConstantBuffer0, g_pImmediateContext, g_pVertexShader, g_pPixelShader, g_pInputLayout, g_pSkybox, g_pSampler0);
 
 	// Create levels
-	g_levels.push_back(new Level((char*)"levels/1.txt", g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
+	g_levels.push_back(new Level((char*)"levels/2.txt", g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
 	g_levels.push_back(new Level((char*)"levels/1.txt", g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
 
 	return S_OK;
@@ -570,5 +570,5 @@ void RenderFrame(void)
 	}
 
 	// Display what has just been rendered
-	g_pSwapChain->Present(0, 0);
+	g_pSwapChain->Present(1, 0);
 }

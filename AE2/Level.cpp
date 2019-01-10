@@ -42,6 +42,7 @@ Level::Level(string file, InputManager* input, ID3D11Device* device, ID3D11Devic
 	stencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	m_pD3DDevice->CreateDepthStencilState(&stencilDesc, &m_pDepthWriteSkybox);
 
+	// Load level file to string vector
 	ifstream levelFile(file);
 	string line;
 	while (std::getline(levelFile, line))
@@ -69,7 +70,7 @@ void Level::InitialiseLevel()
 	m_camera = new Camera(0.0, 0.0, -10, 0.0);
 	m_camera->Pitch(-60);
 
-	// Initialise essential nodes
+	// Initialise essentials
 	m_rootNode = new SceneNode("Root");
 	m_cameraGripNode = new SceneNode("Camera Grip");
 	m_cameraNode = new SceneNode("Camera");
@@ -144,7 +145,10 @@ void Level::InitialiseLevel()
 
 	}
 
+	// Run Start() methods of all components
 	StartComponents();
+
+	// Set up UI reference
 	m_uiManager = m_rootNode->GetComponentInChildren("UI Manager");
 }
 
@@ -166,7 +170,8 @@ void Level::Update()
 	// Run updates for level objects
 	m_rootNode->Update(&m_world, &m_view, &m_projection);
 
-	m_uiManager->Update();
+	// Update UI Manager to display UI on top
+	if (m_uiManager) m_uiManager->Update();
 }
 
 void Level::Restart()
@@ -187,6 +192,8 @@ void Level::CleanUp()
 	m_cameraGripNode = nullptr;
 	delete m_cameraNode;
 	m_cameraNode = nullptr;
+	delete m_2DText;
+	m_2DText = nullptr;
 
 	for (int i = 0; i < m_nodes.size(); i++) {
 		delete m_nodes[i];

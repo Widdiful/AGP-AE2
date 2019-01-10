@@ -1,0 +1,19 @@
+SKYBOX assets/skybox02.dds
+
+TEXT assets/font1.bmp
+
+PARTICLE
+
+NODE Player
+POS 0 100 0
+COMPONENT Player
+COMPONENT UIManager
+
+NODE Enemy
+POS -100 10 0
+COMPONENT Enemy
+
+NODE Box1
+POS 0 -10 0
+SCALE 100 5 200
+COMPONENT LevelCube

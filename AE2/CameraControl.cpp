@@ -28,6 +28,8 @@ CameraControl::~CameraControl()
 void CameraControl::Update()
 {
 	Component::Update();
+
+	// Rotate camera from input
 	if (m_input->IsKeyPressed(DIK_LEFT)) {
 		m_node->AddYRot(m_gripRotateSpeed * Time::getInstance().deltaTime);
 	}
@@ -41,6 +43,7 @@ void CameraControl::Update()
 		m_node->AddXRot(-m_gripRotateSpeed * Time::getInstance().deltaTime);
 	}
 
+	// Move camera appropriately
 	m_node->SetPos(m_target->GetXPos(), m_target->GetYPos(), m_target->GetZPos());
 	m_cameraNode->SetPos(m_offsetX, m_offsetY, m_offsetZ);
 	m_camera->MoveTowardsX(m_cameraNode->GetWorldXPos(), m_moveSpeed * Time::getInstance().deltaTime);

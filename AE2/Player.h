@@ -13,6 +13,8 @@ private:
 	UIManager* m_uiManager;
 	std::string m_uiMessage;
 	int m_coinCount, m_redCoinCount;
+	int m_selectedText;
+	vector<string> m_messages;
 public:
 	Player(float useGravity, InputManager* input, SceneNode* camera);
 	~Player();
