@@ -121,6 +121,16 @@ void SceneNode::LookAt_XZ(float x, float z)
 	m_rotation.y = atan2(dx, dz) * (180.0 / XM_PI);
 }
 
+void SceneNode::LerpAt_XZ(float x, float z, float lerpSpeed)
+{
+	float dx = x - m_position.x;
+	float dz = z - m_position.z;
+
+	float targetRotation = atan2(dx, dz) * (180.0 / XM_PI);
+
+	m_rotation.y = (m_rotation.y + (lerpSpeed * (targetRotation - m_rotation.y)));
+}
+
 void SceneNode::LookAt_XYZ(float x, float y, float z)
 {
 	float dx, dy, dz;

@@ -12,6 +12,8 @@ private:
 	Vector3 m_currentPoint;
 	float m_distanceToChange;
 	float m_chaseDistance;
+	float m_rotateSpeed;
+	float m_steeringRotateSpeed;
 	SceneNode* m_player;
 
 public:

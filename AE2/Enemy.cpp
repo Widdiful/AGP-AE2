@@ -10,6 +10,8 @@ Enemy::Enemy(bool gravity) : Actor(gravity)
 	m_moveSpeed = 0.025f;
 	m_distanceToChange = 0.1f;
 	m_chaseDistance = 50;
+	m_rotateSpeed = 0.1f;
+	m_steeringRotateSpeed = 1;
 
 	m_points.push_back(Vector3(0, 0, 0));
 	m_points.push_back(Vector3(10, 0, 0));
@@ -62,10 +64,17 @@ void Enemy::Update()
 		}
 
 	}
+	// Save current rotation
+	float y = m_node->GetYRot();
 
 	// Look at and move towards player or path point
-	m_node->LookAt_XZ(target.x, target.z);
-	m_node->MoveForward(Time::getInstance().deltaTime * m_moveSpeed, m_node->GetRootNode());
+	m_node->LerpAt_XZ(target.x, target.z, m_rotateSpeed);
+	if (m_node->MoveForward(Time::getInstance().deltaTime * m_moveSpeed, m_node->GetRootNode())) {
+		// If wall is in the way, use steering
+		m_node->SetYRot(y);
+		m_node->AddYRot(m_steeringRotateSpeed);
+		m_node->MoveForward(Time::getInstance().deltaTime * m_moveSpeed, m_node->GetRootNode());
+	}
 
 	// Jump
 	if (target.y > m_node->GetYPos() && m_grounded) {

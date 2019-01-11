@@ -78,6 +78,7 @@ public:
 
 	// World
 	void LookAt_XZ(float x, float z);
+	void LerpAt_XZ(float x, float z, float lerpSpeed);
 	void LookAt_XYZ(float x, float y, float z);
 	void LookAt_XZ(float x, float z, float rot);
 	void MoveForward(float distance);
