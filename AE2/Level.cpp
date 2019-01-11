@@ -64,6 +64,8 @@ Level::~Level()
 
 void Level::InitialiseLevel()
 {
+	m_redCoinCount = 0;
+	m_coinCount = 0;
 	m_complete = false;
 
 	// Initialise camera
@@ -100,6 +102,11 @@ void Level::InitialiseLevel()
 					m_nodes.back()->SetModel((char*)"assets/redCoin.obj", (char*)"assets/redCoin.bmp", m_pD3DDevice, m_pImmediateContext);
 					m_nodes.back()->AddComponent(new Pickup());
 					m_redCoinCount++;
+				}
+				else if (lineInfo[1] == "Chest") {
+					m_nodes.back()->SetModel((char*)"assets/chest.obj", (char*)"assets/chest.bmp", m_pD3DDevice, m_pImmediateContext);
+					m_nodes.back()->AddComponent(new Pickup());
+					m_nodes.back()->SetEnabled(false);
 				}
 			}
 
@@ -204,6 +211,11 @@ void Level::CleanUp()
 void Level::CompleteLevel()
 {
 	m_complete = true;
+}
+
+void Level::SpawnChest()
+{
+	m_rootNode->FindNode("Chest")->SetEnabled(true);
 }
 
 int Level::GetCoinCount()

@@ -84,7 +84,10 @@ void Player::OnCollision(SceneNode * other)
 		m_redCoinCount++;
 		other->SetEnabled(false);
 		if (m_redCoinCount == m_level->GetRedCoinCount()) {
-			m_level->CompleteLevel();
+			m_level->SpawnChest();
 		}
+	}
+	else if (other->GetName() == "Chest") {
+		m_level->CompleteLevel();
 	}
 }

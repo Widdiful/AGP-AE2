@@ -38,12 +38,13 @@ protected:
 public:
 	Level(string file, InputManager* input, ID3D11Device* device, ID3D11DeviceContext* context, Skybox* skybox);
 	~Level();
-	virtual void InitialiseLevel();
-	virtual void StartComponents();
-	virtual void Update();
-	virtual void Restart();
-	virtual void CleanUp();
-	virtual void CompleteLevel();
+	void InitialiseLevel();
+	void StartComponents();
+	void Update();
+	void Restart();
+	void CleanUp();
+	void CompleteLevel();
+	void SpawnChest();
 
 	int GetCoinCount();
 	int GetRedCoinCount();
