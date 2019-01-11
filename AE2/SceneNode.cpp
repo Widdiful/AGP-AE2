@@ -128,6 +128,9 @@ void SceneNode::LerpAt_XZ(float x, float z, float lerpSpeed)
 
 	float targetRotation = atan2(dx, dz) * (180.0 / XM_PI);
 
+	if (targetRotation - m_rotation.y >= 180) {
+		targetRotation -= 360;
+	}
 	m_rotation.y = (m_rotation.y + (lerpSpeed * (targetRotation - m_rotation.y)));
 }
 
@@ -520,6 +523,8 @@ void SceneNode::SetXRot(float x)
 void SceneNode::SetYRot(float y)
 {
 	m_rotation.y = y;
+	if (m_rotation.y > 360) m_rotation.y -= 360;
+	if (m_rotation.y < -360) m_rotation.y += 360;
 }
 
 void SceneNode::SetZRot(float z)
