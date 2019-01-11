@@ -9,12 +9,15 @@ class Player :
 private:
 	InputManager* m_input;
 	SceneNode* m_camera;
+	SceneNode* m_startingParent;
 
 	UIManager* m_uiManager;
 	std::string m_uiMessage;
 	int m_coinCount, m_redCoinCount;
 	int m_selectedText;
 	vector<string> m_messages;
+	float m_platformY = 0;
+	bool m_onPlatform = false;
 public:
 	Player(float useGravity, InputManager* input, SceneNode* camera);
 	~Player();

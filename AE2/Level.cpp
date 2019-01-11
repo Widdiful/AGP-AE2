@@ -10,6 +10,7 @@
 #include "CameraControl.h"
 #include "LevelCube.h"
 #include "Pickup.h"
+#include "MovingPlatform.h"
 
 
 
@@ -128,6 +129,23 @@ void Level::InitialiseLevel()
 					m_nodes.back()->SetModel((char*)"assets/Cube.obj", (char*)"assets/platform.bmp", m_pD3DDevice, m_pImmediateContext);
 					m_nodes.back()->AddComponent(new LevelCube());
 				}
+				else if (lineInfo[1] == "MovingPlatform") {
+					m_nodes.back()->AddComponent(new MovingPlatform());
+				}
+			}
+
+			else if (lineInfo[0] == "ENEMYPOINT") {
+				Vector3 newPoint = Vector3(stof(lineInfo[1]), stof(lineInfo[2]), stof(lineInfo[3]));
+				static_cast<Enemy*>(m_nodes.back()->GetComponent("Enemy"))->AddPoint(newPoint);
+			}
+
+			else if (lineInfo[0] == "PLATFORMPOINT") {
+				Vector3 newPoint = Vector3(stof(lineInfo[1]), stof(lineInfo[2]), stof(lineInfo[3]));
+				static_cast<MovingPlatform*>(m_nodes.back()->GetComponent("Moving Platform"))->AddPoint(newPoint);
+			}
+
+			else if (lineInfo[0] == "MODEL") {
+				m_nodes.back()->SetModel((char*)lineInfo[1].c_str(), (char*)lineInfo[2].c_str(), m_pD3DDevice, m_pImmediateContext);
 			}
 
 			// Edit position of previous node

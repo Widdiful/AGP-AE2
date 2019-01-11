@@ -10,6 +10,7 @@
 #include <xnamath.h>
 
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 #include "Camera.h"
@@ -42,6 +43,7 @@ private:
 	bool m_collisionEnabled = true;
 	bool m_enabled = true;
 	bool m_visible = true;
+	bool m_isMovingPlatform = false;
 
 	XMMATRIX m_localWorldMatrix;
 
@@ -55,6 +57,7 @@ public:
 	void SetModel(Model* model);
 	void SetModel(char* model, char* texture, ID3D11Device* device, ID3D11DeviceContext* context);
 	void addChildNode(SceneNode* n);
+	void removeChildNode(SceneNode* n);
 	bool detatchNode(SceneNode* n);
 	void SetParent(SceneNode* n);
 	SceneNode* GetParent();
@@ -66,6 +69,8 @@ public:
 	bool GetEnabled();
 	void SetVisible(bool val);
 	bool GetVisible();
+	void SetIsMovingPlatform(bool val);
+	Model* GetModel();
 
 	// Components
 	void AddComponent(Component* component);

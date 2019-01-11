@@ -43,6 +43,11 @@ void SceneNode::addChildNode(SceneNode * n)
 	n->SetParent(this);
 }
 
+void SceneNode::removeChildNode(SceneNode * n)
+{
+	m_children.erase(std::remove(m_children.begin(), m_children.end(), n), m_children.end());
+}
+
 bool SceneNode::detatchNode(SceneNode * n)
 {
 	// traverse tree to find node to detatch
@@ -174,7 +179,7 @@ bool SceneNode::MoveForward(float distance, SceneNode * rootNode)
 	rootNode->UpdateCollisionTree(&identity, 1.0);
 
 	// check for collision of this node (and children) against all other nodes
-	if (CheckCollision(rootNode) == true)
+	if (CheckCollision(rootNode) == true && !m_isMovingPlatform)
 	{
 		// if collision restore state
 		m_position.x = old_x;
@@ -468,6 +473,16 @@ void SceneNode::SetVisible(bool val)
 bool SceneNode::GetVisible()
 {
 	return m_visible;
+}
+
+void SceneNode::SetIsMovingPlatform(bool val)
+{
+	m_isMovingPlatform = val;
+}
+
+Model * SceneNode::GetModel()
+{
+	return m_pModel;
 }
 
 void SceneNode::SetCollision(bool val)

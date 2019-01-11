@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "SceneNode.h"
 #include "Level.h"
+#include "MovingPlatform.h"
 
 
 Player::Player(float useGravity, InputManager* input, SceneNode* camera) : Actor(useGravity)
@@ -31,12 +32,15 @@ void Player::Start()
 	m_uiManager = static_cast<UIManager*>(m_node->GetComponent("UI Manager"));
 	m_messages.push_back("");
 	m_messages.push_back("");
+
+	m_startingParent = m_node->GetParent();
 }
 
 void Player::Update()
 {
 	// Move based on keyboard input
 	float x = 0, z = 0;
+	// Create offset to look at
 	if (m_input->IsKeyPressed(DIK_W)) z = 0.5;
 	if (m_input->IsKeyPressed(DIK_S)) z = -0.5;
 	if (m_input->IsKeyPressed(DIK_A)) x = -0.5;
@@ -58,11 +62,17 @@ void Player::Update()
 	m_messages[1] = "FPS" + to_string((int)(floorf(Time::getInstance().fps * 100)) / 100) + " X" + to_string((int)(floorf(m_node->GetXPos() * 100)) / 100) + " Y" + to_string((int)(floorf(m_node->GetYPos() * 100)) / 100) + " Z" + to_string((int)(floorf(m_node->GetZPos() * 100)) / 100);
 	if (m_uiManager) m_uiManager->ChangeText(m_messages[m_selectedText]);
 
+	if (m_node->GetParent() != m_startingParent) {
+		//m_node->SetParent(m_startingParent);
+	}
+
+
 	Actor::Update();
 }
 
 void Player::OnCollision(SceneNode * other)
 {
+	Actor::OnCollision(other);
 	// Collision code based on node name
 	if (other->GetName() == "Enemy") {
 		if (m_node->GetYPos() > other->GetYPos() && m_velocityY < 0) {
@@ -89,5 +99,14 @@ void Player::OnCollision(SceneNode * other)
 	}
 	else if (other->GetName() == "Chest") {
 		m_level->CompleteLevel();
+	}
+
+	else if (other->GetName() == "MovingPlatform") {
+		Vector3 movement = static_cast<MovingPlatform*>(other->GetComponent("Moving Platform"))->GetMovementInfo();
+		m_node->AddXPos(movement.x * 2 * Time::getInstance().deltaTime);
+		m_node->AddYPos(movement.y * 2 * Time::getInstance().deltaTime);
+		m_node->AddZPos(movement.z * 2 * Time::getInstance().deltaTime);
+		if (movement.y > 0)
+			m_node->SetYPos(other->GetYPos() + other->GetModel()->GetCubeBounds().y + m_node->GetModel()->GetBoundingSphereRadius() + 1.01);
 	}
 }

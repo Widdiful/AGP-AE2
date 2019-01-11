@@ -12,15 +12,6 @@ Enemy::Enemy(bool gravity) : Actor(gravity)
 	m_chaseDistance = 50;
 	m_rotateSpeed = 0.1f;
 	m_steeringRotateSpeed = 1;
-
-	m_points.push_back(Vector3(0, 0, 0));
-	m_points.push_back(Vector3(10, 0, 0));
-	m_points.push_back(Vector3(0, 0, 10));
-	m_points.push_back(Vector3(10, 10, 10));
-	m_points.push_back(Vector3(20, 10, 0));
-	m_points.push_back(Vector3(-20, 10, 20));
-
-	m_currentPoint = m_points[m_currentPointIndex];
 }
 
 
@@ -32,6 +23,11 @@ void Enemy::Start()
 {
 	Actor::Start();
 	m_player = m_rootNode->FindNode("Player");
+
+	if (m_points.size() == 0)
+		m_points.push_back(Vector3(m_node->GetXPos(), m_node->GetYPos(), m_node->GetZPos()));
+
+	m_currentPoint = m_points[m_currentPointIndex];
 }
 
 void Enemy::Update()
