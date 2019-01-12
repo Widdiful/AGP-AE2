@@ -30,6 +30,7 @@ void Player::Start()
 	Actor::Start();
 
 	m_uiManager = static_cast<UIManager*>(m_node->GetComponent("UI Manager"));
+	m_particles = static_cast<Particles*>(m_node->GetComponent("Particles"));
 	m_messages.push_back("");
 	m_messages.push_back("");
 
@@ -48,6 +49,17 @@ void Player::Update()
 	if (x != 0 || z != 0) {
 		m_node->LookAt_XZ(m_node->GetXPos() + x, m_node->GetZPos() + z, m_camera->GetYRot());
 		m_node->MoveForward(Time::getInstance().deltaTime * m_moveSpeed, m_node->GetRootNode());
+	}
+
+	// Manage particles
+	if (m_particles) {
+		if ((x != 0 || z != 0) && m_grounded) {
+			m_particles->UpdatePosition(m_node->GetXPos(), m_node->GetYPos() - m_node->GetModel()->GetBoundingSphereRadius(), m_node->GetZPos());
+			m_particles->Play();
+		}
+		else {
+			m_particles->Stop();
+		}
 	}
 
 	// Jump

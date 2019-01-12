@@ -89,7 +89,6 @@ ParticleGenerator::ParticleGenerator(ID3D11Device * pD3DDevice, ID3D11DeviceCont
 
 ParticleGenerator::~ParticleGenerator()
 {
-	delete m_pObject;
 	if (m_pVShader) m_pVShader->Release();
 	if (m_pPShader) m_pPShader->Release();
 	if (m_pInputLayout) m_pInputLayout->Release();
@@ -208,8 +207,32 @@ void ParticleGenerator::Draw(XMMATRIX* view, XMMATRIX* projection, XMFLOAT3* cam
 					////////////////////////initialise the particle NOTE: all of this is adjustable for different effects////////////////////////
 					(*it)->colour = XMFLOAT4(RandomZeroToOne(), RandomZeroToOne(), RandomZeroToOne(), RandomZeroToOne());
 					(*it)->gravity = 4.5f;
-					(*it)->position = XMFLOAT3(0.0f, 1.0f, 3.0f);
+					(*it)->position = XMFLOAT3(m_x, m_y, m_z);
 					(*it)->velocity = XMFLOAT3(RandomNegOneToPosOne(), 2.50f, RandomNegOneToPosOne());
+					////////////////////////////////////////////////////////////////////////////////////////////////
+					break;
+				}
+				case COIN_GLOW:
+				{
+					m_age = 0.5f;
+					m_untilParticle = 0.008f;
+					////////////////////////initialise the particle NOTE: all of this is adjustable for different effects////////////////////////
+					(*it)->colour = XMFLOAT4(0.9f, 0.3f, 0.3f, 0.3f);
+					(*it)->gravity = 0;
+					(*it)->position = XMFLOAT3(m_x, m_y, m_z);
+					(*it)->velocity = XMFLOAT3(RandomNegOneToPosOne(), RandomNegOneToPosOne(), RandomNegOneToPosOne());
+					////////////////////////////////////////////////////////////////////////////////////////////////
+					break;
+				}
+				case DUST_TRAIL:
+				{
+					m_age = 0.15f;
+					m_untilParticle = 0.008f;
+					////////////////////////initialise the particle NOTE: all of this is adjustable for different effects////////////////////////
+					(*it)->colour = XMFLOAT4(0.9f, 0.8f, 0.5f, 0.3f);
+					(*it)->gravity = 4.5f;
+					(*it)->position = XMFLOAT3(m_x + RandomNegOneToPosOne(), m_y, m_z + RandomNegOneToPosOne());
+					(*it)->velocity = XMFLOAT3(RandomNegOneToPosOne(), RandomZeroToOne() * 5, RandomNegOneToPosOne());
 					////////////////////////////////////////////////////////////////////////////////////////////////
 					break;
 				}
@@ -236,7 +259,7 @@ void ParticleGenerator::Draw(XMMATRIX* view, XMMATRIX* projection, XMFLOAT3* cam
 
 			switch (type)
 			{
-			case RAINBOW_FOUNTAIN:
+			default:
 			{
 				/////////////////////////ALL of this is adjustable for different effects///////////////////////////////////////////////////////////
 				(*it)->age += Time::getInstance().deltaTime / 1000;
@@ -247,25 +270,17 @@ void ParticleGenerator::Draw(XMMATRIX* view, XMMATRIX* projection, XMFLOAT3* cam
 				///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				break;
 			}
-			default:
-			{
-				break;
-			}
 			}
 			world = XMMatrixIdentity();
 			switch (type)
 			{
-			case RAINBOW_FOUNTAIN:
+			default:
 			{
 				/*set scale and world transforms here*/
 				world *= XMMatrixScaling(0.3f, 0.3f, 0.3f);
 				//world *= XMMatrixRotationY(XMConvertToRadians(XM_PI));
 				LookAt_XZ(cameraPosition->x, cameraPosition->z);
 				world *= XMMatrixRotationY(XMConvertToRadians(m_yAngle));
-				break;
-			}
-			default:
-			{
 				break;
 			}
 			}
@@ -344,6 +359,11 @@ void ParticleGenerator::DrawOne(Particle* particle, XMMATRIX * view, XMMATRIX * 
 	m_pImmediateContext->Draw(6, 0);
 }
 
+void ParticleGenerator::Play()
+{
+	m_isActive = true;
+}
+
 void ParticleGenerator::LookAt_XZ(float x, float z)
 {
 	float dx, dz;
@@ -392,6 +412,16 @@ bool ParticleGenerator::CheckCollision(ParticleGenerator * other, float xOffset,
 		return true;
 	else
 		return false;
+}
+
+void ParticleGenerator::SetType(particleTypes newType)
+{
+	type = newType;
+}
+
+void ParticleGenerator::SetEnabled(bool val)
+{
+	m_isActive = val;
 }
 
 void ParticleGenerator::SetXPos(float x)

@@ -85,6 +85,7 @@
     <ClCompile Include="MovingPlatform.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Particles.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -150,6 +151,7 @@
     <ClInclude Include="MovingPlatform.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Particles.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shaders">

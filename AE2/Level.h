@@ -6,6 +6,7 @@
 #include "Time.h"
 #include "text2D.h"
 #include "UIManager.h"
+#include "Particles.h"
 
 class Level
 {
@@ -20,7 +21,7 @@ protected:
 	vector<SceneNode*> m_nodes;
 	Text2D* m_2DText;
 	Component* m_uiManager;
-	ParticleGenerator* m_particle;
+	vector<Particles*> m_particles;
 
 	ID3D11RasterizerState*		m_pRasterSolid = 0;
 	ID3D11RasterizerState*		m_pRasterSkybox = 0;

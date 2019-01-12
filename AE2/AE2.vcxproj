@@ -154,6 +154,7 @@
     <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="objfilemodel.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="Particles.cpp" />
     <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneNode.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="objfilemodel.h" />
     <ClInclude Include="ParticleGenerator.h" />
+    <ClInclude Include="Particles.h" />
     <ClInclude Include="Pickup.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneNode.h" />

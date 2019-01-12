@@ -215,6 +215,11 @@ ID3D11ShaderResourceView* g_pTexture0;
 ID3D11ShaderResourceView* g_pSkybox;
 ID3D11SamplerState* g_pSampler0;
 
+ID3D11BlendState* g_pAlphaBlendEnable;
+ID3D11BlendState* g_pAlphaBlendDisable;
+
+
+
 InputManager* g_input;
 vector<Level*> g_levels;
 Skybox* g_skybox;
@@ -500,6 +505,20 @@ HRESULT InitialiseD3D()
 
 	g_pD3DDevice->CreateSamplerState(&sampler_desc, &g_pSampler0);
 
+	D3D11_BLEND_DESC b;
+	b.RenderTarget[0].BlendEnable = TRUE;
+	b.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	b.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	b.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	b.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	b.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	b.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	b.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	b.IndependentBlendEnable = FALSE;
+	b.AlphaToCoverageEnable = FALSE;
+
+	g_pD3DDevice->CreateBlendState(&b, &g_pAlphaBlendEnable);
+
 	return S_OK;
 }
 
@@ -560,6 +579,8 @@ void RenderFrame(void)
 	g_pImmediateContext->ClearRenderTargetView(g_pBackBufferRTView, rgba_clear_colour);
 
 	g_pImmediateContext->ClearDepthStencilView(g_pZBuffer, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	g_pImmediateContext->OMSetBlendState(g_pAlphaBlendEnable, 0, 0xffffffff);
 
 	Time::getInstance().Tick();
 

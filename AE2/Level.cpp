@@ -82,8 +82,6 @@ void Level::InitialiseLevel()
 	m_rootNode->SetLevel(this);
 
 	m_2DText = new Text2D("assets/font1.bmp", m_pD3DDevice, m_pImmediateContext);
-	m_particle = new ParticleGenerator(m_pD3DDevice, m_pImmediateContext);
-	m_particle->CreateParticle();
 
 	// Create level from string
 	for (int i = 0; i < levelText.size(); i++) {
@@ -104,6 +102,8 @@ void Level::InitialiseLevel()
 				else if (lineInfo[1] == "RedCoin") {
 					m_nodes.back()->SetModel((char*)"assets/redCoin.obj", (char*)"assets/redCoin.bmp", m_pD3DDevice, m_pImmediateContext);
 					m_nodes.back()->AddComponent(new Pickup());
+					m_particles.push_back(new Particles(ParticleGenerator::COIN_GLOW, m_pD3DDevice, m_pImmediateContext));
+					m_nodes.back()->AddComponent(m_particles.back());
 					m_redCoinCount++;
 				}
 				else if (lineInfo[1] == "Chest") {
@@ -119,6 +119,8 @@ void Level::InitialiseLevel()
 					m_nodes.back()->SetModel((char*)"assets/player.obj", (char*)"assets/coin.bmp", m_pD3DDevice, m_pImmediateContext);
 					m_nodes.back()->AddComponent(new Player(true, m_input, m_cameraGripNode));
 					m_cameraGripNode->AddComponent(new CameraControl(m_camera, m_nodes.back(), m_cameraNode, m_input));
+					m_particles.push_back(new Particles(ParticleGenerator::DUST_TRAIL, m_pD3DDevice, m_pImmediateContext));
+					m_nodes.back()->AddComponent(m_particles.back());
 				}
 				else if (lineInfo[1] == "Enemy") {
 					m_nodes.back()->SetModel((char*)"assets/enemy.obj", (char*)"assets/redCoin.bmp", m_pD3DDevice, m_pImmediateContext);
@@ -197,7 +199,10 @@ void Level::Update()
 	// Run updates for level objects
 	m_rootNode->Update(&m_world, &m_view, &m_projection);
 
-	m_particle->Draw(&m_view, &m_projection, new XMFLOAT3(m_camera->GetX(), m_camera->GetY(), m_camera->GetZ()));
+	// Update particles
+	for (int i = 0; i < m_particles.size(); i++) {
+		if (m_particles[i] != nullptr) m_particles[i]->Update(&m_view, &m_projection, XMFLOAT3(m_camera->GetX(), m_camera->GetY(), m_camera->GetZ()));
+	}
 
 	// Update UI Manager to display UI on top
 	if (m_uiManager) m_uiManager->Update();
@@ -211,6 +216,8 @@ void Level::Restart()
 
 void Level::CleanUp()
 {
+
+
 	m_rootNode->DeleteComponents();
 
 	delete m_camera;
@@ -228,6 +235,7 @@ void Level::CleanUp()
 		delete m_nodes[i];
 	}
 	m_nodes.clear();
+	m_particles.clear();
 }
 
 void Level::CompleteLevel()

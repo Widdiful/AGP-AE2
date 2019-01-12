@@ -52,6 +52,7 @@ private:
 public:
 	SceneNode(string name);
 	~SceneNode();
+	XMFLOAT3 m_cameraPos;
 
 	// Core node features
 	void SetModel(Model* model);

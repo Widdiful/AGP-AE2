@@ -41,10 +41,8 @@ private:
 	float m_numberOfParticles = 100;
 	float m_age;
 	bool m_isActive = true;
-	bool m_playOnce = true;
+	bool m_playOnce = false;
 
-	enum particleTypes { RAINBOW_FOUNTAIN };
-	particleTypes type = RAINBOW_FOUNTAIN;
 
 	std::list<Particle*> m_free;
 	std::list<Particle*> m_active;
@@ -54,6 +52,9 @@ private:
 	float RandomZeroToOne();
 	float RandomNegOneToPosOne();
 public:
+	enum particleTypes { RAINBOW_FOUNTAIN, COIN_GLOW, DUST_TRAIL };
+	particleTypes type = RAINBOW_FOUNTAIN;
+
 	ParticleGenerator(ID3D11Device* pD3DDevice, ID3D11DeviceContext* pImmediateContext);
 	~ParticleGenerator();
 
@@ -62,10 +63,13 @@ public:
 	int CreateParticle();
 	void Draw(XMMATRIX* view, XMMATRIX* projection, XMFLOAT3* cameraPosition);
 	void DrawOne(Particle* particle, XMMATRIX* view, XMMATRIX* projection, XMFLOAT3* cameraPosition);
+	void Play();
 	void LookAt_XZ(float x, float z);
 	void MoveForward(float distance);
 	bool CheckCollision(ParticleGenerator* other);
 	bool CheckCollision(ParticleGenerator* other, float xOffset, float yOffset, float zOffset);
+	void SetType(particleTypes newType);
+	void SetEnabled(bool val);
 
 	// POSITION INFO
 

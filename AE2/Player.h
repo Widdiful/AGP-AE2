@@ -3,6 +3,7 @@
 #include "InputManager.h"
 #include "Camera.h"
 #include "UIManager.h"
+#include "Particles.h"
 class Player :
 	public Actor
 {
@@ -13,6 +14,7 @@ private:
 
 	UIManager* m_uiManager;
 	std::string m_uiMessage;
+	Particles* m_particles;
 	int m_coinCount, m_redCoinCount;
 	int m_selectedText;
 	vector<string> m_messages;
