@@ -30,6 +30,10 @@ VOut ModelVS(float4 position : POSITION, float2 texcoord : TEXCOORD, float3 norm
 	return output;
 }
 
+float4 ModelPSCel(float4 position : SV_POSITION, float4 color : COLOR, float2 texcoord : TEXCOORD) : SV_TARGET{
+	return texture0.Sample(sampler0, texcoord) * color;
+}
+
 float4 ModelPS(float4 position : SV_POSITION, float4 color : COLOR, float2 texcoord : TEXCOORD) : SV_TARGET{
 	float intensity = (color.x + color.y + color.z + color.w) / 4.0;
 	float4 celShading;
@@ -47,5 +51,5 @@ float4 ModelPS(float4 position : SV_POSITION, float4 color : COLOR, float2 texco
 
 
 
-	return texture0.Sample(sampler0, texcoord) * (color * 3) * celShading;
+	return texture0.Sample(sampler0, texcoord) * (color + float4(0.5, 0.5, 0.5, 1.0)) * celShading;
 }

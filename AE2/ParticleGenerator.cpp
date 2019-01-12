@@ -1,5 +1,6 @@
 #include "ParticleGenerator.h"
 #include <math.h>
+#include "Time.h"
 
 struct PARTICLE_CONSTANT_BUFFER {
 	XMMATRIX WorldViewProjection;
@@ -52,12 +53,12 @@ float ParticleGenerator::CalculateBoundingSphereRadius()
 
 float ParticleGenerator::RandomZeroToOne()
 {
-	return static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	return ((rand() % 1000) / 1000.0f);
 }
 
 float ParticleGenerator::RandomNegOneToPosOne()
 {
-	return ((float(rand()) / float(RAND_MAX)) * (1 - -1)) + -1;
+	return ((rand() % 1000) / 1000.0f) - (rand() % 2);
 }
 
 ParticleGenerator::ParticleGenerator(ID3D11Device * pD3DDevice, ID3D11DeviceContext * pImmediateContext)
@@ -93,12 +94,16 @@ ParticleGenerator::~ParticleGenerator()
 	if (m_pPShader) m_pPShader->Release();
 	if (m_pInputLayout) m_pInputLayout->Release();
 	if (m_pConstantBuffer) m_pConstantBuffer->Release();
-	/*for (int i = 0; i < m_free.size; i++) {
-		delete m_free[i];
+
+	std::list<Particle*>::iterator it;
+	for (it = m_free.end(); it != m_free.begin(); it--)
+	{
+		m_free.remove(*it);
 	}
-	for (int i = 0; i < m_active.size; i++) {
-		delete m_active[i];
-	}*/
+	for (it = m_active.end(); it != m_active.begin(); it--)
+	{
+		m_active.remove(*it);
+	}
 }
 
 HRESULT ParticleGenerator::CompileShaders()
@@ -150,8 +155,6 @@ HRESULT ParticleGenerator::CompileShaders()
 	D3D11_INPUT_ELEMENT_DESC iedesc[] =
 	{
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},
-		{"COLOR", 0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,D3D11_APPEND_ALIGNED_ELEMENT,D3D11_INPUT_PER_VERTEX_DATA,0},
-		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 
 	hr = m_pD3DDevice->CreateInputLayout(iedesc, ARRAYSIZE(iedesc), VS->GetBufferPointer(), VS->GetBufferSize(), &m_pInputLayout);
@@ -182,46 +185,42 @@ HRESULT ParticleGenerator::AddTexture(char * filename)
 
 void ParticleGenerator::Draw(XMMATRIX* view, XMMATRIX* projection, XMFLOAT3* cameraPosition)
 {
-	XMMATRIX world;
 	UINT stride = sizeof(XMFLOAT3);
 	UINT offset = 0;
-	float timeNow = float(timeGetTime())/1000.0f;
-	float deltaTime = timeNow - m_timePrevious;
-	m_untilParticle -= deltaTime;
-
-	std::list<Particle*>::iterator it;//iteration list for pointing to the correct particle in the list
-
+	XMMATRIX world;
+	m_untilParticle -= Time::getInstance().deltaTime / 100;
+	std::list<Particle*>::iterator it;
 
 	if (m_untilParticle <= 0.0f)
 	{
 		if (m_isActive)//a bool to check if the particle engine is on or off. Make a getter/setter and use it in main
 		{
 			it = m_free.begin();//point to the beggining of the free list
-			//add a new particle to the back of m_active from the front of m_free
+								//add a new particle to the back of m_active from the front of m_free
 			if (m_free.size() != NULL)//safety check
 			{
 				switch (type)//the name of my enum
 				{
-					case RAINBOW_FOUNTAIN:
-					{
-						m_age = 2.0f;
-						m_untilParticle = 0.008f;
-						////////////////////////initialise the particle NOTE: all of this is adjustable for different effects////////////////////////
-						(*it)->colour = XMFLOAT4(RandomZeroToOne(), RandomZeroToOne(), RandomZeroToOne(), 1.0f);
-						(*it)->gravity = 0.01f;
-						(*it)->position = XMFLOAT3(0.0f, 1.0f, 3.0f);
-						(*it)->velocity = XMFLOAT3(RandomNegOneToPosOne(), 4.50f, RandomNegOneToPosOne());
-						////////////////////////////////////////////////////////////////////////////////////////////////
-						break;
-					}
-					default:
-					{
-						break;
-					}
+				case RAINBOW_FOUNTAIN:
+				{
+					m_age = 2.0f;
+					m_untilParticle = 0.008f;
+					////////////////////////initialise the particle NOTE: all of this is adjustable for different effects////////////////////////
+					(*it)->colour = XMFLOAT4(RandomZeroToOne(), RandomZeroToOne(), RandomZeroToOne(), RandomZeroToOne());
+					(*it)->gravity = 4.5f;
+					(*it)->position = XMFLOAT3(0.0f, 1.0f, 3.0f);
+					(*it)->velocity = XMFLOAT3(RandomNegOneToPosOne(), 2.50f, RandomNegOneToPosOne());
+					////////////////////////////////////////////////////////////////////////////////////////////////
+					break;
+				}
+				default:
+				{
+					break;
+				}
 				}
 				(*it)->age = 0.0f;//set age to 0. this is used for knowing when to delete the particle
 
-			//////add the particle from the front of the available list to the back of the active list and remove it
+								  //////add the particle from the front of the available list to the back of the active list and remove it
 				m_active.push_back(*it);
 				m_free.pop_front();
 			}
@@ -234,42 +233,41 @@ void ParticleGenerator::Draw(XMMATRIX* view, XMMATRIX* projection, XMFLOAT3* cam
 		it = m_active.begin();//point the iterator to the front of the active list ready for processing
 		while (it != m_active.end())//move all of the particles
 		{
+
 			switch (type)
 			{
-				case RAINBOW_FOUNTAIN:
-				{
-					/////////////////////////ALL of this is adjustable for different effects///////////////////////////////////////////////////////////
-					(*it)->age += deltaTime;
-					(*it)->velocity.y -= (*it)->gravity*(deltaTime);
-					/*(*it)->position.x += (*it)->velocity.x*(deltaTime);
-					(*it)->position.y += (*it)->velocity.y*(deltaTime);
-					(*it)->position.z += (*it)->velocity.z*(deltaTime);*/
-					///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-					break;
-				}
-				default:
-				{
-					break;
-				}
+			case RAINBOW_FOUNTAIN:
+			{
+				/////////////////////////ALL of this is adjustable for different effects///////////////////////////////////////////////////////////
+				(*it)->age += Time::getInstance().deltaTime / 1000;
+				(*it)->velocity.y -= (*it)->gravity*(Time::getInstance().deltaTime / 100);
+				(*it)->position.x += (*it)->velocity.x*(Time::getInstance().deltaTime / 100);
+				(*it)->position.y += (*it)->velocity.y*(Time::getInstance().deltaTime / 100);
+				(*it)->position.z += (*it)->velocity.z*(Time::getInstance().deltaTime / 100);
+				///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				break;
+			}
+			default:
+			{
+				break;
+			}
 			}
 			world = XMMatrixIdentity();
-
-			float dx = cameraPosition->x - (*it)->position.x;
-			float dz = cameraPosition->z - (*it)->position.z;
-			float m_yAngle = atan2(dx, dz) * (180.0 / XM_PI);
-
 			switch (type)
 			{
-				case RAINBOW_FOUNTAIN:
-				{
-					world = XMMatrixScaling(0.3f, 0.3f, 0.3f);
-					world *= XMMatrixRotationY(XMConvertToRadians(m_yAngle));
-					break;
-				}
-				default:
-				{
-					break;
-				}
+			case RAINBOW_FOUNTAIN:
+			{
+				/*set scale and world transforms here*/
+				world *= XMMatrixScaling(0.3f, 0.3f, 0.3f);
+				//world *= XMMatrixRotationY(XMConvertToRadians(XM_PI));
+				LookAt_XZ(cameraPosition->x, cameraPosition->z);
+				world *= XMMatrixRotationY(XMConvertToRadians(m_yAngle));
+				break;
+			}
+			default:
+			{
+				break;
+			}
 			}
 			world *= XMMatrixTranslation((*it)->position.x, (*it)->position.y, (*it)->position.z);
 
@@ -293,22 +291,21 @@ void ParticleGenerator::Draw(XMMATRIX* view, XMMATRIX* projection, XMFLOAT3* cam
 			m_pImmediateContext->RSSetState(m_pRasterParticle);//set backface culling to on
 			m_pImmediateContext->Draw(6, 0);//draw the particle
 			m_pImmediateContext->RSSetState(m_pRasterSolid);//set backface culling to off
-
 			if ((*it)->age >= m_age)//check the age of the current particle
 			{
 				it++;
 				m_active.front()->age = m_age;
-				m_active.front()->position = { (RandomNegOneToPosOne() + m_x * 10)*(RandomZeroToOne() * 10), m_y + 5.0f, /*position.z*/ m_z + 7.0f };
-				m_active.front()->velocity = { /*RandomNegOneToPosOne()*/0.0f, 4.50f, RandomNegOneToPosOne() };
-				m_free.push_back(m_active.front());//move the (now previously) current active particle to the back of the pool			
-				m_active.pop_front();//remove the particle
+				m_active.front()->position = { (RandomNegOneToPosOne() + m_x * 10)*(RandomZeroToOne() * 10),m_y + 5.0f, m_z + 7.0f };
+				m_active.front()->velocity = { 0.0f, 4.50f, RandomNegOneToPosOne() };
+
+				if (!m_playOnce)
+					m_free.push_back(m_active.front());//move the (now previously) current active particle to the back of the pool			
+
+				m_active.pop_front();//remove the particle			
 			}
 			else it++;
-			}//end of while
-		}//end of if(m_active.size()!=NULL)
-
-
-	//DrawOne(&test, view, projection, cameraPosition);
+		}//end of while
+	}//end of if(m_active.size()!=NULL)
 }
 
 void ParticleGenerator::DrawOne(Particle* particle, XMMATRIX * view, XMMATRIX * projection, XMFLOAT3 * cameraPosition)

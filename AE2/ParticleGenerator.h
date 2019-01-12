@@ -41,6 +41,7 @@ private:
 	float m_numberOfParticles = 100;
 	float m_age;
 	bool m_isActive = true;
+	bool m_playOnce = true;
 
 	enum particleTypes { RAINBOW_FOUNTAIN };
 	particleTypes type = RAINBOW_FOUNTAIN;

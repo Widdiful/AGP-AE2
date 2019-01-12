@@ -5,86 +5,172 @@ TEXT assets/font1.bmp
 PARTICLE
 
 NODE Player
-POS 0 100 0
+POS 0 10 -125
 COMPONENT Player
 COMPONENT UIManager
 
 NODE Enemy
-POS -100 10 0
+POS -50 0 -50
 COMPONENT Enemy
-ENEMYPOINT -10 0 0
-ENEMYPOINT 0 0 -10
-ENEMYPOINT 10 0 0
-ENEMYPOINT 0 0 10
+ENEMYPOINT -60 -5 -50
+ENEMYPOINT -50 -5 -60
+ENEMYPOINT -40 -5 -50
+ENEMYPOINT -50 -5 -40
+
+NODE Ground
+POS 0 -10 0
+SCALE 200 5 200
+COMPONENT LevelCube
 
 NODE Box1
-POS 0 -10 0
-SCALE 100 5 200
+POS 70 0 -10
+SCALE 10 5 10
+COMPONENT LevelCube
+
+NODE Box2
+POS 60 5 20
+SCALE 20 10 15
+COMPONENT LevelCube
+
+NODE Box3
+POS -80 5 20
+SCALE 30 10 20
 COMPONENT LevelCube
 
 NODE MovingPlatform
-POS 0 0 0
+POS 15 10 20
 SCALE 10 2 10
 COMPONENT LevelCube
 COMPONENT MovingPlatform
-PLATFORMPOINT 100 0 0
-PLATFORMPOINT 0 0 0
-PLATFORMPOINT 0 50 0
-PLATFORMPOINT 0 0 0
+PLATFORMPOINT 30 10 20
+PLATFORMPOINT -25 10 20
 
-NODE Chest
-POS 0 0 0
+NODE Chest // On left platform
+POS -90 18 20
 
+NODE RedCoin // On right platform
+POS 60 18 20
+NODE RedCoin // On right step
+POS 70 10 -10
+NODE RedCoin // Right of right platform
+POS 90 0 20
+NODE RedCoin // Behind left platform
+POS -80 0 50
+NODE RedCoin // Middle of level
+POS 0 5 0
+NODE RedCoin // Behind player
+POS 0 0 -175
+NODE RedCoin // By enemy
+POS -50 10 -50
+NODE RedCoin // Above moving platform
+POS 0 20 20
+
+// By middle coin
 NODE Coin
-POS 5 0 0
-
+POS 0 0 -10
+NODE Coin
+POS 0 0 10
+NODE Coin
+POS -10 0 0
 NODE Coin
 POS 10 0 0
 
+// Across two platforms
 NODE Coin
-POS 15 0 0
-
+POS -80 18 20
 NODE Coin
-POS 20 0 0
-
+POS -70 18 20
 NODE Coin
-POS 25 0 0
-
+POS -70 18 20
 NODE Coin
-POS 30 0 0
-
+POS -60 18 20
 NODE Coin
-POS 35 0 0
-
+POS -50 18 20
 NODE Coin
-POS 40 0 0
-
+POS -40 18 20
 NODE Coin
-POS 45 0 0
-
+POS -30 18 20
 NODE Coin
-POS 50 0 0
+POS -20 18 20
+NODE Coin
+POS -10 18 20
+NODE Coin
+POS 10 18 20
+NODE Coin
+POS 20 18 20
+NODE Coin
+POS 30 18 20
+NODE Coin
+POS 40 18 20
+NODE Coin
+POS 50 18 20
 
-NODE RedCoin
-POS 0 0 5
+// Down side of right platform
+NODE Coin
+POS 90 0 50
+NODE Coin
+POS 90 0 40
+NODE Coin
+POS 90 0 30
+NODE Coin
+POS 90 0 10
+NODE Coin
+POS 90 0 0
+NODE Coin
+POS 90 0 -10
+NODE Coin
+POS 90 0 -20
+NODE Coin
+POS 90 0 -30
 
-NODE RedCoin
-POS 0 0 10
+// Down back of level
+NODE Coin
+POS 80 0 50
+NODE Coin
+POS 70 0 50
+NODE Coin
+POS 60 0 50
+NODE Coin
+POS 50 0 50
+NODE Coin
+POS 40 0 50
+NODE Coin
+POS 30 0 50
+NODE Coin
+POS 20 0 50
+NODE Coin
+POS 10 0 50
+NODE Coin
+POS 0 0 50
+NODE Coin
+POS -10 0 50
+NODE Coin
+POS -20 0 50
+NODE Coin
+POS -30 0 50
+NODE Coin
+POS -40 0 50
+NODE Coin
+POS -50 0 50
+NODE Coin
+POS -60 0 50
+NODE Coin
+POS -70 0 50
 
-NODE RedCoin
-POS 0 0 15
-
-NODE RedCoin
-POS 0 0 20
-
-NODE RedCoin
-POS 0 0 25
-
-NODE RedCoin
-POS 0 0 30
-
-NODE RedCoin
-POS 0 0 35
-
-NODE RedCoin
-POS 0 0 40
+// Around enemy
+NODE Coin
+POS -70 0 -50
+NODE Coin
+POS -30 0 -50
+NODE Coin
+POS -50 0 -70
+NODE Coin
+POS -50 0 -30
+NODE Coin
+POS -60 0 -60
+NODE Coin
+POS -60 0 -40
+NODE Coin
+POS -40 0 -40
+NODE Coin
+POS -40 0 -60

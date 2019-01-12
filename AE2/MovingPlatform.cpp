@@ -8,7 +8,7 @@ MovingPlatform::MovingPlatform()
 {
 	m_name = "Moving Platform";
 	m_moveSpeed = 0.001f;
-	m_distanceToChange = 0.1f;
+	m_distanceToChange = 1.0f;
 }
 
 

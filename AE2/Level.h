@@ -20,6 +20,7 @@ protected:
 	vector<SceneNode*> m_nodes;
 	Text2D* m_2DText;
 	Component* m_uiManager;
+	ParticleGenerator* m_particle;
 
 	ID3D11RasterizerState*		m_pRasterSolid = 0;
 	ID3D11RasterizerState*		m_pRasterSkybox = 0;

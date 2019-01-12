@@ -25,5 +25,6 @@ public:
 	void Start();
 	void Update();
 	void OnCollision(SceneNode* other);
+	void TakeDamage();
 };
 

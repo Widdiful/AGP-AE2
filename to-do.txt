@@ -2,14 +2,12 @@ required:
 cubemap on coins
 second camera
 advanced text
-moving platforms
 
 stretch:
 advanced textures
 advanced lighting
 other shaders
 bsp trees
-ai pathfinding
 advanced particles
 
 levels:

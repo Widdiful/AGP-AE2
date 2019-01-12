@@ -537,6 +537,7 @@ HRESULT InitialiseGraphics()
 	// Create levels
 	g_levels.push_back(new Level((char*)"levels/1.txt", g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
 	g_levels.push_back(new Level((char*)"levels/2.txt", g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
+	g_levels.push_back(new Level((char*)"levels/3.txt", g_input, g_pD3DDevice, g_pImmediateContext, g_skybox));
 
 	return S_OK;
 }
@@ -551,6 +552,7 @@ void RenderFrame(void)
 	if (g_input->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(g_hWnd);
 	if (g_input->IsKeyPressed(DIK_1)) g_levelID = 0;
 	if (g_input->IsKeyPressed(DIK_2)) g_levelID = 1;
+	if (g_input->IsKeyPressed(DIK_3)) g_levelID = 2;
 	if (g_input->IsKeyBeganPressed(DIK_R)) g_levels[g_levelID]->Restart();
 
 	// Clear the back buffer - choose a colour you like

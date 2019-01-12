@@ -82,6 +82,8 @@ void Level::InitialiseLevel()
 	m_rootNode->SetLevel(this);
 
 	m_2DText = new Text2D("assets/font1.bmp", m_pD3DDevice, m_pImmediateContext);
+	m_particle = new ParticleGenerator(m_pD3DDevice, m_pImmediateContext);
+	m_particle->CreateParticle();
 
 	// Create level from string
 	for (int i = 0; i < levelText.size(); i++) {
@@ -194,6 +196,8 @@ void Level::Update()
 
 	// Run updates for level objects
 	m_rootNode->Update(&m_world, &m_view, &m_projection);
+
+	m_particle->Draw(&m_view, &m_projection, new XMFLOAT3(m_camera->GetX(), m_camera->GetY(), m_camera->GetZ()));
 
 	// Update UI Manager to display UI on top
 	if (m_uiManager) m_uiManager->Update();

@@ -12,6 +12,7 @@ protected:
 	float m_iframes;
 	bool m_visible;
 	int m_health;
+	float m_deathY;
 
 public:
 	Actor(float useGravity);

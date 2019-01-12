@@ -110,3 +110,12 @@ void Player::OnCollision(SceneNode * other)
 			m_node->SetYPos(other->GetYPos() + other->GetModel()->GetCubeBounds().y + m_node->GetModel()->GetBoundingSphereRadius() + 1.01);
 	}
 }
+
+void Player::TakeDamage()
+{
+	m_health--;
+	if (m_health <= 0) {
+		m_uiManager->ChangeText("Press R to retry");
+		m_node->SetEnabled(false);
+	}
+}

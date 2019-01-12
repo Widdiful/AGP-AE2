@@ -82,7 +82,9 @@
     <ClCompile Include="Level.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="MovingPlatform.cpp" />
+    <ClCompile Include="MovingPlatform.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -145,7 +147,9 @@
     <ClInclude Include="Level.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="MovingPlatform.h" />
+    <ClInclude Include="MovingPlatform.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shaders">

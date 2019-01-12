@@ -17,6 +17,7 @@ Actor::Actor(float useGravity)
 	m_gravity = -0.0001f;
 	m_gravityMax = -0.5f;
 	m_useGravity = useGravity;
+	m_deathY = -50;
 }
 
 Actor::~Actor()
@@ -68,6 +69,10 @@ void Actor::Update()
 		}
 		if (m_iframes <= 0 && blinking) {
 			m_node->SetVisible(m_visible);
+		}
+
+		if (m_node->GetYPos() <= m_deathY) {
+			TakeDamage();
 		}
 	}
 }
