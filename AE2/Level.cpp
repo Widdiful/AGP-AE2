@@ -51,7 +51,7 @@ Level::Level(string file, InputManager* input, ID3D11Device* device, ID3D11Devic
 		levelText.push_back(line + "\n");
 	}
 
-	InitialiseLevel();
+	//InitialiseLevel();
 }
 
 
