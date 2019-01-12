@@ -48,7 +48,7 @@ HRESULT InputManager::InitialiseInput()
 	hr = m_mouse_device->SetDataFormat(&c_dfDIMouse);
 	if (FAILED(hr)) return hr;
 
-	hr = m_mouse_device->SetCooperativeLevel(*m_hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+	hr = m_mouse_device->SetCooperativeLevel(*m_hWnd, DISCL_FOREGROUND | DISCL_EXCLUSIVE);
 	if (FAILED(hr)) return hr;
 
 	hr = m_mouse_device->Acquire();

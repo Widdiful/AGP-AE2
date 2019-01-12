@@ -36,6 +36,9 @@ CameraControl::CameraControl(Camera * camera, SceneNode * target, SceneNode* cam
 	m_rotateSpeeds.push_back(m_FProtateSpeed);
 	m_gripSpeeds.push_back(m_gripRotateSpeed);
 	m_gripSpeeds.push_back(m_FPgripRotateSpeed);
+
+	m_zoomSpeed = 0.1;
+	m_mouseSensitivity = 0.5f;
 }
 
 CameraControl::~CameraControl()
@@ -50,7 +53,7 @@ void CameraControl::Update()
 		m_target->SetVisible(!m_target->GetVisible());
 	}
 
-	// Rotate camera from input
+	// Rotate camera from keyboard input
 	if (m_input->IsKeyPressed(DIK_LEFT)) {
 		m_node->AddYRot(m_gripSpeeds[m_cameraMode] * Time::getInstance().deltaTime);
 	}
@@ -62,6 +65,21 @@ void CameraControl::Update()
 	}
 	if (m_input->IsKeyPressed(DIK_DOWN)) {
 		m_node->AddXRot(-m_gripSpeeds[m_cameraMode] * Time::getInstance().deltaTime);
+	}
+
+	// Rotate camera from input
+	LONG xMove = m_input->GetMouseState().lX * m_mouseSensitivity;
+	LONG yMove = m_input->GetMouseState().lY * m_mouseSensitivity;
+	if (xMove != 0) {
+		m_node->AddYRot(m_gripSpeeds[m_cameraMode] * Time::getInstance().deltaTime * xMove);
+	}
+	if (yMove != 0) {
+		m_node->AddXRot(m_gripSpeeds[m_cameraMode] * Time::getInstance().deltaTime * yMove);
+	}
+
+	// Zoom camera on scroll
+	if (m_input->GetMouseState().lZ != 0) {
+		m_offsets[0].z += m_input->GetMouseState().lZ * m_zoomSpeed;
 	}
 
 	// Move camera appropriately

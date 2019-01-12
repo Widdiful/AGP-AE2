@@ -10,11 +10,12 @@
 
 class Level
 {
-protected:
+private:
 	SceneNode* m_rootNode;
 	SceneNode* m_cameraGripNode;
 	SceneNode* m_cameraNode;
 	Camera* m_camera;
+	Camera* m_chestCamera;
 	InputManager* m_input;
 	ID3D11Device* m_pD3DDevice;
 	ID3D11DeviceContext* m_pImmediateContext;
@@ -37,6 +38,8 @@ protected:
 	int m_redCoinCount;
 	int m_enemyCount;
 	bool m_complete;
+	bool m_useChestCamera;
+	float m_chestCamTimer;
 
 public:
 	Level(string file, InputManager* input, ID3D11Device* device, ID3D11DeviceContext* context, Skybox* skybox);
@@ -52,5 +55,6 @@ public:
 	int GetCoinCount();
 	int GetRedCoinCount();
 	bool IsComplete();
+	bool IsUsingChestCamera();
 };
 

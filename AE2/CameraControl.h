@@ -27,6 +27,8 @@ private:
 	vector<float> m_rotateSpeeds;
 	vector<float> m_gripSpeeds;
 
+	float m_zoomSpeed, m_mouseSensitivity;
+
 public:
 	CameraControl(Camera* camera, SceneNode* target, SceneNode* cameraNode, InputManager* input);
 	~CameraControl();

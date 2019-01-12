@@ -11,6 +11,7 @@
 #include "LevelCube.h"
 #include "Pickup.h"
 #include "MovingPlatform.h"
+#include "Time.h"
 
 
 
@@ -67,10 +68,12 @@ void Level::InitialiseLevel()
 {
 	m_redCoinCount = 0;
 	m_coinCount = 0;
+	m_enemyCount = 0;
 	m_complete = false;
 
 	// Initialise camera
 	m_camera = new Camera(0.0, 0.0, -10, 0.0);
+	m_chestCamera = new Camera(0.0, 0.0, -10, 0.0);
 	m_camera->Pitch(-60);
 
 	// Initialise essentials
@@ -116,7 +119,7 @@ void Level::InitialiseLevel()
 			// Add component to previous node
 			else if (lineInfo[0] == "COMPONENT") {
 				if (lineInfo[1] == "Player") {
-					m_nodes.back()->SetModel((char*)"assets/player.obj", (char*)"assets/coin.bmp", m_pD3DDevice, m_pImmediateContext);
+					m_nodes.back()->SetModel((char*)"assets/player.obj", (char*)"assets/player.bmp", m_pD3DDevice, m_pImmediateContext);
 					m_nodes.back()->AddComponent(new Player(true, m_input, m_cameraGripNode));
 					m_cameraGripNode->AddComponent(new CameraControl(m_camera, m_nodes.back(), m_cameraNode, m_input));
 					m_particles.push_back(new Particles(ParticleGenerator::DUST_TRAIL, m_pD3DDevice, m_pImmediateContext));
@@ -193,10 +196,22 @@ void Level::Update()
 	// Set up matrices
 	m_world = XMMatrixTranslation(0, 0, 0);
 	m_projection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45), 16.0 / 9.0, 1.0, 1000.0);
-	m_view = m_camera->GetViewMatrix();
+	if (m_useChestCamera) {
+		m_view = m_chestCamera->GetViewMatrix();
+		m_skybox->DrawSkybox(m_chestCamera, &m_view, &m_projection, m_pRasterSkybox, m_pDepthWriteSkybox, m_pRasterSolid, m_pDepthWriteSolid);
+		m_chestCamTimer -= Time::getInstance().deltaTime / 1000;
+		if (m_chestCamTimer <= 0) {
+			m_useChestCamera = false;
+		}
+	}
+	else {
+		m_view = m_camera->GetViewMatrix();
+		m_skybox->DrawSkybox(m_camera, &m_view, &m_projection, m_pRasterSkybox, m_pDepthWriteSkybox, m_pRasterSolid, m_pDepthWriteSolid);
+	}
+
+	if (m_input->IsKeyBeganPressed(DIK_C)) SpawnChest();
 
 	// Render skybox
-	m_skybox->DrawSkybox(m_camera, &m_view, &m_projection, m_pRasterSkybox, m_pDepthWriteSkybox, m_pRasterSolid, m_pDepthWriteSolid);
 
 	// Run updates for level objects
 	m_rootNode->Update(&m_world, &m_view, &m_projection);
@@ -224,6 +239,8 @@ void Level::CleanUp()
 
 	delete m_camera;
 	m_camera = nullptr;
+	delete m_chestCamera;
+	m_chestCamera = nullptr;
 	delete m_rootNode;
 	m_rootNode = nullptr;
 	delete m_cameraGripNode;
@@ -248,6 +265,8 @@ void Level::CompleteLevel()
 void Level::SpawnChest()
 {
 	m_rootNode->FindNode("Chest")->SetEnabled(true);
+	m_useChestCamera = true;
+	m_chestCamTimer = 2;
 }
 
 int Level::GetCoinCount()
@@ -263,4 +282,9 @@ int Level::GetRedCoinCount()
 bool Level::IsComplete()
 {
 	return m_complete;
+}
+
+bool Level::IsUsingChestCamera()
+{
+	return m_useChestCamera;
 }
