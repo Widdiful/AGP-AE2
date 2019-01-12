@@ -49,7 +49,10 @@ void Player::Update()
 	if (x != 0 || z != 0) {
 		m_node->LookAt_XZ(m_node->GetXPos() + x, m_node->GetZPos() + z, m_camera->GetYRot());
 		m_node->MoveForward(Time::getInstance().deltaTime * m_moveSpeed, m_node->GetRootNode());
+		m_moving = true;
 	}
+	else
+		m_moving = false;
 
 	// Manage particles
 	if (m_particles) {
@@ -70,8 +73,9 @@ void Player::Update()
 	// Update UI
 	if (m_input->IsKeyBeganPressed(DIK_TAB))
 		m_selectedText = (m_selectedText + 1) % m_messages.size();
-	m_messages[0] = std::to_string(m_health) + "HP Coins " + std::to_string(m_coinCount) + " Red coins " + std::to_string(m_redCoinCount);
-	m_messages[1] = "FPS" + to_string((int)(floorf(Time::getInstance().fps * 100)) / 100) + " X" + to_string((int)(floorf(m_node->GetXPos() * 100)) / 100) + " Y" + to_string((int)(floorf(m_node->GetYPos() * 100)) / 100) + " Z" + to_string((int)(floorf(m_node->GetZPos() * 100)) / 100);
+	m_messages[0] = "H" + std::to_string(m_health) + " C" + std::to_string(m_coinCount) + "O" + std::to_string(m_level->GetCoinCount()) + " R" + std::to_string(m_redCoinCount) + "O" + std::to_string(m_level->GetRedCoinCount());
+	m_messages[1] = "X" + to_string((int)(floorf(m_node->GetXPos() * 100)) / 100) + " Y" + to_string((int)(floorf(m_node->GetYPos() * 100)) / 100) + " Z" + to_string((int)(floorf(m_node->GetZPos() * 100)) / 100) + " F" + to_string((int)(floorf(Time::getInstance().fps * 100)) / 100);
+	replace(m_messages[1].begin(), m_messages[1].end(), '-', 'M');
 	if (m_uiManager) m_uiManager->ChangeText(m_messages[m_selectedText]);
 
 	if (m_node->GetParent() != m_startingParent) {
@@ -112,22 +116,13 @@ void Player::OnCollision(SceneNode * other)
 	else if (other->GetName() == "Chest") {
 		m_level->CompleteLevel();
 	}
-
-	else if (other->GetName() == "MovingPlatform") {
-		Vector3 movement = static_cast<MovingPlatform*>(other->GetComponent("Moving Platform"))->GetMovementInfo();
-		m_node->AddXPos(movement.x * 2 * Time::getInstance().deltaTime);
-		m_node->AddYPos(movement.y * 2 * Time::getInstance().deltaTime);
-		m_node->AddZPos(movement.z * 2 * Time::getInstance().deltaTime);
-		if (movement.y > 0)
-			m_node->SetYPos(other->GetYPos() + other->GetModel()->GetCubeBounds().y + m_node->GetModel()->GetBoundingSphereRadius() + 1.01);
-	}
 }
 
 void Player::TakeDamage()
 {
 	m_health--;
 	if (m_health <= 0) {
-		m_uiManager->ChangeText("Press R to retry");
+		m_uiManager->ChangeText("Press r to retry");
 		m_node->SetEnabled(false);
 	}
 }

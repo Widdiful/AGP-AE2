@@ -81,7 +81,7 @@ void Level::InitialiseLevel()
 	m_cameraGripNode->addChildNode(m_cameraNode);
 	m_rootNode->SetLevel(this);
 
-	m_2DText = new Text2D("assets/font1.bmp", m_pD3DDevice, m_pImmediateContext);
+	m_2DText = new Text2D("assets/font2.png", m_pD3DDevice, m_pImmediateContext);
 
 	// Create level from string
 	for (int i = 0; i < levelText.size(); i++) {
@@ -125,6 +125,7 @@ void Level::InitialiseLevel()
 				else if (lineInfo[1] == "Enemy") {
 					m_nodes.back()->SetModel((char*)"assets/enemy.obj", (char*)"assets/redCoin.bmp", m_pD3DDevice, m_pImmediateContext);
 					m_nodes.back()->AddComponent(new Enemy(true));
+					m_enemyCount++;
 				}
 				else if (lineInfo[1] == "UIManager") {
 					m_nodes.back()->AddComponent(new UIManager(m_2DText));
@@ -135,6 +136,7 @@ void Level::InitialiseLevel()
 				}
 				else if (lineInfo[1] == "MovingPlatform") {
 					m_nodes.back()->AddComponent(new MovingPlatform());
+					m_nodes.back()->GetModel()->AddTexture((char*)"assets/platform.bmp", (char*)"assets/dots.bmp");
 				}
 			}
 
@@ -250,7 +252,7 @@ void Level::SpawnChest()
 
 int Level::GetCoinCount()
 {
-	return m_coinCount;
+	return m_coinCount + m_enemyCount;
 }
 
 int Level::GetRedCoinCount()

@@ -9,7 +9,7 @@ Enemy::Enemy(bool gravity) : Actor(gravity)
 	m_jumpVelocity = 0.05f;
 	m_moveSpeed = 0.025f;
 	m_distanceToChange = 0.1f;
-	m_chaseDistance = 50;
+	m_chaseDistance = 75;
 	m_rotateSpeed = 0.1f;
 	m_steeringRotateSpeed = 1;
 }

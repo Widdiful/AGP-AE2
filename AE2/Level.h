@@ -35,6 +35,7 @@ protected:
 
 	int m_coinCount;
 	int m_redCoinCount;
+	int m_enemyCount;
 	bool m_complete;
 
 public:

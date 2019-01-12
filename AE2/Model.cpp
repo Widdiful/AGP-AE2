@@ -107,6 +107,8 @@ Model::Model(ID3D11Device * pD3DDevice, ID3D11DeviceContext * pImmediateContext)
 	m_ambient_light_colour = XMVectorSet(0.25f, 0.25f, 0.25f, 1.0f);
 
 	m_pTexture0 = NULL;
+	m_pTexture1 = NULL;
+	m_pBlankTexture = NULL;
 	m_pSampler0 = NULL;
 }
 
@@ -213,6 +215,14 @@ HRESULT Model::AddTexture(char * filename)
 	return D3DX11CreateShaderResourceViewFromFile(m_pD3DDevice, filename, NULL, NULL, &m_pTexture0, NULL);
 }
 
+HRESULT Model::AddTexture(char * filename1, char * filename2)
+{
+	HRESULT hr1, hr2;
+	hr1 = D3DX11CreateShaderResourceViewFromFile(m_pD3DDevice, filename1, NULL, NULL, &m_pTexture0, NULL);
+	hr2 = D3DX11CreateShaderResourceViewFromFile(m_pD3DDevice, filename2, NULL, NULL, &m_pTexture1, NULL);
+	return hr1 && hr2;
+}
+
 void Model::SetTexture(ID3D11ShaderResourceView * texture)
 {
 	m_pTexture0 = texture;
@@ -254,6 +264,10 @@ void Model::Draw(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection)
 	// Apply textures
 	m_pImmediateContext->PSSetSamplers(0, 1, &m_pSampler0);
 	m_pImmediateContext->PSSetShaderResources(0, 1, &m_pTexture0);
+	if (m_pTexture1)
+		m_pImmediateContext->PSSetShaderResources(1, 1, &m_pTexture1);
+	else
+		m_pImmediateContext->PSSetShaderResources(1, 1, &m_pBlankTexture);
 
 	// Draw the object
 	m_pObject->Draw();

@@ -1,8 +1,10 @@
 #include "Actor.h"
 #include "SceneNode.h"
 #include "Level.h"
+#include "MovingPlatform.h"
 
-
+const float platformYoffset = 1.01f;
+const float platformYoffsetMoving = 0.19f;
 
 Actor::Actor(float useGravity)
 {
@@ -82,5 +84,19 @@ void Actor::TakeDamage()
 	m_health--;
 	if (m_health <= 0) {
 		m_node->SetEnabled(false);
+	}
+}
+
+void Actor::OnCollision(SceneNode * other)
+{
+	if (other->GetName() == "MovingPlatform") {
+		Vector3 movement = static_cast<MovingPlatform*>(other->GetComponent("Moving Platform"))->GetMovementInfo();
+		m_node->AddXPos(movement.x * 2 * Time::getInstance().deltaTime);
+		m_node->AddYPos(movement.y * 2 * Time::getInstance().deltaTime);
+		m_node->AddZPos(movement.z * 2 * Time::getInstance().deltaTime);
+		if (movement.y > 0) {
+			m_node->SetYPos(other->GetYPos() + other->GetModel()->GetCubeBounds().y + m_node->GetModel()->GetBoundingSphereRadius() + platformYoffset);
+			if (m_moving) m_node->AddYPos(platformYoffsetMoving);
+		}
 	}
 }

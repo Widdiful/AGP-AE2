@@ -13,6 +13,7 @@ protected:
 	bool m_visible;
 	int m_health;
 	float m_deathY;
+	bool m_moving = false;
 
 public:
 	Actor(float useGravity);
@@ -21,5 +22,6 @@ public:
 	virtual void Start();
 	virtual void Update();
 	virtual void TakeDamage();
+	virtual void OnCollision(SceneNode* other);
 };
 

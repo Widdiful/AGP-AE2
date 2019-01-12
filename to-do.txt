@@ -1,14 +1,11 @@
 required:
 cubemap on coins
 second camera
-advanced text
 
 stretch:
-advanced textures
 advanced lighting
 other shaders
 bsp trees
-advanced particles
 
 levels:
 level 1 - mostly flat, some platforming

@@ -214,7 +214,7 @@ void ParticleGenerator::Draw(XMMATRIX* view, XMMATRIX* projection, XMFLOAT3* cam
 				}
 				case COIN_GLOW:
 				{
-					m_age = 0.5f;
+					m_age = 0.2f;
 					m_untilParticle = 0.008f;
 					////////////////////////initialise the particle NOTE: all of this is adjustable for different effects////////////////////////
 					(*it)->colour = XMFLOAT4(0.9f, 0.3f, 0.3f, 0.3f);

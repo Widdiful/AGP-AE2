@@ -15,6 +15,8 @@ protected:
 	ID3D11InputLayout*		m_pInputLayout;
 	ID3D11Buffer*			m_pConstantBuffer;
 	ID3D11ShaderResourceView* m_pTexture0;
+	ID3D11ShaderResourceView* m_pTexture1;
+	ID3D11ShaderResourceView* m_pBlankTexture;
 	ID3D11SamplerState*		m_pSampler0;
 
 	XMVECTOR				m_directional_light_origin;
@@ -38,6 +40,7 @@ public:
 
 	HRESULT LoadObjModel(char* filename);
 	HRESULT AddTexture(char* filename);
+	HRESULT AddTexture(char* filename1, char* filename2);
 	void SetTexture(ID3D11ShaderResourceView* texture);
 	void SetSampler(ID3D11SamplerState* sampler);
 	void Draw(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection);

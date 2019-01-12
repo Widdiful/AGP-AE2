@@ -6,6 +6,7 @@ cbuffer CB0 {
 }; // total = 112 bytes
 
 Texture2D		texture0;
+Texture2D		texture1;
 SamplerState	sampler0;
 
 struct VOut {
@@ -50,6 +51,7 @@ float4 ModelPS(float4 position : SV_POSITION, float4 color : COLOR, float2 texco
 		celShading = float4(0.3, 0.3, 0.3, 1.0);
 
 
-
-	return texture0.Sample(sampler0, texcoord) * (color + float4(0.5, 0.5, 0.5, 1.0)) * celShading;
+	float4 tex = texture0.Sample(sampler0, texcoord);
+	if (texture1.Sample(sampler0, texcoord).w != 0) tex *= texture1.Sample(sampler0, texcoord);
+	return tex * (color + float4(0.5, 0.5, 0.5, 1.0)) * celShading;
 }
