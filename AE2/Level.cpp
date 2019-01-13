@@ -179,6 +179,11 @@ void Level::InitialiseLevel()
 
 	}
 
+	SceneNode* chest = m_rootNode->FindNode("Chest");
+	Vector3 chestPos = Vector3(chest->GetXPos(), chest->GetYPos(), chest->GetZPos());
+	m_chestCamera->SetY(chestPos.y + 10);
+	m_chestCamera->LookAt(chestPos.x, chestPos.y, chestPos.z);
+
 	// Run Start() methods of all components
 	StartComponents();
 
@@ -208,8 +213,6 @@ void Level::Update()
 		m_view = m_camera->GetViewMatrix();
 		m_skybox->DrawSkybox(m_camera, &m_view, &m_projection, m_pRasterSkybox, m_pDepthWriteSkybox, m_pRasterSolid, m_pDepthWriteSolid);
 	}
-
-	if (m_input->IsKeyBeganPressed(DIK_C)) SpawnChest();
 
 	// Render skybox
 

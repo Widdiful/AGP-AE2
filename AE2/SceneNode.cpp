@@ -106,14 +106,8 @@ void SceneNode::Update(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection)
 		if (m_pModel) m_pModel->Draw(&m_localWorldMatrix, view, projection);
 	}
 	// run all component update functions
-	bool updateComponents = true;
-	if (m_parent && m_parent->GetLevel() && m_parent->GetLevel()->IsUsingChestCamera()){
-		updateComponents = false;
-	}
-	if (updateComponents) {
-		for (int i = 0; i < m_components.size(); i++) {
-			m_components[i]->Update();
-		}
+	for (int i = 0; i < m_components.size(); i++) {
+		m_components[i]->Update();
 	}
 
 	// traverse all child nodes, passing in the concatenated world matrix

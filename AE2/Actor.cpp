@@ -33,6 +33,9 @@ void Actor::Start()
 
 void Actor::Update()
 {
+	if (m_rootNode && m_rootNode->GetLevel() && m_rootNode->GetLevel()->IsUsingChestCamera()) {
+		return;
+	}
 	Component::Update();
 
 	// Apply velocity / gravity

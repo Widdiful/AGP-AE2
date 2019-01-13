@@ -32,6 +32,10 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
+	if (m_rootNode && m_rootNode->GetLevel() && m_rootNode->GetLevel()->IsUsingChestCamera()) {
+		return;
+	}
+
 	// check distance to player
 	Vector3 pos = Vector3(m_node->GetXPos(), m_node->GetYPos(), m_node->GetZPos());
 	float dx = pos.x - m_player->GetXPos();

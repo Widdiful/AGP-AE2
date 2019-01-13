@@ -39,6 +39,10 @@ void Player::Start()
 
 void Player::Update()
 {
+	if (m_rootNode && m_rootNode->GetLevel() && m_rootNode->GetLevel()->IsUsingChestCamera()) {
+		return;
+	}
+
 	// Move based on keyboard input
 	float x = 0, z = 0;
 	// Create offset to look at

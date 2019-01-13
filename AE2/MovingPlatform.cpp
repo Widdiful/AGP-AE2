@@ -1,6 +1,7 @@
 #include "MovingPlatform.h"
 #include "SceneNode.h"
 #include "Time.h"
+#include "Level.h"
 
 
 
@@ -28,6 +29,10 @@ void MovingPlatform::Start()
 
 void MovingPlatform::Update()
 {
+	if (m_rootNode && m_rootNode->GetLevel() && m_rootNode->GetLevel()->IsUsingChestCamera()) {
+		return;
+	}
+
 	Vector3 pos = Vector3(m_node->GetXPos(), m_node->GetYPos(), m_node->GetZPos());
 
 	float dx = pos.x - m_currentPoint.x;

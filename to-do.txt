@@ -1,6 +1,5 @@
 required:
 cubemap on coins
-second camera
 
 stretch:
 advanced lighting
