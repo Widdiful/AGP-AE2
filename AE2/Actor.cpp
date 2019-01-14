@@ -8,6 +8,7 @@ const float platformYoffsetMoving = 0.19f;
 
 Actor::Actor(float useGravity)
 {
+	// Initialise default variables
 	m_name = "Actor";
 	m_health = 1;
 	m_visible = true;
@@ -33,6 +34,7 @@ void Actor::Start()
 
 void Actor::Update()
 {
+	// Don't update if the chest camera is active - pauses gameplay without pausing everything
 	if (m_rootNode && m_rootNode->GetLevel() && m_rootNode->GetLevel()->IsUsingChestCamera()) {
 		return;
 	}
@@ -53,6 +55,7 @@ void Actor::Update()
 			if (m_velocityY > m_gravityMax) m_velocityY += m_gravity * Time::getInstance().deltaTime;
 		}
 
+		// Ground detection
 		if (m_velocityY > 0.01f || m_velocityY < -0.01f) {
 			m_grounded = false;
 		}
@@ -66,6 +69,7 @@ void Actor::Update()
 			}
 		}*/
 
+		// iframes and character flickering
 		bool blinking = false;
 		if (m_iframes > 0) {
 			m_node->SetVisible(!m_node->GetVisible());
@@ -76,6 +80,7 @@ void Actor::Update()
 			m_node->SetVisible(m_visible);
 		}
 
+		// Kill character when they fall under the death plane
 		if (m_node->GetYPos() <= m_deathY) {
 			TakeDamage();
 		}
@@ -84,6 +89,7 @@ void Actor::Update()
 
 void Actor::TakeDamage()
 {
+	// Lower health, kill character when at 0hp
 	m_health--;
 	if (m_health <= 0) {
 		m_node->SetEnabled(false);
@@ -92,6 +98,7 @@ void Actor::TakeDamage()
 
 void Actor::OnCollision(SceneNode * other)
 {
+	// Move along with moving platforms
 	if (other->GetName() == "MovingPlatform") {
 		Vector3 movement = static_cast<MovingPlatform*>(other->GetComponent("Moving Platform"))->GetMovementInfo();
 		m_node->AddXPos(movement.x * 2 * Time::getInstance().deltaTime);

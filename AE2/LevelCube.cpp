@@ -14,5 +14,6 @@ LevelCube::~LevelCube()
 
 void LevelCube::Start()
 {
+	// Set collider to cube
 	m_node->SetCollisionType(SceneNode::Cube);
 }

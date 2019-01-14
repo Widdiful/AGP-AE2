@@ -39,6 +39,7 @@ void Player::Start()
 
 void Player::Update()
 {
+	// Don't update if the chest camera is active - pauses gameplay without pausing everything
 	if (m_rootNode && m_rootNode->GetLevel() && m_rootNode->GetLevel()->IsUsingChestCamera()) {
 		return;
 	}
@@ -81,10 +82,6 @@ void Player::Update()
 	m_messages[1] = "X" + to_string((int)(floorf(m_node->GetXPos() * 100)) / 100) + " Y" + to_string((int)(floorf(m_node->GetYPos() * 100)) / 100) + " Z" + to_string((int)(floorf(m_node->GetZPos() * 100)) / 100) + " F" + to_string((int)(floorf(Time::getInstance().fps * 100)) / 100);
 	replace(m_messages[1].begin(), m_messages[1].end(), '-', 'M');
 	if (m_uiManager) m_uiManager->ChangeText(m_messages[m_selectedText]);
-
-	if (m_node->GetParent() != m_startingParent) {
-		//m_node->SetParent(m_startingParent);
-	}
 
 
 	Actor::Update();

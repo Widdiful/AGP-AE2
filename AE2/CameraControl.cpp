@@ -5,6 +5,7 @@
 
 CameraControl::CameraControl(Camera * camera, SceneNode * target, SceneNode* cameraNode, InputManager* input)
 {
+	// Initialise default variables
 	m_name = "Camera Control";
 
 	m_camera = camera;
@@ -48,6 +49,8 @@ CameraControl::~CameraControl()
 void CameraControl::Update()
 {
 	Component::Update();
+
+	// Toggle first-person view
 	if (m_input->IsKeyBeganPressed(DIK_Q)) {
 		m_cameraMode = (m_cameraMode + 1) % m_offsets.size();
 		m_target->SetVisible(!m_target->GetVisible());

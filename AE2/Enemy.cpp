@@ -5,6 +5,7 @@
 
 Enemy::Enemy(bool gravity) : Actor(gravity)
 {
+	// Initialise default variables
 	m_name = "Enemy";
 	m_jumpVelocity = 0.05f;
 	m_moveSpeed = 0.025f;
@@ -22,8 +23,11 @@ Enemy::~Enemy()
 void Enemy::Start()
 {
 	Actor::Start();
+
+	// Create reference to player
 	m_player = m_rootNode->FindNode("Player");
 
+	// Add current position to points list if empty
 	if (m_points.size() == 0)
 		m_points.push_back(Vector3(m_node->GetXPos(), m_node->GetYPos(), m_node->GetZPos()));
 
@@ -32,6 +36,7 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
+	// Don't update if the chest camera is active - pauses gameplay without pausing everything
 	if (m_rootNode && m_rootNode->GetLevel() && m_rootNode->GetLevel()->IsUsingChestCamera()) {
 		return;
 	}

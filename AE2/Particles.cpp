@@ -4,6 +4,7 @@
 
 Particles::Particles(ParticleGenerator::particleTypes type, ID3D11Device* device, ID3D11DeviceContext* context)
 {
+	// Initialise default variables
 	m_name = "Particles";
 	m_particles = new ParticleGenerator(device, context);
 	m_particles->SetType(type);

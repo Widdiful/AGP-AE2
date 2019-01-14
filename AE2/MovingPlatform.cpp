@@ -7,6 +7,7 @@
 
 MovingPlatform::MovingPlatform()
 {
+	// Initialise default variables
 	m_name = "Moving Platform";
 	m_moveSpeed = 0.001f;
 	m_distanceToChange = 1.0f;
@@ -20,6 +21,8 @@ MovingPlatform::~MovingPlatform()
 void MovingPlatform::Start()
 {
 	Component::Start();
+
+	// Add current position to points list if empty
 	if (m_points.size() == 0)
 		m_points.push_back(Vector3(m_node->GetXPos(), m_node->GetYPos(), m_node->GetZPos()));
 
@@ -29,6 +32,7 @@ void MovingPlatform::Start()
 
 void MovingPlatform::Update()
 {
+	// Don't update if the chest camera is active - pauses gameplay without pausing everything
 	if (m_rootNode && m_rootNode->GetLevel() && m_rootNode->GetLevel()->IsUsingChestCamera()) {
 		return;
 	}
