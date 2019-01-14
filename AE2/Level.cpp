@@ -217,7 +217,8 @@ void Level::Update()
 	// Render skybox
 
 	// Run updates for level objects
-	m_rootNode->Update(&m_world, &m_view, &m_projection);
+	XMVECTOR cam = XMVectorSet(m_camera->GetX(), m_camera->GetY(), m_camera->GetZ(), 0.0);
+	m_rootNode->Update(&m_world, &m_view, &m_projection, cam);
 
 	// Update particles
 	for (int i = 0; i < m_particles.size(); i++) {

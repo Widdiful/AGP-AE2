@@ -570,10 +570,8 @@ void RenderFrame(void)
 	// Update inputs
 	g_input->ReadInputStates();
 	if (g_input->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(g_hWnd);
-	if (g_input->IsKeyPressed(DIK_1)) g_levelID = 0;
-	if (g_input->IsKeyPressed(DIK_2)) g_levelID = 1;
-	if (g_input->IsKeyPressed(DIK_3)) g_levelID = 2;
 	if (g_input->IsKeyBeganPressed(DIK_R)) g_levels[g_levelID]->Restart();
+	if (g_input->IsKeyBeganPressed(DIK_C)) g_levels[g_levelID]->CompleteLevel();
 
 	// Clear the back buffer - choose a colour you like
 	float rgba_clear_colour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };

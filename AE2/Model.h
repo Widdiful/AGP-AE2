@@ -43,7 +43,7 @@ public:
 	HRESULT AddTexture(char* filename1, char* filename2);
 	void SetTexture(ID3D11ShaderResourceView* texture);
 	void SetSampler(ID3D11SamplerState* sampler);
-	void Draw(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection);
+	void Draw(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection, XMVECTOR cameraPosition);
 	void LookAt_XZ(float x, float z);
 	void MoveForward(float distance);
 	bool CheckCollision(Model* other);

@@ -81,7 +81,7 @@ SceneNode * SceneNode::GetParent()
 	return m_parent;
 }
 
-void SceneNode::Update(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection)
+void SceneNode::Update(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection, XMVECTOR cameraPosition)
 {
 	if (!m_enabled) return;
 
@@ -103,7 +103,7 @@ void SceneNode::Update(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection)
 		m_localWorldMatrix *= *world;
 
 		// only draw if there is a model attached
-		if (m_pModel) m_pModel->Draw(&m_localWorldMatrix, view, projection);
+		if (m_pModel) m_pModel->Draw(&m_localWorldMatrix, view, projection, cameraPosition);
 	}
 	// run all component update functions
 	for (int i = 0; i < m_components.size(); i++) {
@@ -113,7 +113,7 @@ void SceneNode::Update(XMMATRIX * world, XMMATRIX * view, XMMATRIX * projection)
 	// traverse all child nodes, passing in the concatenated world matrix
 	for (int i = 0; i < m_children.size(); i++)
 	{
-		m_children[i]->Update(&m_localWorldMatrix, view, projection);
+		m_children[i]->Update(&m_localWorldMatrix, view, projection, cameraPosition);
 	}
 
 }

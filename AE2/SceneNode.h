@@ -64,7 +64,7 @@ public:
 	SceneNode* GetParent();
 	void SetLevel(Level* n);
 	Level* GetLevel();
-	void Update(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection);
+	void Update(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection, XMVECTOR cameraPosition);
 	string GetName();
 	void SetEnabled(bool val);
 	bool GetEnabled();

@@ -8,6 +8,7 @@ struct MODEL_CONSTANT_BUFFER {
 	XMVECTOR directional_light_vector;
 	XMVECTOR directional_light_colour;
 	XMVECTOR ambient_light_colour;
+	XMVECTOR cameraPosition;
 };
 
 XMFLOAT3 Model::CalculateModelCentrePoint()
@@ -198,7 +199,7 @@ HRESULT Model::LoadObjModel(char * filename)
 	ZeroMemory(&constant_buffer_desc, sizeof(constant_buffer_desc));
 
 	constant_buffer_desc.Usage = D3D11_USAGE_DEFAULT;
-	constant_buffer_desc.ByteWidth = 112; // must be a multiple of 16
+	constant_buffer_desc.ByteWidth = 128; // must be a multiple of 16
 	constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
 	hr = m_pD3DDevice->CreateBuffer(&constant_buffer_desc, NULL, &m_pConstantBuffer);
@@ -233,7 +234,7 @@ void Model::SetSampler(ID3D11SamplerState * sampler)
 	m_pSampler0 = sampler;
 }
 
-void Model::Draw(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection)
+void Model::Draw(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection, XMVECTOR cameraPosition)
 {
 	// Scale, rotate and position model correctly
 	//XMMATRIX world;
@@ -251,6 +252,7 @@ void Model::Draw(XMMATRIX* world, XMMATRIX* view, XMMATRIX* projection)
 	model_cb_values.ambient_light_colour = m_ambient_light_colour;
 	model_cb_values.directional_light_vector = XMVector3Transform(m_directional_light_origin, transpose);
 	model_cb_values.directional_light_vector = XMVector3Normalize(model_cb_values.directional_light_vector);
+	model_cb_values.cameraPosition = cameraPosition;
 
 	// Add to buffer
 	m_pImmediateContext->UpdateSubresource(m_pConstantBuffer, 0, 0, &model_cb_values, 0, 0);
