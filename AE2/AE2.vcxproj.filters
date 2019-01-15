@@ -4,19 +4,19 @@
     <FxCompile Include="particle_shader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="model_shader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="shaders.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="sky_shader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="text2D_shaders.hlsl">
+    <FxCompile Include="reflect_shader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="reflect_shader.hlsl">
+    <FxCompile Include="model_shader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="text2D_shaders.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
